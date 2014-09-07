@@ -9,4 +9,4 @@ Supports:
 * catches displays exceptions 
 * can group cards into collapsible sections on the storyboard 
 
-This extension was based on the screenshot taker extension and would not be here without it.
+This extension is based on the screenshot taker extension and would not be here without it.
