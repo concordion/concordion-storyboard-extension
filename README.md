@@ -10,3 +10,5 @@ Supports:
 * can group cards into collapsible sections on the storyboard 
 
 This extension is based on the screenshot taker extension and would not be here without it.
+
+There are some screenshots of this extension in action in the wiki.
