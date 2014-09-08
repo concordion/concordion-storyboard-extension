@@ -2,11 +2,9 @@ package org.concordion.ext;
 
 import java.awt.Robot;
 
-
 import org.concordion.api.Resource;
 import org.concordion.api.extension.ConcordionExtender;
 import org.concordion.api.extension.ConcordionExtension;
-import org.concordion.ext.ScreenshotTaker;
 import org.concordion.ext.storyboard.CardImage;
 import org.concordion.ext.storyboard.CardResult;
 import org.concordion.ext.storyboard.StoryboardListener;
@@ -102,17 +100,17 @@ public class StoryboardExtension implements ConcordionExtension {
 	}
 
 	/**
-	 * Adds collapsable section card to story board
+	 * Adds collapsible section card to story board
 	 * 
 	 * @param summary
-	 *            Must be unique for each collapsalbe group added
+	 *            Must be unique for each collapsilbe group added
 	 */
-	public void startCollapsableGroup(final String summary) {
-		extension.startCollapsableGroup(summary);
+	public void startCollapsibleGroup(final String summary) {
+		extension.startCollapsibleGroup(summary);
 	}
 
 	/**
-	 * Wraps all story cards from startCollapsableGroup() call to last added card in a collapse/expand region (defaults to collapsed)
+	 * Wraps all story cards from startCollapsibleGroup() call to last added card in a collapse/expand region (defaults to collapsed)
 	 */
 	public void stopCollapsibleGroup() {
 		extension.stopCollapsibleGroup(CardResult.SUCCESS);

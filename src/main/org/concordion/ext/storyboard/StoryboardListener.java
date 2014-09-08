@@ -1,17 +1,3 @@
-/*
- * Copyright (c) 2010 Two Ten Consulting Limited, New Zealand 
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.concordion.ext.storyboard;
 
 import java.util.ArrayList;
@@ -41,7 +27,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	private ScreenshotTaker screenshotTaker = new RobotScreenshotTaker();
 	private boolean addCardOnThrowable = true;
 	private boolean lastScreenShotWasThrowable = false;
-	private String collapsableGroup = "";
+	private String collapsibleGroup = "";
 
 	private Resource resource;
 	private Target target;
@@ -72,36 +58,36 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		cards.add(card);
 	}
 
-	public void startCollapsableGroup(final String summary) {
+	public void startCollapsibleGroup(final String summary) {
 		if (resource == null) {
 			return;
 		}
 
 		String group = "scgroup" + summary.replaceAll(" ", "");
 
-		if (!collapsableGroup.isEmpty()) {
+		if (!collapsibleGroup.isEmpty()) {
 			stopCollapsibleGroup(CardResult.WARN);
 		}
 
-		CollapsableCard card = new CollapsableCard();
+		CollapsibleCard card = new CollapsibleCard();
 		setCardBasicDetails(card, summary, "Click image to show/hide story cards for this section", CardResult.SUCCESS);
 		card.captureDetails(resource, group);
 
 		cards.add(card);
 
-		collapsableGroup = group;
+		collapsibleGroup = group;
 	}
 
 	public void stopCollapsibleGroup(final CardResult result) {
-		if (collapsableGroup.isEmpty()) {
+		if (collapsibleGroup.isEmpty()) {
 			return;
 		}
 
-		CollapsableCard last = null;
+		CollapsibleCard last = null;
 
 		for (int i = cards.size() - 1; i >= 0; i--) {
-			if (cards.get(i) instanceof CollapsableCard) {
-				last = (CollapsableCard) cards.get(i);
+			if (cards.get(i) instanceof CollapsibleCard) {
+				last = (CollapsibleCard) cards.get(i);
 				break;
 			}
 		}
@@ -122,14 +108,14 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 			last.setCollapsed(true);
 		}
 
-		collapsableGroup = "";
+		collapsibleGroup = "";
 	}
 
 	private void setCardBasicDetails(final Card card, final String summary, final String description, final CardResult result) {
 		card.setSummary(summary);
 		card.setDescription(description.trim() + (description.trim().endsWith(".") ? "" : "."));
 		card.setResult(result);
-		card.setGroupMembership(collapsableGroup);
+		card.setGroupMembership(collapsibleGroup);
 	}
 
 	@Override
@@ -233,7 +219,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	}
 
 	private void addCardsToStoryboard(final Element storyboard) {
-		CollapsableCard collapseGroup = null;
+		CollapsibleCard collapseGroup = null;
 
 		Element ul = new Element("ul");
 		storyboard.appendChild(ul);
@@ -243,8 +229,8 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 			Element li = new Element("li");
 			li.addStyleClass("storycard");
 
-			if (card instanceof CollapsableCard) {
-				collapseGroup = (CollapsableCard) card;
+			if (card instanceof CollapsibleCard) {
+				collapseGroup = (CollapsibleCard) card;
 			}
 
 			if (card.isGroupMember()) {

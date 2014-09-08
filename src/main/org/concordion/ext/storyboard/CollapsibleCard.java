@@ -3,7 +3,7 @@ package org.concordion.ext.storyboard;
 import org.concordion.api.Element;
 import org.concordion.api.Resource;
 
-public class CollapsableCard extends Card {
+public class CollapsibleCard extends Card {
 	private String collapseImageName;
 	private String expandImageName;
 	private boolean collapsed = false;

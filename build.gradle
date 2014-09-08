@@ -1,0 +1,62 @@
+/*
+ * Copyright: Copyright (c) 2013 NZ Customs Service
+ */
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+// Java compilier compliance level
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+// Setup variables for important dependancies
+ext {
+	junitVersion				= "4.8.2"	// https://github.com/junit-team/junit/releases ???? 	-- latest 4.11
+	seleniumVersion				= "2.39.0" 	// http://docs.seleniumhq.org/download/ 				-- latest 2.41.0
+	slf4jVersion                = "1.7.7"	// http://www.slf4j.org/download.html					-- latest 1.7.7
+	concordionVersion           = "1.5.0-SNAPSHOT"	// http://concordion.org/Download.html					-- latest 1.4.4
+	concordionExtensionsVersion = "1.1.1"	// http://concordion.org/Download.html					-- latest 1.1.1
+}
+
+// Download dependancies via Artifactory
+repositories {
+	mavenCentral()
+	/*
+	mavenLocal()
+	maven {
+		url "http://artifactory:8081/artifactory/repo1/"
+		url "http://artifactory:8081/artifactory/libs-release/"
+	}
+	*/
+}
+
+// Specify dependancies
+dependencies {
+	compile "org.seleniumhq.selenium:selenium-java:$seleniumVersion"
+	compile "org.concordion:concordion-extensions:$concordionExtensionsVersion"
+	compile "org.concordion:concordion:$concordionVersion"
+	compile "junit:junit:$junitVersion"
+	compile "org.slf4j:slf4j-api:$slf4jVersion"
+	compile 'ch.qos.logback:logback-classic:1.1.2'
+}
+
+sourceSets {
+	main {
+		java { srcDir 'src/main' }
+		resources { srcDirs = [] }
+	}
+}
+
+// Configure concordion
+test {
+	if (System.getProperty('logback.configurationFile') != null && System.getProperty('logback.configurationFile').trim().length() > 0) {
+		systemProperty 'logback.configurationFile', System.getProperty('logback.configurationFile')
+	}
+	if (System.getProperty('concordion.run.threadCount') != null && System.getProperty('concordion.run.threadCount').trim().length() > 0) {
+		systemProperty 'concordion.run.threadCount', System.getProperty('concordion.run.threadCount')
+	}
+	systemProperty 'concordion.output.dir', "$reporting.baseDir/acceptance/"
+	outputs.upToDateWhen { false } // Force-run Selenium
+	testLogging.showStandardStreams = true
+	testLogging.showExceptions = true
+}

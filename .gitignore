@@ -1,3 +1,10 @@
-build.gradle
+# Gradle
+.gradle
+build/
+
+# Eclipse
 .checkstyle
+.classpath
+.project
+.settings/
 bin/
