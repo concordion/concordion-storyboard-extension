@@ -8,16 +8,11 @@ import org.concordion.api.Resource;
 public class NotificationCard extends Card {
 	private String dataFileName = "";
 	private CardImage cardImage;
-	private String cardImage2 = "";
 	private String data = "";
 	private String fileExtension = "txt";
 
 	public void setCardImage(final CardImage cardImage) {
 		this.cardImage = cardImage;
-	}
-
-	public void setCardImage(final String cardImage) {
-		this.cardImage2 = cardImage;
 	}
 
 	public void setData(final String data) {
@@ -50,13 +45,7 @@ public class NotificationCard extends Card {
 
 	@Override
 	protected void addHTMLToContainer(final Element storyboard, final Element container) {
-		String imageName;
-
-		if (!cardImage2.isEmpty()) {
-			imageName = getResource().getRelativePath(new Resource("/email.png"));
-		} else {
-			imageName = getResource().getRelativePath(cardImage.getResource());
-		}
+		String imageName = getResource().getRelativePath(cardImage.getResource());
 
 		Element img = new Element("img");
 		img.setId(this.getDescription());
