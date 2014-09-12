@@ -4,37 +4,60 @@ import java.io.OutputStream;
 
 import org.concordion.api.Element;
 import org.concordion.api.Resource;
-import org.concordion.api.Target;
 
 public class NotificationCard extends Card {
-	private String imageName;
 	private String dataFileName = "";
+	private CardImage cardImage;
+	private String cardImage2 = "";
+	private String data = "";
+	private String fileExtension = "txt";
 
-	public void captureData(final Resource resource, final Target target, final String data, final CardImage image, final int nextCardNumber) {
-		imageName = resource.getRelativePath(image.getResource());
+	public void setCardImage(final CardImage cardImage) {
+		this.cardImage = cardImage;
+	}
 
+	public void setCardImage(final String cardImage) {
+		this.cardImage2 = cardImage;
+	}
+
+	public void setData(final String data) {
+		if (data == null) {
+			this.data = "";
+		} else {
+			this.data = data;
+		}
+	}
+
+	@Override
+	protected void captureData() {
 		if (data != null && !data.isEmpty()) {
-			dataFileName = getNextFileName(resource.getName(), nextCardNumber);
-			Resource xmlResource = resource.getRelativeResource(dataFileName);
+			dataFileName = getFileName(getResource().getName(), getCardNumber(), fileExtension);
+			Resource xmlResource = getResource().getRelativeResource(dataFileName);
 
 			try {
 				// As don't have access to the concordion spec, store the results for later
-				OutputStream outputStream = target.getOutputStream(xmlResource);
+				OutputStream outputStream = getTarget().getOutputStream(xmlResource);
 				outputStream.write(data.getBytes());
 				this.dataFileName = xmlResource.getName();
 			} catch (Exception e) {
 				// Unable to write file
 				this.dataFileName = "";
 			}
+
+			data = "";
 		}
 	}
 
-	public void captureData(final Resource resource, final CardImage image) {
-		imageName = resource.getRelativePath(image.getResource());
-	}
-
 	@Override
-	public void addHTMLToContainer(final Element storyboard, final Element container) {
+	protected void addHTMLToContainer(final Element storyboard, final Element container) {
+		String imageName;
+
+		if (!cardImage2.isEmpty()) {
+			imageName = getResource().getRelativePath(new Resource("/email.png"));
+		} else {
+			imageName = getResource().getRelativePath(cardImage.getResource());
+		}
+
 		Element img = new Element("img");
 		img.setId(this.getDescription());
 		img.addStyleClass("sizeheight");
@@ -51,8 +74,15 @@ public class NotificationCard extends Card {
 		}
 	}
 
-	@Override
-	protected String getFileExtension() {
-		return "txt";
+	public void setFileExtension(final String fileExtension) {
+		if (fileExtension == null || fileExtension.isEmpty()) {
+			return;
+		}
+
+		if (fileExtension.startsWith(".")) {
+			this.fileExtension = fileExtension.substring(1);
+		} else {
+			this.fileExtension = fileExtension;
+		}
 	}
 }

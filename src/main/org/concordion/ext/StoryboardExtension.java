@@ -1,12 +1,21 @@
 package org.concordion.ext;
 
 import java.awt.Robot;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.concordion.api.Resource;
 import org.concordion.api.extension.ConcordionExtender;
 import org.concordion.api.extension.ConcordionExtension;
+import org.concordion.ext.storyboard.Card;
 import org.concordion.ext.storyboard.CardImage;
 import org.concordion.ext.storyboard.CardResult;
+import org.concordion.ext.storyboard.CollapsibleStartCard;
+import org.concordion.ext.storyboard.CollapsibleStopCard;
+import org.concordion.ext.storyboard.CustomCardImage;
+import org.concordion.ext.storyboard.NotificationCard;
+import org.concordion.ext.storyboard.ScreenshotCard;
+import org.concordion.ext.storyboard.StockCardImage;
 import org.concordion.ext.storyboard.StoryboardListener;
 
 /**
@@ -21,6 +30,7 @@ public class StoryboardExtension implements ConcordionExtension {
 
 	private final StoryboardListener extension = new StoryboardListener();
 	private boolean acceptsScreenShots = true;
+	private final Map<String, CustomCardImage> customImages = new HashMap<String, CustomCardImage>();
 
 	@Override
 	public void addTo(final ConcordionExtender concordionExtender) {
@@ -37,12 +47,35 @@ public class StoryboardExtension implements ConcordionExtension {
 
 		concordionExtender.withLinkedCSS(path + "/storyboard.css", new Resource("/storyboard.css"));
 		concordionExtender.withLinkedJavaScript(path + "/storyboard.js", new Resource("/storyboard.js"));
-		concordionExtender.withResource(path + CardImage.XML_REQUEST, CardImage.XML_REQUEST.getResource());
-		concordionExtender.withResource(path + CardImage.XML_RESPONSE, CardImage.XML_RESPONSE.getResource());
-		concordionExtender.withResource(path + CardImage.EXPAND, CardImage.EXPAND.getResource());
-		concordionExtender.withResource(path + CardImage.COLLAPSE, CardImage.COLLAPSE.getResource());
-		concordionExtender.withResource(path + CardImage.COMPLETE, CardImage.COMPLETE.getResource());
-		concordionExtender.withResource(path + CardImage.ERROR, CardImage.ERROR.getResource());
+		concordionExtender.withResource(path + StockCardImage.XML_REQUEST, StockCardImage.XML_REQUEST.getResource());
+		concordionExtender.withResource(path + StockCardImage.XML_RESPONSE, StockCardImage.XML_RESPONSE.getResource());
+		concordionExtender.withResource(path + StockCardImage.EXPAND, StockCardImage.EXPAND.getResource());
+		concordionExtender.withResource(path + StockCardImage.COLLAPSE, StockCardImage.COLLAPSE.getResource());
+		concordionExtender.withResource(path + StockCardImage.COMPLETE, StockCardImage.COMPLETE.getResource());
+		concordionExtender.withResource(path + StockCardImage.ERROR, StockCardImage.ERROR.getResource());
+
+		for (CustomCardImage image : customImages.values()) {
+			concordionExtender.withResource(image.getSourcePath() + image.getFilename(), image.getResource());
+		}
+	}
+
+	/**
+	 * Add custom card image that will be shared by all tests, must be called before test starts otherwise this will do nothing
+	 * 
+	 * @param imageName
+	 */
+	public void addCardImage(final String sourcePath, final String filename) {
+		customImages.put(CustomCardImage.getKeyFromFileName(filename), new CustomCardImage(sourcePath, filename));
+	}
+
+	/**
+	 * Get a previously added custom card image
+	 * 
+	 * @param filename
+	 * @return
+	 */
+	public CustomCardImage getCardImage(final String filename) {
+		return customImages.get(filename);
 	}
 
 	/**
@@ -79,40 +112,86 @@ public class StoryboardExtension implements ConcordionExtension {
 	/**
 	 * Adds screenshot card to story board
 	 * 
-	 * @param summary
+	 * @param title
 	 * @param description
 	 */
-	public void addScreenshot(final String summary, final String description) {
+	public void addScreenshot(final String title, final String description) {
 		if (acceptsScreenShots) {
-			extension.addScreenshotCard(summary, description, CardResult.SUCCESS);
+			ScreenshotCard card = new ScreenshotCard();
+			card.setTitle(title);
+			card.setDescription(description);
+			card.setResult(CardResult.SUCCESS);
+
+			extension.addCard(card);
 		}
 	}
 
 	/**
-	 * Adds xml card to story board
+	 * Adds data/information card to story board
 	 * 
-	 * @param summary
+	 * @param title
+	 *            short description
 	 * @param description
-	 * @param xml
+	 *            card summary
+	 * @param data
+	 *            any data that may want to present to user when they click on it, can be empty, xml, json, etc
 	 */
-	public void addNotification(final String summary, final String description, final String xml, final CardImage image, final CardResult result) {
-		extension.addNotificationCard(summary, description, xml, image, result);
+	public void addNotification(final String title, final String description, final String data, final CardImage image, final CardResult result) {
+		addNotification(title, description, data, "", image, result);
+	}
+
+	/**
+	 * Adds data/information card to story board
+	 * 
+	 * @param title
+	 *            short description
+	 * @param description
+	 *            card summary
+	 * @param data
+	 *            any data that may want to present to user when they click on it, can be empty, xml, json, etc
+	 * @param fileExtension
+	 *            file extension of file to write data to, defaults to txt
+	 */
+	public void addNotification(final String title, final String description, final String data, final String fileExtension, final CardImage image,
+			final CardResult result) {
+		NotificationCard card = new NotificationCard();
+		card.setTitle(title);
+		card.setDescription(description);
+		card.setCardImage(image);
+		card.setData(data);
+		card.setFileExtension(fileExtension);
+		card.setResult(result);
+
+		extension.addCard(card);
 	}
 
 	/**
 	 * Adds collapsible section card to story board
 	 * 
-	 * @param summary
-	 *            Must be unique for each collapsilbe group added
+	 * @param title
+	 *            Must be unique for each collapsible group added
 	 */
-	public void startCollapsibleGroup(final String summary) {
-		extension.startCollapsibleGroup(summary);
+	public void startCollipsableGroup(final String title) {
+		CollapsibleStartCard card = new CollapsibleStartCard();
+		card.setTitle(title);
+
+		extension.addCard(card);
 	}
 
 	/**
 	 * Wraps all story cards from startCollapsibleGroup() call to last added card in a collapse/expand region (defaults to collapsed)
 	 */
 	public void stopCollapsibleGroup() {
-		extension.stopCollapsibleGroup(CardResult.SUCCESS);
+		extension.addCard(new CollapsibleStopCard());
 	}
+
+	/**
+	 * Allow customs cards to be passed into storyboard
+	 * 
+	 * @param card
+	 */
+	public void addCard(final Card card) {
+		extension.addCard(card);
+	}
+
 }

@@ -28,94 +28,89 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	private boolean addCardOnThrowable = true;
 	private boolean lastScreenShotWasThrowable = false;
 	private String collapsibleGroup = "";
-
 	private Resource resource;
 	private Target target;
 
-	public void addScreenshotCard(final String summary, final String description, final CardResult result) {
-		if (screenshotTaker == null || resource == null) {
-			return;
-		}
-
-		ScreenshotCard card = new ScreenshotCard();
-		setCardBasicDetails(card, summary, description, result);
-		card.captureScreenshot(resource, target, screenshotTaker, getNextCardNumber());
-
-		cards.add(card);
-
+	/**
+	 * Add screenshot
+	 */
+	public void addCard(final ScreenshotCard card) {
+		card.setScreenshotTaker(screenshotTaker);
+		addCard((Card) card);
 		lastScreenShotWasThrowable = false;
 	}
 
-	public void addNotificationCard(final String summary, final String description, final String data, final CardImage image, final CardResult result) {
-		if (resource == null) {
-			return;
-		}
-
-		NotificationCard card = new NotificationCard();
-		setCardBasicDetails(card, summary, description, result);
-		card.captureData(resource, target, data, image, getNextCardNumber());
-
-		cards.add(card);
-	}
-
-	public void startCollapsibleGroup(final String summary) {
-		if (resource == null) {
-			return;
-		}
-
-		String group = "scgroup" + summary.replaceAll(" ", "");
-
+	/**
+	 * Add collapsible section start
+	 */
+	public void addCard(final CollapsibleStartCard card) {
 		if (!collapsibleGroup.isEmpty()) {
-			stopCollapsibleGroup(CardResult.WARN);
+			CollapsibleStopCard stopCard = new CollapsibleStopCard();
+			stopCard.setResult(CardResult.WARN);
+			addCard(stopCard);
 		}
 
-		CollapsibleCard card = new CollapsibleCard();
-		setCardBasicDetails(card, summary, "Click image to show/hide story cards for this section", CardResult.SUCCESS);
-		card.captureDetails(resource, group);
+		addCard((Card) card);
 
-		cards.add(card);
-
-		collapsibleGroup = group;
+		collapsibleGroup = "scgroup" + getCardNumber();
+		card.setGroupOwnership(collapsibleGroup);
 	}
 
-	public void stopCollapsibleGroup(final CardResult result) {
+	/**
+	 * Add collapsible section end
+	 */
+	public void addCard(final CollapsibleStopCard card) {
 		if (collapsibleGroup.isEmpty()) {
 			return;
 		}
 
-		CollapsibleCard last = null;
-
-		for (int i = cards.size() - 1; i >= 0; i--) {
-			if (cards.get(i) instanceof CollapsibleCard) {
-				last = (CollapsibleCard) cards.get(i);
-				break;
-			}
-		}
-
-		if (last == null) {
+		CollapsibleStartCard start = getLastCollapsibleStartCard();
+		if (start == null) {
 			return;
 		}
 
-		last.setResult(result);
-
-		if (result != CardResult.FAILURE) {
-			NotificationCard card = new NotificationCard();
-			setCardBasicDetails(card, last.getSummary(), "This step has completed successfully", result);
-			card.captureData(resource, CardImage.COMPLETE);
-
-			cards.add(card);
-
-			last.setCollapsed(true);
+		if (card.getResult() != CardResult.FAILURE) {
+			start.setCollapsed(true);
 		}
+		card.setTitle(start.getTitle());
+
+		addCard((Card) card);
 
 		collapsibleGroup = "";
 	}
 
-	private void setCardBasicDetails(final Card card, final String summary, final String description, final CardResult result) {
-		card.setSummary(summary);
-		card.setDescription(description.trim() + (description.trim().endsWith(".") ? "" : "."));
-		card.setResult(result);
+	/**
+	 * Add custom card and/or set common details for all cards
+	 */
+	public void addCard(final Card card) {
+		if (resource == null || target == null) {
+			return;
+		}
+
+		card.setStoryboardListener(this);
 		card.setGroupMembership(collapsibleGroup);
+		card.captureData();
+		cards.add(card);
+
+		if (!collapsibleGroup.isEmpty() && card.getResult() != CardResult.SUCCESS) {
+			CollapsibleStartCard start = getLastCollapsibleStartCard();
+
+			if (start != null) {
+				start.setResult(card.getResult());
+			}
+		}
+	}
+
+	private CollapsibleStartCard getLastCollapsibleStartCard() {
+		CollapsibleStartCard last = null;
+
+		for (int i = cards.size() - 1; i >= 0; i--) {
+			if (cards.get(i) instanceof CollapsibleStartCard) {
+				last = (CollapsibleStartCard) cards.get(i);
+				break;
+			}
+		}
+		return last;
 	}
 
 	@Override
@@ -141,13 +136,21 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 			title = error.getClass().getSimpleName();
 
 			if (screenshotTaker == null) {
-				addNotificationCard(title, "See specification for further information", "", CardImage.ERROR, CardResult.FAILURE);
+				NotificationCard card = new NotificationCard();
+				card.setTitle(title);
+				card.setDescription("See specification for further information");
+				card.setCardImage(StockCardImage.ERROR);
+				card.setResult(CardResult.FAILURE);
+				addCard(card);
 			} else {
-				addScreenshotCard(title, "See specification for further information", CardResult.FAILURE);
+				ScreenshotCard card = new ScreenshotCard();
+				card.setTitle(title);
+				card.setDescription("See specification for further information");
+				card.setResult(CardResult.FAILURE);
+				addCard(card);
+
 				lastScreenShotWasThrowable = true;
 			}
-
-			stopCollapsibleGroup(CardResult.FAILURE);
 		}
 	}
 
@@ -157,13 +160,22 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	}
 
 	@Override
+	public void concordionBuilt(final ConcordionBuildEvent event) {
+		target = event.getTarget();
+	}
+
+	@Override
 	public void afterProcessingSpecification(final SpecificationProcessingEvent event) {
 		if (cards.isEmpty()) {
 			return;
 		}
 
-		if (!lastScreenShotWasThrowable) {
-			addScreenshotCard("Test Completed", "This is the page the test  finished on", CardResult.SUCCESS);
+		if (!lastScreenShotWasThrowable && screenshotTaker != null) {
+			ScreenshotCard card = new ScreenshotCard();
+			card.setTitle("Test Completed");
+			card.setDescription("This is the page the test  finished on");
+			card.setResult(CardResult.SUCCESS);
+			addCard(card);
 		}
 
 		Element storyboard = getStoryboard(event);
@@ -172,11 +184,9 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		}
 
 		addCardsToStoryboard(storyboard);
-	}
 
-	@Override
-	public void concordionBuilt(final ConcordionBuildEvent event) {
-		target = event.getTarget();
+		resource = null;
+		target = null;
 	}
 
 	private Element getStoryboard(final SpecificationProcessingEvent event) {
@@ -219,7 +229,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	}
 
 	private void addCardsToStoryboard(final Element storyboard) {
-		CollapsibleCard collapseGroup = null;
+		CollapsibleStartCard collapseGroup = null;
 
 		Element ul = new Element("ul");
 		storyboard.appendChild(ul);
@@ -229,8 +239,8 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 			Element li = new Element("li");
 			li.addStyleClass("storycard");
 
-			if (card instanceof CollapsibleCard) {
-				collapseGroup = (CollapsibleCard) card;
+			if (card instanceof CollapsibleStartCard) {
+				collapseGroup = (CollapsibleStartCard) card;
 			}
 
 			if (card.isGroupMember()) {
@@ -247,7 +257,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 			// Summary
 			Element summary = new Element("p");
-			summary.appendText(card.getSummary());
+			summary.appendText(card.getTitle());
 			summary.addStyleClass("scsummary " + card.getResult().getKey());
 
 			li.appendChild(summary);
@@ -262,8 +272,8 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		}
 	}
 
-	private int getNextCardNumber() {
-		return cards.size() + 1;
+	public int getCardNumber() {
+		return cards.size();
 	}
 
 	public void setScreenshotTaker(final ScreenshotTaker screenshotTaker) {
@@ -272,5 +282,13 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	public void setAddCardOnThrowable(final boolean takeShot) {
 		this.addCardOnThrowable = takeShot;
+	}
+
+	public Resource getResource() {
+		return resource;
+	}
+
+	public Target getTarget() {
+		return target;
 	}
 }
