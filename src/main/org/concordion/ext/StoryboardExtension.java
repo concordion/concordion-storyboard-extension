@@ -51,6 +51,7 @@ public class StoryboardExtension implements ConcordionExtension {
 		concordionExtender.withResource(path + StockCardImage.XML_RESPONSE, StockCardImage.XML_RESPONSE.getResource());
 		concordionExtender.withResource(path + StockCardImage.EXPAND, StockCardImage.EXPAND.getResource());
 		concordionExtender.withResource(path + StockCardImage.COLLAPSE, StockCardImage.COLLAPSE.getResource());
+		concordionExtender.withResource(path + StockCardImage.EMAIL, StockCardImage.EMAIL.getResource());
 		concordionExtender.withResource(path + StockCardImage.COMPLETE, StockCardImage.COMPLETE.getResource());
 		concordionExtender.withResource(path + StockCardImage.ERROR, StockCardImage.ERROR.getResource());
 

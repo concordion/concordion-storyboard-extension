@@ -11,6 +11,7 @@ targetCompatibility = 1.7
 
 // Setup variables for important dependancies
 ext {
+	// could use latest.release as version
 	junitVersion				= "4.8.2"	// https://github.com/junit-team/junit/releases ???? 	-- latest 4.11
 	seleniumVersion				= "2.39.0" 	// http://docs.seleniumhq.org/download/ 				-- latest 2.41.0
 	slf4jVersion                = "1.7.7"	// http://www.slf4j.org/download.html					-- latest 1.7.7
@@ -20,14 +21,13 @@ ext {
 
 // Download dependancies via Artifactory
 repositories {
-	mavenCentral()
-	/*
+	//mavenCentral()
+	
 	mavenLocal()
 	maven {
 		url "http://artifactory:8081/artifactory/repo1/"
 		url "http://artifactory:8081/artifactory/libs-release/"
 	}
-	*/
 }
 
 // Specify dependancies
@@ -38,6 +38,11 @@ dependencies {
 	compile "junit:junit:$junitVersion"
 	compile "org.slf4j:slf4j-api:$slf4jVersion"
 	compile 'ch.qos.logback:logback-classic:1.1.2'
+	
+	//testCompile 'org.concordion:concordion:1.5.0-SNAPSHOT'
+	//testCompile 'org.concordion:concordion-extensions:1.1.1'
+	testCompile 'org.seleniumhq.selenium:selenium-java:2.+'
+	//testCompile 'org.slf4j:slf4j-api:1.7.7'
 }
 
 sourceSets {
