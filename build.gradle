@@ -21,28 +21,24 @@ ext {
 
 // Download dependancies via Artifactory
 repositories {
-	//mavenCentral()
-	
-	mavenLocal()
-	maven {
-		url "http://artifactory:8081/artifactory/repo1/"
-		url "http://artifactory:8081/artifactory/libs-release/"
-	}
+	mavenCentral()
+		
+	//mavenLocal()
+	//maven {
+	//	url "http://artifactory:8081/artifactory/repo1/"
+	//	url "http://artifactory:8081/artifactory/libs-release/"
+	//}
 }
 
 // Specify dependancies
 dependencies {
-	compile "org.seleniumhq.selenium:selenium-java:$seleniumVersion"
 	compile "org.concordion:concordion-extensions:$concordionExtensionsVersion"
 	compile "org.concordion:concordion:$concordionVersion"
 	compile "junit:junit:$junitVersion"
 	compile "org.slf4j:slf4j-api:$slf4jVersion"
 	compile 'ch.qos.logback:logback-classic:1.1.2'
-	
-	//testCompile 'org.concordion:concordion:1.5.0-SNAPSHOT'
-	//testCompile 'org.concordion:concordion-extensions:1.1.1'
-	testCompile 'org.seleniumhq.selenium:selenium-java:2.+'
-	//testCompile 'org.slf4j:slf4j-api:1.7.7'
+
+	testCompile "org.seleniumhq.selenium:selenium-java:$seleniumVersion"
 }
 
 sourceSets {
@@ -50,18 +46,17 @@ sourceSets {
 		java { srcDir 'src/main' }
 		resources { srcDirs = [] }
 	}
+
+	test {
+		java { srcDir 'src/test' }
+		resources { srcDir 'src/test' }
+	}
 }
 
 // Configure concordion
 test {
-	if (System.getProperty('logback.configurationFile') != null && System.getProperty('logback.configurationFile').trim().length() > 0) {
-		systemProperty 'logback.configurationFile', System.getProperty('logback.configurationFile')
-	}
-	if (System.getProperty('concordion.run.threadCount') != null && System.getProperty('concordion.run.threadCount').trim().length() > 0) {
-		systemProperty 'concordion.run.threadCount', System.getProperty('concordion.run.threadCount')
-	}
-	systemProperty 'concordion.output.dir', "$reporting.baseDir/acceptance/"
-	outputs.upToDateWhen { false } // Force-run Selenium
-	testLogging.showStandardStreams = true
-	testLogging.showExceptions = true
+	include '**/demo.*'
+	systemProperties['concordion.output.dir'] = "$reporting.baseDir/spec"
 }
+
+test.dependsOn cleanTest
