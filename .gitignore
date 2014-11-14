@@ -8,3 +8,7 @@ build/
 .project
 .settings/
 bin/
+
+# IDEA
+.idea/
+*.iml
