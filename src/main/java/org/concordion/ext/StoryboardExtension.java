@@ -62,8 +62,6 @@ public class StoryboardExtension implements ConcordionExtension {
 
 	/**
 	 * Add custom card image that will be shared by all tests, must be called before test starts otherwise this will do nothing
-	 * 
-	 * @param imageName
 	 */
 	public void addCardImage(final String sourcePath, final String filename) {
 		customImages.put(CustomCardImage.getKeyFromFileName(filename), new CustomCardImage(sourcePath, filename));
