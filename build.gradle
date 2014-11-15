@@ -30,3 +30,12 @@ githubPages {
 	}
 }
 
+sourceSets {
+	main {
+		resources { srcDir 'src/main/java' }
+	}
+}
+
+dependencies {
+	compile "org.concordion:concordion-extensions:1.1.1"
+}
