@@ -1,62 +1,32 @@
-/*
- * Copyright: Copyright (c) 2013 NZ Customs Service
- */
+apply from: 'https://raw.githubusercontent.com/concordion/concordion-extension-build/master/extension-build.gradle'
 
-apply plugin: 'java'
-apply plugin: 'eclipse'
+description = 'An extension to Concordion that capture screenshots, etc in storyboard format while the specification is being executed so that we can see exactly what the test has done against the system under test'
 
-// Java compilier compliance level
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
-
-// Setup variables for important dependancies
 ext {
-	// could use latest.release as version
-	junitVersion				= "4.8.2"	// https://github.com/junit-team/junit/releases ???? 	-- latest 4.11
-	seleniumVersion				= "2.39.0" 	// http://docs.seleniumhq.org/download/ 				-- latest 2.41.0
-	slf4jVersion                = "1.7.7"	// http://www.slf4j.org/download.html					-- latest 1.7.7
-	concordionVersion           = "1.5.0-SNAPSHOT"	// http://concordion.org/Download.html					-- latest 1.4.4
-	concordionExtensionsVersion = "1.1.1"	// http://concordion.org/Download.html					-- latest 1.1.1
+	developers = {
+		developer {
+			id 'andrew-sumner'
+			name 'Andrew Sumner'
+			roles { role 'Project owner' }
+		}
+	}
+	inceptionYear = '2014'
 }
 
-// Download dependancies via Artifactory
-repositories {
-	mavenCentral()
+githubPages {
+//TODO update URL to concordion when transferred
+	repoUri = 'git@github.com:andrew-sumner/concordion-storyboard-extension .git'
+	pages {
+		from 'docs'
 		
-	//mavenLocal()
-	//maven {
-	//	url "http://artifactory:8081/artifactory/repo1/"
-	//	url "http://artifactory:8081/artifactory/libs-release/"
-	//}
-}
-
-// Specify dependancies
-dependencies {
-	compile "org.concordion:concordion-extensions:$concordionExtensionsVersion"
-	compile "org.concordion:concordion:$concordionVersion"
-	compile "junit:junit:$junitVersion"
-	compile "org.slf4j:slf4j-api:$slf4jVersion"
-	compile 'ch.qos.logback:logback-classic:1.1.2'
-
-	testCompile "org.seleniumhq.selenium:selenium-java:$seleniumVersion"
-}
-
-sourceSets {
-	main {
-		java { srcDir 'src/main' }
-		resources { srcDirs = [] }
-	}
-
-	test {
-		java { srcDir 'src/test' }
-		resources { srcDir 'src/test' }
+//TODO update with spec details if any
+		from ('build/reports/spec/spec/concordion/ext/storyboard/') {
+			into 'spec'
+		}
+		
+		from ('build/docs/javadoc/') {
+			into 'api'
+		}
 	}
 }
 
-// Configure concordion
-test {
-	include '**/demo.*'
-	systemProperties['concordion.output.dir'] = "$reporting.baseDir/spec"
-}
-
-test.dependsOn cleanTest
