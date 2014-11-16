@@ -170,7 +170,7 @@ public class StoryboardExtension implements ConcordionExtension {
 	 * @param title
 	 *            Must be unique for each collapsible group added
 	 */
-	public void startCollipsableGroup(final String title) {
+	public void startCollapsibleGroup(final String title) {
 		CollapsibleStartCard card = new CollapsibleStartCard();
 		card.setTitle(title);
 
