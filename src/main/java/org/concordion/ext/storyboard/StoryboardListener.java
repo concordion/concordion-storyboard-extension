@@ -170,6 +170,8 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 			return;
 		}
 
+		overrideIECompatibilityView(event);
+		
 		if (!lastScreenShotWasThrowable && screenshotTaker != null) {
 			ScreenshotCard card = new ScreenshotCard();
 			card.setTitle("Test Completed");
@@ -189,6 +191,31 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		target = null;
 	}
 
+	/**
+	 * Insert meta tag '<meta http-equiv="X-UA-Compatible" content="IE=edge" />";' if not already present.  This
+	 * allows the storyboard to display correctly in IE if Compatibility View mode is on - as can happen in a corporate environment.
+	 */
+	private void overrideIECompatibilityView(final SpecificationProcessingEvent event) {
+		Element head = event.getRootElement().getFirstChildElement("head");
+		if (head == null) {
+			head = event.getRootElement();
+		}
+		
+		Element[] metaTags = head.getChildElements("meta");
+		for (Element tag : metaTags) {
+			if(tag.getAttributeValue("http-equiv").equalsIgnoreCase("X-UA-Compatible")) {
+				if(tag.getAttributeValue("content").equalsIgnoreCase("IE=edge")) {
+					return;
+				}
+			}
+		}
+		
+		Element meta = new Element("meta");
+		meta.addAttribute("http-equiv", "X-UA-Compatible");
+		meta.addAttribute("content", "IE=edge");
+		head.prependChild(meta);
+	}
+	
 	private Element getStoryboard(final SpecificationProcessingEvent event) {
 		Element body = event.getRootElement().getFirstChildElement("body");
 		if (body != null) {
