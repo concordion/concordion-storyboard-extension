@@ -109,6 +109,17 @@ public class StoryboardExtension implements ConcordionExtension {
 	}
 
 	/**
+	 * Sets whether screenshots will be embedded in the output when a failure occurs in the test. Defaults to <b><code>true</code></b>.
+	 * 
+	 * @param takeShot
+	 *            <code>true</code> to take screenshots when a failure occurs in the test, <code>false</code> to not take screenshots.
+	 */
+	public StoryboardExtension setScreenshotOnFailure(final boolean takeShot) {
+		extension.setAddCardOnFailure(takeShot);
+		return this;
+	}
+	
+	/**
 	 * Adds screenshot card to story board
 	 * 
 	 * @param title

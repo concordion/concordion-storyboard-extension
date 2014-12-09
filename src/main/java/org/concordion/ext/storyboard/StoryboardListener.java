@@ -26,6 +26,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	private final List<Card> cards = new ArrayList<Card>();
 	private ScreenshotTaker screenshotTaker = new RobotScreenshotTaker();
 	private boolean addCardOnThrowable = true;
+	private boolean addCardOnFailure = true;
 	private boolean lastScreenShotWasThrowable = false;
 	private String collapsibleGroup = "";
 	private Resource resource;
@@ -120,7 +121,36 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	@Override
 	public void failureReported(final AssertFailureEvent event) {
-		// Do nothing
+		if (addCardOnFailure) {
+			String title = "Test Failed";
+
+			StringBuilder sb = new StringBuilder().append("See specification for further information");
+			
+			if(event.getExpected() != null) {
+				sb.append("\n").append("Expected: ").append(event.getExpected());
+			}
+			
+			if(event.getActual() != null) {
+				sb.append("\n").append("Actual: ").append(event.getActual().toString());
+			}
+						
+			if (screenshotTaker == null) {
+				NotificationCard card = new NotificationCard();
+				card.setTitle(title);
+				card.setDescription(sb.toString());
+				card.setCardImage(StockCardImage.ERROR);
+				card.setResult(CardResult.FAILURE);
+				addCard(card);
+			} else {
+				ScreenshotCard card = new ScreenshotCard();
+				card.setTitle(title);
+				card.setDescription(sb.toString());
+				card.setResult(CardResult.FAILURE);
+				addCard(card);
+
+				lastScreenShotWasThrowable = true;
+			}
+		}
 	}
 
 	@Override
@@ -311,6 +341,10 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		this.addCardOnThrowable = takeShot;
 	}
 
+	public void setAddCardOnFailure(final boolean takeShot) {
+		this.addCardOnFailure = takeShot;
+	}
+	
 	public Resource getResource() {
 		return resource;
 	}
