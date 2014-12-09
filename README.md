@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/concordion/concordion-storyboard-extension.svg?branch=master)](https://travis-ci.org/concordion/concordion-storyboard-extension)
 
-This [Concordion](http://www.concordion.org) extension provides the capability to embed screenshots in the output specification.
+This [Concordion](http://www.concordion.org) extension provides the capability to embed a series of 'cards' containing screenshots or data (text, xml, or html) in the output specification.
 
 The [demo project](http://github.com/concordion/concordion-storyboard-extension-demo) demonstrates this extension.
 
