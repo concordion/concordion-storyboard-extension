@@ -23,6 +23,7 @@ Further documentation can be found in the [wiki](https://github.com/concordion/c
 
 # Further info
 
+* [Wiki](https://github.com/concordion/concordion-storyboard-extension/wiki)
 * [API](http://concordion.github.io/concordion-storyboard-extension/api/index.html)
 * [Demo project](http://github.com/concordion/concordion-storyboard-extension-demo)
 
