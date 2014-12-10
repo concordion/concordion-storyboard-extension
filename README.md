@@ -29,4 +29,4 @@ Further documentation can be found in the [wiki](https://github.com/concordion/c
 
 # Acknowledgements
 
-This extension was partly inspired by Nigel Charman's [Screenshot Extension]https://github.com/concordion/concordion-screenshot-extension).
+This extension was partly inspired by Nigel Charman's [Screenshot Extension](https://github.com/concordion/concordion-screenshot-extension).
