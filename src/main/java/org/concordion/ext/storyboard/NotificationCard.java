@@ -5,16 +5,28 @@ import java.io.OutputStream;
 import org.concordion.api.Element;
 import org.concordion.api.Resource;
 
+/**
+ * Generic card that can optionally provide data to the user.  This data can be text, xml, or html.
+ */
 public class NotificationCard extends Card {
 	private String dataFileName = "";
 	private CardImage cardImage;
 	private String data = "";
 	private String fileExtension = "txt";
 
+	/**
+	 * Set the card image that should be displayed
+	 * @param cardImage
+	 */
 	public void setCardImage(final CardImage cardImage) {
 		this.cardImage = cardImage;
 	}
 
+	/**
+	 * Set the data that you wish the card to display
+	 * 
+	 * @param data
+	 */
 	public void setData(final String data) {
 		if (data == null) {
 			this.data = "";
@@ -63,6 +75,11 @@ public class NotificationCard extends Card {
 		}
 	}
 
+	/**
+	 * Set the file type for the data.  This helps with formatting/display.  Defaults to 'txt'.
+	 * 
+	 * @param fileExtension
+	 */
 	public void setFileExtension(final String fileExtension) {
 		if (fileExtension == null || fileExtension.isEmpty()) {
 			return;

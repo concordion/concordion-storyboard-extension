@@ -2,6 +2,9 @@ package org.concordion.ext.storyboard;
 
 import org.concordion.api.Resource;
 
+/**
+ * A list of the stock images that can be assigned to a card
+ */
 public enum StockCardImage implements CardImage {
 	XML_REQUEST("/xmlrequest.png"),
 	XML_RESPONSE("/xmlresponse.png"),

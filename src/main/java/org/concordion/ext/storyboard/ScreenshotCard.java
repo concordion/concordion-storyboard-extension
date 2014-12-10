@@ -6,6 +6,9 @@ import org.concordion.api.Element;
 import org.concordion.api.Resource;
 import org.concordion.ext.ScreenshotTaker;
 
+/**
+ * Card that takes and presents screenshots of the system under test.
+ */
 public class ScreenshotCard extends Card {
 	private static final int MAX_WIDTH = 700;
 	private String imageName = "";

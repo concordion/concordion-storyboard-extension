@@ -4,6 +4,9 @@ import org.concordion.api.Element;
 import org.concordion.api.Resource;
 import org.concordion.api.Target;
 
+/**
+ * Base class for all cards that can be added to the storyboard
+ */
 public abstract class Card {
 	private String title = "";
 	private String description = "";
@@ -11,8 +14,17 @@ public abstract class Card {
 	private String groupMembership = "";
 	private StoryboardListener listener;
 
+	/**
+	 * Write the data to a file
+	 */
 	protected abstract void captureData();
 
+	/**
+	 * Add HTML to the storyboard to display the card details
+	 * 
+	 * @param storyboard
+	 * @param listItem
+	 */
 	protected abstract void addHTMLToContainer(final Element storyboard, final Element listItem);
 
 	protected void setStoryboardListener(final StoryboardListener listener) {
@@ -27,10 +39,21 @@ public abstract class Card {
 		return listener.getTarget();
 	}
 
+	/**
+	 * @return The unique number of this card on the storyboard
+	 */
 	protected int getCardNumber() {
 		return listener.getCardNumber();
 	}
 
+	/**
+	 * Gets a unique file name
+	 * 
+	 * @param specificationName The name of the specification
+	 * @param cardNumber
+	 * @param fileExtension
+	 * @return
+	 */
 	protected String getFileName(final String specificationName, final int cardNumber, final String fileExtension) {
 		String prefix = specificationName;
 
@@ -70,10 +93,16 @@ public abstract class Card {
 		return groupMembership;
 	}
 
+	/**
+	 * Set the collapsible section this card belongs to
+	 */
 	protected void setGroupMembership(final String group) {
 		this.groupMembership = group;
 	}
 
+	/**
+	 * Check if this card is a member of a group
+	 */
 	protected boolean isGroupMember() {
 		return groupMembership != null && !groupMembership.isEmpty();
 	}

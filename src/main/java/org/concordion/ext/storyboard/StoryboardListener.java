@@ -20,6 +20,9 @@ import org.concordion.api.listener.ThrowableCaughtListener;
 import org.concordion.ext.ScreenshotTaker;
 import org.concordion.ext.screenshot.RobotScreenshotTaker;
 
+/**
+ * Listens to Concordion events and/or method calls and then adds the required cards to the story board. 
+ */
 public class StoryboardListener implements AssertEqualsListener, AssertTrueListener, AssertFalseListener, ConcordionBuildListener,
 		SpecificationProcessingListener, ThrowableCaughtListener {
 
@@ -329,6 +332,9 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		}
 	}
 
+	/**
+	 * @return The number of next card to be added to the storyboard
+	 */
 	public int getCardNumber() {
 		return cards.size();
 	}

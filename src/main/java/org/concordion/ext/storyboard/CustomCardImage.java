@@ -2,6 +2,9 @@ package org.concordion.ext.storyboard;
 
 import org.concordion.api.Resource;
 
+/**
+ * Provides the ability to add a custom image (ie non stock) to a card.
+ */
 public class CustomCardImage implements CardImage {
 	private final String filename;
 	private final String sourcePath;

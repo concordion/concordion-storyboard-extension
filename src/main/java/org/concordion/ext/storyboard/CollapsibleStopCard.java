@@ -2,6 +2,11 @@ package org.concordion.ext.storyboard;
 
 import org.concordion.api.Element;
 
+/**
+ * Card that marks the end of a collapsible section in the storyboard.
+ * 
+ * You wouldn't normally add this card directly but would call storyboard.stopCollapsibleGroup();
+ */
 public class CollapsibleStopCard extends Card {
 	private CardImage cardImage;
 
@@ -10,6 +15,10 @@ public class CollapsibleStopCard extends Card {
 		setCardImage(StockCardImage.COMPLETE);
 	}
 
+	/**
+	 * Override the default card image of COMPLETE
+	 * @param cardImage
+	 */
 	protected void setCardImage(final CardImage cardImage) {
 		this.cardImage = cardImage;
 	}
