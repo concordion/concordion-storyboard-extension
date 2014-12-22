@@ -24,7 +24,7 @@ import org.junit.runner.RunWith;
 
 import test.concordion.FileOutputStreamer;
 import test.concordion.TestRig;
-import test.concordion.ext.screenshot.DummyStoryboardFactory;
+import test.concordion.ext.storyboard.DummyStoryboardFactory;
 
 @RunWith(ConcordionRunner.class)
 public class StoryCardFileNaming {
