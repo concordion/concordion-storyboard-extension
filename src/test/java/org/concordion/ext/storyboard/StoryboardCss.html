@@ -26,10 +26,9 @@ limitations under the License.
         
         <p concordion:execute="setSystemProperty(#name, #value)">Given the system property <code concordion:set="#name">concordion.extensions</code> is set to <code concordion:set="#value">org.concordion.ext.StoryboardExtension</code></p>
         
-        <p>The HTML output includes the <span concordion:assertTrue="hasStyle(#TEXT)">storyboard</span> style:</p>
+        <p>The HTML output links to the stylesheet file '<span concordion:assertTrue="hasStyle(#filename)"><span concordion:set="#filename">storyboard.css</span></span>':</p>
         
-        <p><span concordion:echo="getStyle(#TEXT)">storyboard</span></p>
-
+        <p><pre><span concordion:echo="getStyle(#filename)"></span></pre></p>
   </div>
 </body>
 </html>

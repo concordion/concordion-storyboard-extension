@@ -24,13 +24,12 @@ limitations under the License.
   <div class="example">
         <h3>Example</h3>
         
-        <p concordion:execute="setSystemProperty(#name, #value)">Given the system property <code concordion:set="#name">concordion.extensions</code> is set to <code concordion:set="#value">org.concordion.ext.StoryboardExtension</code>.</p>
+        <p concordion:execute="setSystemProperty(#name, #value)">Given the system property <code concordion:set="#name">concordion.extensions</code> is set to <code concordion:set="#value">org.concordion.ext.StoryboardExtension</code></p>
         
-        <p>The HTML output includes the </p>
-        <ul>
-        <li><span concordion:assertTrue="hasJavaScriptFunction(#TEXT)">showScreenPopup</span> function, to show the screenshot</li>
-        <li><span concordion:assertTrue="hasJavaScriptFunction(#TEXT)">showStoryboardSection</span> function, to expand a group</li>
-        </ul>
+        <p>The HTML output links to the JavaScript file '<span concordion:assertTrue="hasJavaScript(#filename)"><span concordion:set="#filename">storyboard.js</span></span>':</p>
+        
+        
+        <p><pre><span concordion:echo="getJavaScript(#filename)"></span></pre></p>
   </div>
 </body>
 </html>

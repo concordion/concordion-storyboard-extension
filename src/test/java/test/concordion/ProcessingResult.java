@@ -1,5 +1,11 @@
 package test.concordion;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Paths;
+
 import nu.xom.Document;
 
 import org.concordion.api.Element;
@@ -125,13 +131,24 @@ public class ProcessingResult {
         return false;
     }
 
-    public String getEmbeddedCSS(String css) {
-        for (Element style : getHeadElement().getChildElements("style")) {
-            if (style.getText().contains(css) ) {
-                return style.getText();
+    public boolean hasLinkedCSS(String baseOutputDir, String css) {
+        for (Element style : getHeadElement().getChildElements("link")) {
+            if ("stylesheet".equals(style.getAttributeValue("rel")) && css.endsWith(style.getAttributeValue("href"))) {
+            	String path = Paths.get(baseOutputDir, style.getAttributeValue("href")).toString();
+                return new File(path).exists();
             }
         }
-        return "";
+        return false;
+    }
+
+    public String getLinkedCSS(String baseOutputDir, String css) throws IOException {
+    	 for (Element style : getHeadElement().getChildElements("link")) {
+             if ("stylesheet".equals(style.getAttributeValue("rel")) && css.endsWith(style.getAttributeValue("href"))) {
+                 String path = Paths.get(baseOutputDir, style.getAttributeValue("href")).toString();
+                 return readFile(path);
+             }
+         }
+    	 return "";
     }
 
     public boolean hasJavaScriptDeclaration(String jsFilename) {
@@ -155,6 +172,26 @@ public class ProcessingResult {
         return false;
     }
 
+    public boolean hasLinkedJavaScript(String baseOutputDir, String javaScript) {
+        for (Element style : getHeadElement().getChildElements("script")) {
+            if ("text/javascript".equals(style.getAttributeValue("type")) && javaScript.equals(style.getAttributeValue("src"))) {
+            	String path = Paths.get(baseOutputDir, style.getAttributeValue("src")).toString();
+                return new File(path).exists();
+            }
+        }
+        return false;
+    }
+
+    public String getLinkedJavaScript(String baseOutputDir, String javaScript) throws IOException {
+    	for (Element style : getHeadElement().getChildElements("script")) {
+            if ("text/javascript".equals(style.getAttributeValue("type")) && javaScript.equals(style.getAttributeValue("src"))) {
+            	String path = Paths.get(baseOutputDir, style.getAttributeValue("src")).toString();
+                return readFile(path);
+            }
+    	}
+    	return "";
+    }
+
     public boolean hasJavaScriptFunction(String functionName) {
         return hasEmbeddedJavaScript("function " + functionName + "(");
     }
@@ -162,4 +199,22 @@ public class ProcessingResult {
     private Element getHeadElement() {
         return getRootElement().getFirstChildElement("head");
     }
+    
+
+    private String readFile(String fileName) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(fileName));
+        try {
+            StringBuilder sb = new StringBuilder();
+            String line = br.readLine();
+
+            while (line != null) {
+                sb.append(line);
+                sb.append("\n");
+                line = br.readLine();
+            }
+            return sb.toString();
+        } finally {
+            br.close();
+        }
+    }    
 }
