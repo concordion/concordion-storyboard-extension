@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.concordion.ext.storyboard;
+package spec.concordion.ext.storyboard;
 
 import org.concordion.integration.junit4.ConcordionRunner;
 import org.junit.Before;
@@ -23,7 +23,7 @@ import test.concordion.TestRig;
 import test.concordion.ext.storyboard.DummyStoryboardFactory;
 
 @RunWith(ConcordionRunner.class)
-public class StoryCardScreenshot {
+public class StoryCardScreenshot extends AcceptanceTest {
     
     public static final String SPEC_NAME = "/" + StoryCardScreenshot.class.getName().replace(".java", ".html").replaceAll("\\.","/");
     public static int testRunNumber = 1;  // since we want to run the test rig multiple times for a single spec 
@@ -34,11 +34,9 @@ public class StoryCardScreenshot {
     }
     
     public String render(String fragment, String namespacePrefix, String namespace) throws Exception {
-        return new TestRig()
+        return getTestRig()
             .withNamespaceDeclaration(namespacePrefix, namespace)
-            .withFixture(this)
-            .withOutputStreamer(new FileOutputStreamer())
             .processFragment(fragment, SPEC_NAME + testRunNumber++)
-            .getOutputFragmentXML();
+            .getElementXML("storyboard");
     }
 }

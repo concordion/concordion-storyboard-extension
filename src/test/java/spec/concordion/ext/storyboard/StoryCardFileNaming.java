@@ -12,66 +12,61 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.concordion.ext.storyboard;
+package spec.concordion.ext.storyboard;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.concordion.api.Element;
 import org.concordion.integration.junit4.ConcordionRunner;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 
 import test.concordion.FileOutputStreamer;
+import test.concordion.ProcessingResult;
 import test.concordion.TestRig;
 import test.concordion.ext.storyboard.DummyStoryboardFactory;
 
 @RunWith(ConcordionRunner.class)
-public class StoryCardFileNaming {
+public class StoryCardFileNaming extends AcceptanceTest {
     
     public static final String SPEC_NAME = "/" + StoryCardFileNaming.class.getName().replace(".java", ".html").replaceAll("\\.","/");
-    public static final String TEXT_BEFORE_IMAGE_NAME = "if (showScreenshotOn(event)) {show('";
+    public static final String TEXT_BEFORE_IMAGE_NAME = "<a href=\"";
     public String acronym;
-    private FileOutputStreamer streamer;
-
+    
     @Before 
     public void installExtension() {
         System.setProperty("concordion.extensions", DummyStoryboardFactory.class.getName());
     }
     
-    public StoryCardFileNaming() {
-        streamer = new FileOutputStreamer();        
-    }
-    
     public String render(String fragment, String acronym) throws Exception {
         this.acronym = acronym;
-        return new TestRig()
-            .withFixture(this)
-            .withOutputStreamer(streamer)
-            .processFragment(fragment, SPEC_NAME)
-            .getOutputFragmentXML();
+        
+        return getTestRig()
+        		.processFragment(fragment, SPEC_NAME)	            
+        		.getElementXML("storyboard");
     }
 
     public String renderUsingFixtureNamed(String fragment, String fixtureName) throws Exception {
-        return new TestRig()
-            .withFixture(this)
-            .withOutputStreamer(streamer)
-            .processFragment(fragment, fixtureName)
-            .getOutputFragmentXML();
+    	return getTestRig()
+	            .processFragment(fragment, fixtureName)
+	            .getElementXML("storyboard");
     }
     
     public List<String> getResourceNamesOutput() {
-        return streamer.getResourcesOutput();
+        return getStreamer().getResourcesOutput();
     }
     
-    public List<ImageResult> listScreenshotImages(String folder, String fragment) {
+    public List<ImageResult> listStoryboardImages(String folder, String fragment) {
         ArrayList<ImageResult> list = new ArrayList<ImageResult>();
         int pos = 0;
         while ((pos=fragment.indexOf(TEXT_BEFORE_IMAGE_NAME, pos)) != -1) {
             ImageResult result = new ImageResult();
-            result.imageName = fragment.substring(pos + TEXT_BEFORE_IMAGE_NAME.length(), fragment.indexOf("')", pos));
+            pos = pos + TEXT_BEFORE_IMAGE_NAME.length();
+            result.imageName = fragment.substring(pos, fragment.indexOf("\"", pos));
             pos++;
-            File file = new File(new File(streamer.getBaseOutputDir(), folder), result.imageName);
+            File file = new File(new File(getBaseOutputDir(), folder), result.imageName);
             System.out.println("looking for " + file.toString());
             result.storedOnDisk = file.exists();
             list.add(result);

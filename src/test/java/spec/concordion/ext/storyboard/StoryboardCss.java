@@ -1,4 +1,4 @@
-package org.concordion.ext.storyboard;
+package spec.concordion.ext.storyboard;
 
 import org.concordion.integration.junit4.ConcordionRunner;
 import org.junit.runner.RunWith;
@@ -7,7 +7,6 @@ import test.concordion.TestRig;
 
 @RunWith(ConcordionRunner.class)
 public class StoryboardCss extends AcceptanceTest {
-	TestRig rig = null;
 	ProcessingResult result = null;
 	
     public void setSystemProperty(String name, String value) {
@@ -15,13 +14,12 @@ public class StoryboardCss extends AcceptanceTest {
     }
     
     public boolean hasStyle(String style) throws Exception {
-    	rig = getTestRig();
-    	result = rig.processFragment("");
+    	result = getTestRig().processFragment("");
         
-        return result.hasLinkedCSS(rig.getBaseOutputDir(), style);
+        return result.hasLinkedCSS(getBaseOutputDir(), style);
     }
     
     public String getStyle(String style) throws Exception {
-    	return result.getLinkedCSS(rig.getBaseOutputDir(), style);
+    	return result.getLinkedCSS(getBaseOutputDir(), style);
     }
 }

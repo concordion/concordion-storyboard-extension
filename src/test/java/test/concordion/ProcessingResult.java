@@ -58,10 +58,22 @@ public class ProcessingResult {
         return textOfElementWithClass(childDivs, "footer");
     }
 
+    public String getElementXML(String className) {
+        Element[] childDivs = getRootElement().getDescendantElements("div");
+        
+        for (Element div : childDivs) {
+            if (className.equals(div.getAttributeValue("class"))) {
+            	return div.toXML();
+            }
+        }
+        return "";
+    }
+
     public String getExceptionMessage() {
         Element[] childSpans = getRootElement().getDescendantElements("span");
         return textOfElementWithClass(childSpans, "exceptionMessage");
     }
+    
     
     public String getStackTraceMessage() {
         String clazz = "stackTraceExceptionMessage";

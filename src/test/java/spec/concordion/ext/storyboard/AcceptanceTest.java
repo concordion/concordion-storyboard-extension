@@ -1,4 +1,4 @@
-package org.concordion.ext.storyboard;
+package spec.concordion.ext.storyboard;
 
 import org.concordion.api.Resource;
 import org.concordion.api.extension.ConcordionExtension;
@@ -14,6 +14,12 @@ import test.concordion.TestRig;
 @RunWith(ConcordionRunner.class)
 public class AcceptanceTest {
     
+	private FileOutputStreamer streamer;
+	
+	public AcceptanceTest() {
+		streamer = new FileOutputStreamer();
+	}
+	
     protected TestRig getTestRig() {
     	 return new TestRig()
 	        .withFixture(this)
@@ -26,6 +32,14 @@ public class AcceptanceTest {
 	        .withResource(new Resource("/org/concordion/ext/storyboard/email.png"), "")
 	        .withResource(new Resource("/org/concordion/ext/storyboard/complete.png"), "")
 	        .withResource(new Resource("/org/concordion/ext/storyboard/error.png"), "")
-	        .withOutputStreamer(new FileOutputStreamer());
+	        .withOutputStreamer(streamer);
+    }
+    
+    protected FileOutputStreamer getStreamer() {
+		return streamer;
+	}
+    
+    protected String getBaseOutputDir() {
+    	return streamer.getBaseOutputDir().getPath();
     }
 }

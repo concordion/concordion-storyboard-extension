@@ -19,7 +19,7 @@ limitations under the License.
 
   <h1>Storyboard Card File Naming</h1>
 
-  <p>Screenshots are written to the same folder as the specification output.</p>
+  <p>Card data (eg screenshots) is written to the same folder as the specification output.</p>
   <div class="example">
     <h3>Example - Location of screenshot</h3>
     <pre concordion:set="#snippet">&lt;p concordion:assertTrue="#TEXT"&gt;false&lt;/p&gt;</pre>
@@ -34,14 +34,14 @@ limitations under the License.
         <th concordion:assertEquals="#resource">Location</th>
       </tr>
       <tr>
-        <td>/spec/concordion/ext/screenshot/ScreenshotNaming_img1.jpg</td>
+        <td>/spec/concordion/ext/storyboard/StoryCardFileNaming0.jpg</td>
       </tr>
     </table>
 
   </div>
 
 
-  <p>Screenshots within the same spec are numbered sequentially.</p>
+  <p>Card data within the same spec are numbered sequentially.</p>
 
   <div class="example">
     <h3>Example - Two screenshots in the same specification</h3>
@@ -49,9 +49,9 @@ limitations under the License.
 &lt;p concordion:assertTrue="#TEXT"&gt;false&lt;/p&gt;</pre>
 
     <p concordion:execute="#fragment=render(#snippet, #actualValue)">
-      When run with this fixture, this results in two images being included in the HTML output and saved to the sub-folder <code concordion:set="#folder">spec/concordion/ext/screenshot</code>:
+      When run with this fixture, this results in two images being included in the HTML output and saved to the sub-folder <code concordion:set="#folder">spec/concordion/ext/storyboard</code>:
     </p>
-    <table concordion:verifyRows="#image : listScreenshotImages(#folder, #fragment)">
+    <table concordion:verifyRows="#image : listStoryboardImages(#folder, #fragment)">
       <tr>
         
         <th concordion:assertEquals="#image.imageName">Image name</th>
@@ -59,12 +59,12 @@ limitations under the License.
       </tr>
       <tr>
         
-        <td>ScreenshotNaming_img1.jpg</td>
+        <td>StoryCardFileNaming0.jpg</td>
         <td>true</td>
       </tr>
       <tr>
         
-        <td>ScreenshotNaming_img2.jpg</td>
+        <td>StoryCardFileNaming1.jpg</td>
         <td>true</td>
       </tr>
     </table>
@@ -79,7 +79,7 @@ limitations under the License.
     <p concordion:execute="#fragment=render(#snippet, #actualValue)">
       When this snippet is run by a fixture named <code concordion:execute="#fragment1=renderUsingFixtureNamed(#snippet, #TEXT)">/fruit/GreenApple.html</code>, it results in the image being written to the <code concordion:set="#folder">fruit</code> folder:</p>
 
-    <table concordion:verifyRows="#image : listScreenshotImages(#folder, #fragment1)">
+    <table concordion:verifyRows="#image : listStoryboardImages(#folder, #fragment1)">
       <tr>
         
         <th concordion:assertEquals="#image.imageName">Image name</th>
@@ -87,14 +87,14 @@ limitations under the License.
       </tr>
       <tr>
         
-        <td>GreenApple_img1.jpg</td>
+        <td>GreenApple0.jpg</td>
         <td>true</td>
       </tr>
     </table>
 
     <p>When subsequently run by a fixture named <code concordion:execute="#fragment2=renderUsingFixtureNamed(#snippet, #TEXT)">/fruit/RedApple.html</code>, it results in the image being written to the <code concordion:set="#folder">fruit</code> folder:</p>
 
-    <table concordion:verifyRows="#image : listScreenshotImages(#folder, #fragment2)">
+    <table concordion:verifyRows="#image : listStoryboardImages(#folder, #fragment2)">
       <tr>
         
         <th concordion:assertEquals="#image.imageName">Image name</th>
@@ -102,7 +102,7 @@ limitations under the License.
       </tr>
       <tr>
         
-        <td>RedApple_img1.jpg</td>
+        <td>RedApple0.jpg</td>
         <td>true</td>
       </tr>
     </table>

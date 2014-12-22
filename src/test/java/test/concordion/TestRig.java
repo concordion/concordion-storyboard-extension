@@ -97,10 +97,4 @@ public class TestRig {
     public boolean hasCopiedResource(Resource resource) {
         return stubTarget.hasCopiedResource(resource);
     }
-    
-    public String getBaseOutputDir() {
-    	//TODO Handle different types of Streamers?
-    	FileOutputStreamer outputStreamer = (FileOutputStreamer)stubTarget.getOutputStreamer();
-    	return outputStreamer.getBaseOutputDir().getPath();
-    }
 }
