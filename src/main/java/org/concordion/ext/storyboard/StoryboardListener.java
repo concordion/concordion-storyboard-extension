@@ -344,12 +344,12 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		this.screenshotTaker = screenshotTaker;
 	}
 
-	public void setAddCardOnThrowable(final boolean takeShot) {
-		this.addCardOnThrowable = takeShot;
+	public void setAddCardOnThrowable(final boolean value) {
+		this.addCardOnThrowable = value;
 	}
 
-	public void setAddCardOnFailure(final boolean takeShot) {
-		this.addCardOnFailure = takeShot;
+	public void setAddCardOnFailure(final boolean value) {
+		this.addCardOnFailure = value;
 	}
 	
 	public Resource getResource() {

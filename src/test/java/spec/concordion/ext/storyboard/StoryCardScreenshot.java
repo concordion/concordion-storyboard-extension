@@ -18,6 +18,7 @@ import org.concordion.api.extension.Extension;
 import org.concordion.ext.StoryboardExtension;
 import org.concordion.ext.storyboard.CardResult;
 import org.concordion.ext.storyboard.ScreenshotCard;
+import org.concordion.ext.storyboard.StockCardImage;
 import org.concordion.integration.junit4.ConcordionRunner;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -49,8 +50,18 @@ public class StoryCardScreenshot extends AcceptanceTest {
         		.getElementXML("storyboard");
     }
 
+    public String renderWithFailureOff(String fragment, String acronym) throws Exception {
+    	DummyStoryboardFactory.setAddCardOnFailure(false);
+    	
+    	String result = render(fragment, acronym);
+    	
+    	DummyStoryboardFactory.setAddCardOnFailure(true);
+    	
+    	return result;
+    }
+    
     public void addScreenshot() {
-    	DummyStoryboardFactory.storyboard.addScreenshot("Screenshot Example", "This is a screenshot");
+    	DummyStoryboardFactory.getStoryboard().addScreenshot("Screenshot Example", "This is a screenshot");
     }
         
     public boolean screenshotCardAdded(String fragment) {
@@ -69,6 +80,14 @@ public class StoryCardScreenshot extends AcceptanceTest {
     	addScreenshotToSpec(fragment);
     	
     	return fragment.contains("Exception");
+    }
+    
+    public boolean noCardAdded(String fragment) {
+    	if (!"".equals(fragment)) {
+    		addScreenshotToSpec(fragment);
+    	}
+    	
+    	return "".equals(fragment);
     }
     
     private void addScreenshotToSpec(String fragment) {

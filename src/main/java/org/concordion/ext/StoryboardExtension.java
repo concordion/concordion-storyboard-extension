@@ -78,7 +78,10 @@ public class StoryboardExtension implements ConcordionExtension {
 	}
 
 	/**
-	 * Set a custom screenshot taker. If not set, the extension will default to using {@link Robot} which will take a shot of the full visible screen.
+	 * Set a screenshot taker. If not set, the extension will default to using {@link Robot} which will take a shot of the full visible screen.
+	 * 
+	 * For a non gui application this won't be the most appropriate behaviour and you will want to set the screenshot taker to null.
+	 * See the demo application for an example of a custom SeleniumScreenshotTaker.
 	 * 
 	 * @param screenshotTaker
 	 */
@@ -93,8 +96,33 @@ public class StoryboardExtension implements ConcordionExtension {
 	 * @param value
 	 * 			<code>true</code> to take screenshot (default), <code>false</code> to not take screenshot
 	 */
-	public void setTakeScreenshotOnCompletion(final boolean value) {
+	public StoryboardExtension setTakeScreenshotOnCompletion(final boolean value) {
 		extension.setTakeScreenshotOnCompletion(value);
+		return this;
+	}
+	
+	/**
+	 * Sets whether a card will be added to the storyboard when an uncaught exception occurs in the test. Defaults to <b><code>true</code></b>. 
+	 * If screenshotTaker is set then it will take a {@link ScreenshotCard}, else it will add a {@link NotificationCard}
+	 * 
+	 * @param value
+	 *            <code>true</code> to add a card when an uncaught exception occurs in the test, <code>false</code> to not add a card.
+	 */
+	public StoryboardExtension setScreenshotOnThrowable(final boolean value) {
+		extension.setAddCardOnThrowable(value);
+		return this;
+	}
+
+	/**
+	 * Sets whether a card will be added to the storyboard when a failure occurs in the test. Defaults to <b><code>true</code></b>. 
+	 * If screenshotTaker is set then it will take a {@link ScreenshotCard}, else it will add a {@link NotificationCard}
+	 * 
+	 * @param value
+	 *            <code>true</code> to add a card when a failure occurs in the test, <code>false</code> to not add a card.
+	 */
+	public StoryboardExtension setAddCardOnFailure(final boolean value) {
+		extension.setAddCardOnFailure(value);
+		return this;
 	}
 	
 	/**
@@ -105,28 +133,6 @@ public class StoryboardExtension implements ConcordionExtension {
 	 */
 	public void setAcceptsScreenshots(final boolean accept) {
 		this.acceptsScreenShots = accept;
-	}
-
-	/**
-	 * Sets whether screenshots will be embedded in the output when uncaught Throwables occur in the test. Defaults to <b><code>true</code></b>.
-	 * 
-	 * @param takeShot
-	 *            <code>true</code> to take screenshots on uncaught Throwables, <code>false</code> to not take screenshots.
-	 */
-	public StoryboardExtension setScreenshotOnThrowable(final boolean takeShot) {
-		extension.setAddCardOnThrowable(takeShot);
-		return this;
-	}
-
-	/**
-	 * Sets whether screenshots will be embedded in the output when a failure occurs in the test. Defaults to <b><code>true</code></b>.
-	 * 
-	 * @param takeShot
-	 *            <code>true</code> to take screenshots when a failure occurs in the test, <code>false</code> to not take screenshots.
-	 */
-	public StoryboardExtension setScreenshotOnFailure(final boolean takeShot) {
-		extension.setAddCardOnFailure(takeShot);
-		return this;
 	}
 	
 	/**

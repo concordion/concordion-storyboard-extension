@@ -19,45 +19,41 @@ limitations under the License.
 </head>
 <body>
 
-  <h1>Screenshot Card</h1>
-  <p>The screenshot card takes a screen shot of the application under test and presents it along with a description.</p>
+  <h1>Notification Card</h1>
+  <p>The notification card will display any text based data you wish to present, eg soap, xml, html, text.</p>
+  <p>To distinguish one type of data from another the card will show an image from either the supplied stock images, or a custom image can be passed in.</p>
   <p>Behaviour:</p>
   <ul>
-  	<li>A screenshot card may be added explicitly by calling the <code>addScreenshot(title, description) or addCard(card)</code> methods,</li>
-  	<li>or implicitly, when a text failure is encountered, or exception is thrown</li>
-  	<li>Hovering over the screenshot image on the card will popup a larger view of the image</li>
-  	<li>Clicking on the screenshot image will show the image full screen within the browser</li>
-  	<li>When a test completes and there is an active WebBrowser and ScreenshotTaker, a screenshot will be taken of the final state of the browser</li>
+  	<li>A notification card may be added explicitly by calling the <code>addNotification(...) or addCard(...)</code> methods,</li>
+  	<li>or implicitly, when a text failure is encountered, or exception is thrown and there is no active browser and screenshot taker</li>
+  	<li>Clicking on the card image will open a new page and present the data - if any data was supplied</li>
   	<li>Default behaviour can be overridden by use of the following methods</li> 
   	<ul>
-  		<li>setScreenshotTaker</li>
-  		<li>setTakeScreenshotOnCompletion</li>
-  		<li>setAcceptsScreenshots</li>
   		<li>setAddCardOnThrowable</li>
   		<li>setAddCardOnFailure</li>
   	</ul>	
   </ul>
 
   <div class="example">
-    <h3>Example 1: Add Screenshot</h3>
-    <pre concordion:set="#snippet">&lt;p concordion:execute="addScreenshot()"&gt;false&lt;/p&gt;</pre>
+    <h3>Example 1: Add Card</h3>
+    <pre concordion:set="#snippet">&lt;span concordion:execute="addNotification(#TEXT)"&gt;&lt;b&gt;Hello World:&lt;/b&gt;This is some html!&lt;/span&gt;</pre>
 
 	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
-	  When this snippet is run with this fixture, <span concordion:assertTrue="screenshotCardAdded(#fragment)">this results in a Screenshot Card being added to the Storyboard</span>.
+	  When this snippet is run with this fixture, <span concordion:assertTrue="notificationCardAdded(#fragment)">this results in a Notification Card being added to the Storyboard</span>.
 	</p>
 	
 	<h3>Example 2: Capture Failure</h3>
     <pre concordion:set="#snippet">&lt;p concordion:assertEquals="true"&gt;false&lt;/p&gt;</pre>
 
 	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
-	  When this snippet is run with this fixture, this results in a Screenshot Card being added to the Storyboard <span concordion:assertTrue="failureCardAdded(#fragment)">notifying that a test failed on the specification</span>.
+	  When this snippet is run with this fixture, this results in a Notification Card being added to the Storyboard <span concordion:assertTrue="failureCardAdded(#fragment)">notifying that a test failed on the specification</span>.
 	</p>
 	
 	<h3>Example 3: Capture Exception</h3>
 	<pre concordion:set="#snippet">&lt;p concordion:assertTrue="#TEXT"&gt;false&lt;/p&gt;</pre>
 
 	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
-	  When this snippet is run with this fixture, this results in a Screenshot Card being added to the Storyboard <span concordion:assertTrue="exceptionCardAdded(#fragment)">notifying that an exception occurred in the fixture</span>.
+	  When this snippet is run with this fixture, this results in a Notification Card being added to the Storyboard <span concordion:assertTrue="exceptionCardAdded(#fragment)">notifying that an exception occurred in the fixture</span>.
 	</p>
 	
 	<h3>Example 4: Ignore Failure</h3>
