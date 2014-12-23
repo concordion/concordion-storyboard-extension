@@ -28,6 +28,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	private final List<Card> cards = new ArrayList<Card>();
 	private ScreenshotTaker screenshotTaker = new RobotScreenshotTaker();
+	private boolean takeScreenshotOnCompletion = true;
 	private boolean addCardOnThrowable = true;
 	private boolean addCardOnFailure = true;
 	private boolean lastScreenShotWasThrowable = false;
@@ -205,7 +206,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 		overrideIECompatibilityView(event);
 		
-		if (!lastScreenShotWasThrowable && screenshotTaker != null) {
+		if (!lastScreenShotWasThrowable && takeScreenshotOnCompletion && screenshotTaker != null) {
 			ScreenshotCard card = new ScreenshotCard();
 			card.setTitle("Test Completed");
 			card.setDescription("This is the page the test  finished on");
@@ -357,5 +358,10 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	public Target getTarget() {
 		return target;
+	}
+
+	public void setTakeScreenshotOnCompletion(boolean value) {
+		this.takeScreenshotOnCompletion = value;
+		
 	}
 }

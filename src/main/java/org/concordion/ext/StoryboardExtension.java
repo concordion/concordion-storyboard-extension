@@ -88,6 +88,16 @@ public class StoryboardExtension implements ConcordionExtension {
 	}
 
 	/**
+	 * When the test completes and the ScreenshotTaker is not null, the storyboard will take a screenshot of the current screen.
+	 * 
+	 * @param value
+	 * 			<code>true</code> to take screenshot (default), <code>false</code> to not take screenshot
+	 */
+	public void setTakeScreenshotOnCompletion(final boolean value) {
+		extension.setTakeScreenshotOnCompletion(value);
+	}
+	
+	/**
 	 * Set to false to stop screenshot cards being added, this is useful in situations where might be looping and refreshing screen constantly and don't want to
 	 * show many screenshots of same screen in storyboard
 	 * 
@@ -203,5 +213,13 @@ public class StoryboardExtension implements ConcordionExtension {
 	public void addCard(final Card card) {
 		extension.addCard(card);
 	}
-
+	public void addCard(final ScreenshotCard card) {
+		extension.addCard(card);
+	}
+	public void addCard(final CollapsibleStartCard card) {
+		extension.addCard(card);
+	}
+	public void addCard(final CollapsibleStopCard card) {
+		extension.addCard(card);
+	}
 }

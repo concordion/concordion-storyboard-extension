@@ -20,11 +20,13 @@ import org.concordion.ext.ScreenshotExtension;
 import org.concordion.ext.StoryboardExtension;
 
 public class DummyStoryboardFactory implements ConcordionExtensionFactory {
+    public static StoryboardExtension storyboard = null;
     
     @Override
     public ConcordionExtension createExtension() {
-        StoryboardExtension extension = new StoryboardExtension();
-        extension.setScreenshotTaker(new DummyScreenshotTaker());
-        return extension;
+    	
+    	storyboard = new StoryboardExtension();
+    	storyboard.setScreenshotTaker(new DummyScreenshotTaker());
+        return storyboard;
     }
 }
