@@ -11,7 +11,7 @@ public class CollapsibleStopCard extends Card {
 	private CardImage cardImage;
 
 	public CollapsibleStopCard() {
-		setDescription("This step has completed successfully");
+		setDescription("This marks the end of the group");
 		setCardImage(StockCardImage.COMPLETE);
 	}
 

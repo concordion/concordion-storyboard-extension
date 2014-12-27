@@ -80,6 +80,30 @@ public class StoryboardExtension implements ConcordionExtension {
 	}
 
 	/**
+	 * Sets whether a card will be added to the storyboard when an uncaught exception occurs in the test. Defaults to <b><code>true</code></b>. 
+	 * If screenshotTaker is set then it will take a {@link ScreenshotCard}, else it will add a {@link NotificationCard}
+	 * 
+	 * @param value
+	 *            <code>true</code> to add a card when an uncaught exception occurs in the test, <code>false</code> to not add a card.
+	 */
+	public StoryboardExtension setAddCardOnThrowable(final boolean value) {
+		extension.setAddCardOnThrowable(value);
+		return this;
+	}
+
+	/**
+	 * Sets whether a card will be added to the storyboard when a failure occurs in the test. Defaults to <b><code>true</code></b>. 
+	 * If screenshotTaker is set then it will take a {@link ScreenshotCard}, else it will add a {@link NotificationCard}
+	 * 
+	 * @param value
+	 *            <code>true</code> to add a card when a failure occurs in the test, <code>false</code> to not add a card.
+	 */
+	public StoryboardExtension setAddCardOnFailure(final boolean value) {
+		extension.setAddCardOnFailure(value);
+		return this;
+	}
+	
+	/**
 	 * Set a screenshot taker. If not set, the extension will default to using {@link Robot} which will take a shot of the full visible screen.
 	 * 
 	 * For a non gui application this won't be the most appropriate behaviour and you will want to set the screenshot taker to null.
@@ -102,31 +126,7 @@ public class StoryboardExtension implements ConcordionExtension {
 		extension.setTakeScreenshotOnCompletion(value);
 		return this;
 	}
-	
-	/**
-	 * Sets whether a card will be added to the storyboard when an uncaught exception occurs in the test. Defaults to <b><code>true</code></b>. 
-	 * If screenshotTaker is set then it will take a {@link ScreenshotCard}, else it will add a {@link NotificationCard}
-	 * 
-	 * @param value
-	 *            <code>true</code> to add a card when an uncaught exception occurs in the test, <code>false</code> to not add a card.
-	 */
-	public StoryboardExtension setScreenshotOnThrowable(final boolean value) {
-		extension.setAddCardOnThrowable(value);
-		return this;
-	}
 
-	/**
-	 * Sets whether a card will be added to the storyboard when a failure occurs in the test. Defaults to <b><code>true</code></b>. 
-	 * If screenshotTaker is set then it will take a {@link ScreenshotCard}, else it will add a {@link NotificationCard}
-	 * 
-	 * @param value
-	 *            <code>true</code> to add a card when a failure occurs in the test, <code>false</code> to not add a card.
-	 */
-	public StoryboardExtension setAddCardOnFailure(final boolean value) {
-		extension.setAddCardOnFailure(value);
-		return this;
-	}
-	
 	/**
 	 * Set to false to stop screenshot cards being added, this is useful in situations where might be looping and refreshing screen constantly and don't want to
 	 * show many screenshots of same screen in storyboard

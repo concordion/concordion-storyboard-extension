@@ -73,10 +73,10 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		if (start == null) {
 			return;
 		}
-
-		if (card.getResult() != CardResult.FAILURE) {
-			start.setCollapsed(true);
-		}
+		
+		card.setResult(start.getResult());
+		start.setCollapsed(true);
+		
 		card.setTitle(start.getTitle());
 
 		addCard((Card) card);
