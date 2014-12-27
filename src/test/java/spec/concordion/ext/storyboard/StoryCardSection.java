@@ -47,13 +47,13 @@ public class StoryCardSection extends AcceptanceTest {
     	
     	switch (example) {
     	case 1:
-    		title = "Start Group";
+    		title = "Add Section Break";
 			break;
     	case 2:
-    		title = "Stop Card";
+    		title = "Stop Section Break";
 			break;
     	case 3:
-    		title = "Fail Group";
+    		title = "Add Failure Card to Section";
 			break;
     	}
     	
@@ -72,34 +72,35 @@ public class StoryCardSection extends AcceptanceTest {
         return result.getElementXML("storyboard");
     }
     
-    public void startGroup(String data) {    	
-    	DummyStoryboardFactory.getStoryboard().startGroup(data);
-    	DummyStoryboardFactory.getStoryboard().addNotification(data + " Group Member", "Example", "", StockCardImage.TEXT, CardResult.SUCCESS);
+    public void addSectionBreak(String data) {    	
+    	DummyStoryboardFactory.getStoryboard().addSectionBreak(data);
+    	DummyStoryboardFactory.getStoryboard().addNotification(data + " Section Member", "Example", "", StockCardImage.TEXT, CardResult.SUCCESS);
     }
  
-    public void stopGroup(String data) {
-    	DummyStoryboardFactory.getStoryboard().startGroup(data);
-    	DummyStoryboardFactory.getStoryboard().addNotification(data + " Group Member", "Example", "", StockCardImage.TEXT, CardResult.SUCCESS);
-    	DummyStoryboardFactory.getStoryboard().stopGroup();
+    public void addSectionBreak() {
+    	DummyStoryboardFactory.getStoryboard().addSectionBreak("Example");
+    	DummyStoryboardFactory.getStoryboard().addNotification("Example Section Member", "Example", "", StockCardImage.TEXT, CardResult.SUCCESS);
+    	
+    	DummyStoryboardFactory.getStoryboard().addSectionBreak("");
+    	DummyStoryboardFactory.getStoryboard().addNotification("Storyboard Member", "Example", "", StockCardImage.TEXT, CardResult.SUCCESS);
     }
     
-    public void addFailureToGroup(String data) {
-    	DummyStoryboardFactory.getStoryboard().startGroup(data);
-    	DummyStoryboardFactory.getStoryboard().addNotification(data + " Group Member", "Example", "", StockCardImage.TEXT, CardResult.FAILURE);
-    	DummyStoryboardFactory.getStoryboard().stopGroup();
+    public void addFailureToSection(String data) {
+    	DummyStoryboardFactory.getStoryboard().addSectionBreak(data);
+    	DummyStoryboardFactory.getStoryboard().addNotification(data + " Section Member", "Example", "", StockCardImage.TEXT, CardResult.FAILURE);
     }
     
         
-    public boolean groupAddedCollapsed(String fragment) {
-    	return fragment.contains("src=\"../../../../expand.png\"");    	
+    public boolean sectionAddedCollapsed(String fragment) {
+    	return fragment.contains("<h4>Example</h4>");    	
     }
     
-    public boolean groupAddedExpanded(String fragment) {
-    	return fragment.contains("src=\"../../../../collapse.png\"");    	
+    public boolean sectionAddedExpanded(String fragment) {
+    	return fragment.contains("<h4>Setup</h4>");    	
     }
     
-    public boolean groupFailed(String fragment) {
-    	return fragment.contains("<p class=\"scsummary scfailure\">Setup</p>");    	
+    public boolean sectionFailed(String fragment) {
+    	return fragment.contains("<h4>Failure</h4>");    	
     }
     
 }

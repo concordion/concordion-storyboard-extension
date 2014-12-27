@@ -26,26 +26,27 @@ limitations under the License.
   	<li>A section break may be inserted by calling the <code>startSection() or addCard(...)</code> methods</li>
   	<li>If a card with a failure or warning status is added to the section then the section label will be given that same status</li>
   	<li>If the section is not given a name it will not be collapsible</li>
-  	<li>Clicking on the section label will show or hide the rest of the cards in the section</li>  	
+  	<li>Clicking on the section label will show or hide the rest of the cards in the section</li>
+  	<li>Cannot add a section break with an active group - the section break will be ignored</li>
   </ul>
 
   <div class="example">
-    <h3>Example 1: Start Section</h3>
-    <pre concordion:set="#snippet">&lt;span concordion:execute="startSection(#TEXT)"&gt;Setup&lt;/span&gt;</pre>
+    <h3>Example 1: Add Section Break</h3>
+    <pre concordion:set="#snippet">&lt;span concordion:execute="addSectionBreak(#TEXT)"&gt;Setup&lt;/span&gt;</pre>
 
 	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
-	  When this snippet is run with this fixture, <span concordion:assertTrue="sectionAddedExpanded(#fragment)">this results in a new section being added to the Storyboard and the section left expanded</span>.
+	  When this snippet is run with this fixture, <span concordion:assertTrue="sectionAddedExpanded(#fragment)">this results in a new section being added to the Storyboard</span>.
 	</p>
 		
-	<h3>Example 2: Start Section With No Label</h3>
-    <pre concordion:set="#snippet">&lt;span concordion:execute="startSection()"&gt;&lt;/span&gt;</pre>
+	<h3>Example 2: Stop Section Break</h3>
+    <pre concordion:set="#snippet">&lt;span concordion:execute="addSectionBreak()"&gt;&lt;/span&gt;</pre>
 
 	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
-	  When this snippet is run with this fixture, <span concordion:assertTrue="sectionAddedCollapsed(#fragment)">this results in a new section being added to the Storyboard and the section rendered collapsed</span>.
+	  When this snippet is run with this fixture, <span concordion:assertTrue="sectionAddedCollapsed(#fragment)">this results in cards being added to the storyboard rather than a section</span>.
 	</p>
 	
 	<h3>Example 3: Add Failure Card to Section</h3>
-    <pre concordion:set="#snippet">&lt;span concordion:execute="addFailureToGroup(#TEXT)"&gt;Setup&lt;/span&gt;</pre>
+    <pre concordion:set="#snippet">&lt;span concordion:execute="addFailureToSection(#TEXT)"&gt;Failure&lt;/span&gt;</pre>
 
 	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
 	  When this snippet is run with this fixture, <span concordion:assertTrue="sectionFailed(#fragment)">this results the section label getting a failure status</span>.

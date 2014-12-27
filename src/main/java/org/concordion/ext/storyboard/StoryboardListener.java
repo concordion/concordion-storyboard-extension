@@ -85,6 +85,17 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	}
 
 	/**
+	 * Add section break
+	 */
+	public void addCard(final SectionBreak card) {
+		if (!collapsibleGroup.isEmpty()) {
+			return;
+		}
+
+		addCard((Card) card);
+	}
+	
+	/**
 	 * Add custom card and/or set common details for all cards
 	 */
 	public void addCard(final Card card) {
@@ -296,41 +307,69 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		storyboard.appendChild(ul);
 
 		for (Card card : cards) {
-			// Story card
-			Element li = new Element("li");
-			li.addStyleClass("storycard");
+			if (card instanceof SectionBreak) {
+				if (!ul.hasChildren()) {
+					storyboard.removeChild(ul);
+				}
+				
+				ul = new Element("ul");
+				
+				if (!card.getTitle().trim().isEmpty()) {
+					Element h4 = new Element("h4");
+					h4.appendText(card.getTitle());
+					storyboard.appendChild(h4);
+					
+					Element div = new Element("div");
+					div.addAttribute("style", "border: 1px solid green");
+					storyboard.appendChild(div);
+					
+					div.appendChild(ul);
+				} else {
+					storyboard.appendChild(ul);
+				}
+			} else {
+				if (card instanceof GroupStartCard) {
+					collapseGroup = (GroupStartCard) card;
+				}
 
-			if (card instanceof GroupStartCard) {
-				collapseGroup = (GroupStartCard) card;
+				Element li = buildCard(storyboard, collapseGroup, card);
+				
+				ul.appendChild(li);
 			}
-
-			if (card.isGroupMember()) {
-				collapseGroup.addHTMLToGroupCard(li, card);
-			}
-
-			ul.appendChild(li);
-
-			Element container = new Element("div");
-			container.addStyleClass("scimgcontainer");
-			li.appendChild(container);
-
-			card.addHTMLToContainer(storyboard, container);
-
-			// Summary
-			Element summary = new Element("p");
-			summary.appendText(card.getTitle());
-			summary.addStyleClass("scsummary " + card.getResult().getKey());
-
-			li.appendChild(summary);
-
-			// Description
-			Element description = new Element("p");
-			description.appendText(card.getDescription());
-			description.addStyleClass("scdescription");
-			description.addAttribute("title", card.getDescription());
-
-			li.appendChild(description);
 		}
+	}
+
+	private Element buildCard(final Element storyboard, GroupStartCard collapseGroup, Card card) {
+		// Story card
+		Element li = new Element("li");
+		li.addStyleClass("storycard");
+
+		if (card.isGroupMember()) {
+			collapseGroup.addHTMLToGroupCard(li, card);
+		}		
+
+		Element container = new Element("div");
+		container.addStyleClass("scimgcontainer");
+		li.appendChild(container);
+
+		card.addHTMLToContainer(storyboard, container);
+
+		// Summary
+		Element summary = new Element("p");
+		summary.appendText(card.getTitle());
+		summary.addStyleClass("scsummary " + card.getResult().getKey());
+
+		li.appendChild(summary);
+
+		// Description
+		Element description = new Element("p");
+		description.appendText(card.getDescription());
+		description.addStyleClass("scdescription");
+		description.addAttribute("title", card.getDescription());
+
+		li.appendChild(description);
+		
+		return li;
 	}
 
 	/**

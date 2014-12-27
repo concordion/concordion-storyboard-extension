@@ -15,6 +15,7 @@ import org.concordion.ext.storyboard.GroupStopCard;
 import org.concordion.ext.storyboard.CustomCardImage;
 import org.concordion.ext.storyboard.NotificationCard;
 import org.concordion.ext.storyboard.ScreenshotCard;
+import org.concordion.ext.storyboard.SectionBreak;
 import org.concordion.ext.storyboard.StockCardImage;
 import org.concordion.ext.storyboard.StoryboardListener;
 
@@ -213,6 +214,16 @@ public class StoryboardExtension implements ConcordionExtension {
 		extension.addCard(new GroupStopCard());
 	}
 
+	/**
+	 * Wraps all story cards from startGroup() call to last added card in a collapse/expand region (defaults to collapsed)
+	 */
+	public void addSectionBreak(String title) {
+		SectionBreak card = new SectionBreak();
+		card.setTitle(title);
+
+		extension.addCard(card);
+	}
+	
 	/**
 	 * Allow customs cards to be passed into storyboard
 	 * 
