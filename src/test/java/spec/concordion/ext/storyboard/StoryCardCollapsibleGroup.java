@@ -47,12 +47,11 @@ public class StoryCardCollapsibleGroup extends AcceptanceTest {
     @Before 
     public void installExtension() {
         System.setProperty("concordion.extensions", DummyStoryboardFactory.class.getName());
+        DummyStoryboardFactory.prepareWithoutScreenShot();
     }
     
     public String render(String fragment, String acronym) throws Exception {
-    	DummyStoryboardFactory.setScreenshotTaker(null);
-    	
-        return getTestRig()
+    	return getTestRig()
         		.processFragment(fragment, SPEC_NAME)	            
         		.getElementXML("storyboard");
     }

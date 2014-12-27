@@ -38,6 +38,7 @@ public class StoryCardFileNaming extends AcceptanceTest {
     @Before 
     public void installExtension() {
         System.setProperty("concordion.extensions", DummyStoryboardFactory.class.getName());
+        DummyStoryboardFactory.prepareWithScreenShot();
     }
     
     public String render(String fragment, String acronym) throws Exception {

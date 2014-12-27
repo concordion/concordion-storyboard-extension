@@ -22,16 +22,19 @@ import org.concordion.ext.StoryboardExtension;
 
 public class DummyStoryboardFactory implements ConcordionExtensionFactory {
     private static StoryboardExtension storyboard = null;
-    private static ScreenshotTaker screenshotTaker = new DummyScreenshotTaker();
+    private static ScreenshotTaker screenshotTaker = null;
     private static boolean addCardOnFailure = true;
     
-    public static void setScreenshotTaker(final ScreenshotTaker value) {
-    	screenshotTaker = value;
+    public static void prepareWithScreenShot() {
+    	screenshotTaker = new DummyScreenshotTaker();
+    }
+    public static void prepareWithoutScreenShot() {
+    	screenshotTaker = null;
 	}
     
     public static void setAddCardOnFailure(final boolean value) {
     	addCardOnFailure = value;
-	}
+	}    
     
     @Override
     public ConcordionExtension createExtension() {    	
