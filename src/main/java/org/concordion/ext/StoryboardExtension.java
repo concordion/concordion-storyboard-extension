@@ -10,8 +10,8 @@ import org.concordion.api.extension.ConcordionExtension;
 import org.concordion.ext.storyboard.Card;
 import org.concordion.ext.storyboard.CardImage;
 import org.concordion.ext.storyboard.CardResult;
-import org.concordion.ext.storyboard.CollapsibleStartCard;
-import org.concordion.ext.storyboard.CollapsibleStopCard;
+import org.concordion.ext.storyboard.GroupStartCard;
+import org.concordion.ext.storyboard.GroupStopCard;
 import org.concordion.ext.storyboard.CustomCardImage;
 import org.concordion.ext.storyboard.NotificationCard;
 import org.concordion.ext.storyboard.ScreenshotCard;
@@ -194,23 +194,23 @@ public class StoryboardExtension implements ConcordionExtension {
 	}
 
 	/**
-	 * Adds collapsible section card to story board
+	 * Adds collapsible group card to story board
 	 * 
 	 * @param title
-	 *            Must be unique for each collapsible group added
+	 *            Must be unique for each group added
 	 */
-	public void startCollapsibleGroup(final String title) {
-		CollapsibleStartCard card = new CollapsibleStartCard();
+	public void startGroup(final String title) {
+		GroupStartCard card = new GroupStartCard();
 		card.setTitle(title);
 
 		extension.addCard(card);
 	}
 
 	/**
-	 * Wraps all story cards from startCollapsibleGroup() call to last added card in a collapse/expand region (defaults to collapsed)
+	 * Wraps all story cards from startGroup() call to last added card in a collapse/expand region (defaults to collapsed)
 	 */
-	public void stopCollapsibleGroup() {
-		extension.addCard(new CollapsibleStopCard());
+	public void stopGroup() {
+		extension.addCard(new GroupStopCard());
 	}
 
 	/**
@@ -224,10 +224,10 @@ public class StoryboardExtension implements ConcordionExtension {
 	public void addCard(final ScreenshotCard card) {
 		extension.addCard(card);
 	}
-	public void addCard(final CollapsibleStartCard card) {
+	public void addCard(final GroupStartCard card) {
 		extension.addCard(card);
 	}
-	public void addCard(final CollapsibleStopCard card) {
+	public void addCard(final GroupStopCard card) {
 		extension.addCard(card);
 	}
 }

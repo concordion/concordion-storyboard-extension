@@ -48,9 +48,9 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	/**
 	 * Add collapsible section start
 	 */
-	public void addCard(final CollapsibleStartCard card) {
+	public void addCard(final GroupStartCard card) {
 		if (!collapsibleGroup.isEmpty()) {
-			CollapsibleStopCard stopCard = new CollapsibleStopCard();
+			GroupStopCard stopCard = new GroupStopCard();
 			stopCard.setResult(CardResult.WARN);
 			addCard(stopCard);
 		}
@@ -64,12 +64,12 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	/**
 	 * Add collapsible section end
 	 */
-	public void addCard(final CollapsibleStopCard card) {
+	public void addCard(final GroupStopCard card) {
 		if (collapsibleGroup.isEmpty()) {
 			return;
 		}
 
-		CollapsibleStartCard start = getLastCollapsibleStartCard();
+		GroupStartCard start = getLastCollapsibleStartCard();
 		if (start == null) {
 			return;
 		}
@@ -98,7 +98,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		cards.add(card);
 
 		if (!collapsibleGroup.isEmpty() && card.getResult() != CardResult.SUCCESS) {
-			CollapsibleStartCard start = getLastCollapsibleStartCard();
+			GroupStartCard start = getLastCollapsibleStartCard();
 
 			if (start != null) {
 				start.setResult(card.getResult());
@@ -106,12 +106,12 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		}
 	}
 
-	private CollapsibleStartCard getLastCollapsibleStartCard() {
-		CollapsibleStartCard last = null;
+	private GroupStartCard getLastCollapsibleStartCard() {
+		GroupStartCard last = null;
 
 		for (int i = cards.size() - 1; i >= 0; i--) {
-			if (cards.get(i) instanceof CollapsibleStartCard) {
-				last = (CollapsibleStartCard) cards.get(i);
+			if (cards.get(i) instanceof GroupStartCard) {
+				last = (GroupStartCard) cards.get(i);
 				break;
 			}
 		}
@@ -290,7 +290,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	}
 
 	private void addCardsToStoryboard(final Element storyboard) {
-		CollapsibleStartCard collapseGroup = null;
+		GroupStartCard collapseGroup = null;
 
 		Element ul = new Element("ul");
 		storyboard.appendChild(ul);
@@ -300,8 +300,8 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 			Element li = new Element("li");
 			li.addStyleClass("storycard");
 
-			if (card instanceof CollapsibleStartCard) {
-				collapseGroup = (CollapsibleStartCard) card;
+			if (card instanceof GroupStartCard) {
+				collapseGroup = (GroupStartCard) card;
 			}
 
 			if (card.isGroupMember()) {

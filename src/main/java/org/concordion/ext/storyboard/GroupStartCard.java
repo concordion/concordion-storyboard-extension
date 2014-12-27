@@ -7,11 +7,11 @@ import org.concordion.api.Element;
  * 
  * You wouldn't normally add this card directly but would call storyboard.startCollapsibleGroup("groupname");		
  */
-public class CollapsibleStartCard extends Card {
+public class GroupStartCard extends Card {
 	private boolean collapsed = false;
 	private String groupOwnership;
 
-	public CollapsibleStartCard() {
+	public GroupStartCard() {
 		setDescription("Click image to show/hide story cards for this section");
 	}
 

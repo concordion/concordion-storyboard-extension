@@ -7,10 +7,10 @@ import org.concordion.api.Element;
  * 
  * You wouldn't normally add this card directly but would call storyboard.stopCollapsibleGroup();
  */
-public class CollapsibleStopCard extends Card {
+public class GroupStopCard extends Card {
 	private CardImage cardImage;
 
-	public CollapsibleStopCard() {
+	public GroupStopCard() {
 		setDescription("This marks the end of the group");
 		setCardImage(StockCardImage.COMPLETE);
 	}

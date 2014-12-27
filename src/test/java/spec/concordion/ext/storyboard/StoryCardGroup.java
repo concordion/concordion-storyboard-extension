@@ -27,9 +27,9 @@ import test.concordion.ProcessingResult;
 import test.concordion.ext.storyboard.DummyStoryboardFactory;
 
 @RunWith(ConcordionRunner.class)
-public class StoryCardCollapsibleGroup extends AcceptanceTest {
+public class StoryCardGroup extends AcceptanceTest {
     
-    public static final String SPEC_NAME = "/" + StoryCardCollapsibleGroup.class.getName().replaceAll("\\.","/");
+    public static final String SPEC_NAME = "/" + StoryCardGroup.class.getName().replaceAll("\\.","/");
     private int example = 0;
     
     @Extension
@@ -73,20 +73,20 @@ public class StoryCardCollapsibleGroup extends AcceptanceTest {
     }
     
     public void startGroup(String data) {    	
-    	DummyStoryboardFactory.getStoryboard().startCollapsibleGroup(data);
+    	DummyStoryboardFactory.getStoryboard().startGroup(data);
     	DummyStoryboardFactory.getStoryboard().addNotification(data + " Group Member", "Example", "", StockCardImage.TEXT, CardResult.SUCCESS);
     }
  
     public void stopGroup(String data) {
-    	DummyStoryboardFactory.getStoryboard().startCollapsibleGroup(data);
+    	DummyStoryboardFactory.getStoryboard().startGroup(data);
     	DummyStoryboardFactory.getStoryboard().addNotification(data + " Group Member", "Example", "", StockCardImage.TEXT, CardResult.SUCCESS);
-    	DummyStoryboardFactory.getStoryboard().stopCollapsibleGroup();
+    	DummyStoryboardFactory.getStoryboard().stopGroup();
     }
     
     public void addFailureToGroup(String data) {
-    	DummyStoryboardFactory.getStoryboard().startCollapsibleGroup(data);
+    	DummyStoryboardFactory.getStoryboard().startGroup(data);
     	DummyStoryboardFactory.getStoryboard().addNotification(data + " Group Member", "Example", "", StockCardImage.TEXT, CardResult.FAILURE);
-    	DummyStoryboardFactory.getStoryboard().stopCollapsibleGroup();
+    	DummyStoryboardFactory.getStoryboard().stopGroup();
     }
     
         
