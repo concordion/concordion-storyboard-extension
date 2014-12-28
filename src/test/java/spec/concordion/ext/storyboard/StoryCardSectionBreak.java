@@ -27,9 +27,9 @@ import test.concordion.ProcessingResult;
 import test.concordion.ext.storyboard.DummyStoryboardFactory;
 
 @RunWith(ConcordionRunner.class)
-public class StoryCardSection extends AcceptanceTest {
+public class StoryCardSectionBreak extends AcceptanceTest {
     
-    public static final String SPEC_NAME = "/" + StoryCardSection.class.getName().replaceAll("\\.","/");
+    public static final String SPEC_NAME = "/" + StoryCardSectionBreak.class.getName().replaceAll("\\.","/");
     private int example = 0;
     
     @Extension
@@ -92,15 +92,15 @@ public class StoryCardSection extends AcceptanceTest {
     
         
     public boolean sectionAddedCollapsed(String fragment) {
-    	return fragment.contains("<h4>Example</h4>");    	
+    	return fragment.contains("class=\"toggle-box scsuccess\">Example</label>");    	
     }
     
     public boolean sectionAddedExpanded(String fragment) {
-    	return fragment.contains("<h4>Setup</h4>");    	
+    	return fragment.contains("class=\"toggle-box scsuccess\">Setup</label>");    	
     }
     
     public boolean sectionFailed(String fragment) {
-    	return fragment.contains("<h4>Failure</h4>");    	
+    	return fragment.contains("class=\"toggle-box scfailure\"");    	
     }
     
 }

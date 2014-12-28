@@ -87,15 +87,15 @@
 	text-overflow: ellipsis;
 }
 
-.storycard .scsuccess {
+.scsuccess {
 	color: green;
 }
 
-.storycard .scfailure{
+.scfailure{
     color: red;
 }
 
-.storycard .scwarning{
+.scwarning{
     color: orange;
 }
 
@@ -103,3 +103,46 @@
 .storycard .alien-lfl-href-buttonLink {
     display: none;
 }
+
+/* Expanding div support */
+.toggle-box {
+  display: none;
+}
+
+.toggle-box + label {
+  cursor: pointer;
+  display: block;
+  font-weight: bold;
+  line-height: 21px;
+  margin-bottom: 5px;
+}
+
+.toggle-box + label + div {
+  display: none;
+  margin-bottom: 10px;
+}
+
+.toggle-box:checked + label + div {
+  display: block;
+}
+
+.toggle-box + label:before {
+  background-color: lightgrey;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  width: 20px;
+  color: black;
+  content: "+";
+  display: block;
+  float: left;
+  font-weight: bold;
+  font-size: larger;
+  margin-right: 5px;
+  text-align: center;
+}
+
+.toggle-box:checked + label:before {
+  content: "\2212";
+}
+

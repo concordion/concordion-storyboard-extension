@@ -25,6 +25,5 @@ public class SectionBreak extends Card {
 
 	@Override
 	protected void addHTMLToContainer(final Element storyboard, final Element container) {
-		// Do nothing
 	}
 }

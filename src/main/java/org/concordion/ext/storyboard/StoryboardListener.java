@@ -108,13 +108,33 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		card.captureData();
 		cards.add(card);
 
-		if (!collapsibleGroup.isEmpty() && card.getResult() != CardResult.SUCCESS) {
-			GroupStartCard start = getLastCollapsibleStartCard();
-
-			if (start != null) {
-				start.setResult(card.getResult());
+		if (card.getResult() != CardResult.SUCCESS) {
+			if (!collapsibleGroup.isEmpty()) {
+				GroupStartCard start = getLastCollapsibleStartCard();
+	
+				if (start != null) {
+					start.setResult(card.getResult());
+				}
+			}
+			
+			SectionBreak section = getCurrentSectionBreak();
+			if (section != null) {
+				section.setResult(card.getResult());
 			}
 		}
+	}
+
+	private SectionBreak getCurrentSectionBreak() {
+		SectionBreak current = null;
+		
+		for (int i = cards.size() - 1; i >= 0; i--) {
+			if (cards.get(i) instanceof SectionBreak) {
+				current = (SectionBreak) cards.get(i);
+				break;
+			}
+		}
+		
+		return current;
 	}
 
 	private GroupStartCard getLastCollapsibleStartCard() {
@@ -126,6 +146,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 				break;
 			}
 		}
+		
 		return last;
 	}
 
@@ -314,18 +335,12 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 				
 				ul = new Element("ul");
 				
-				if (!card.getTitle().trim().isEmpty()) {
-					Element h4 = new Element("h4");
-					h4.appendText(card.getTitle());
-					storyboard.appendChild(h4);
-					
-					Element div = new Element("div");
-					div.addAttribute("style", "border: 1px solid green");
-					storyboard.appendChild(div);
-					
-					div.appendChild(ul);
-				} else {
+				if (card.getTitle().trim().isEmpty()) {
 					storyboard.appendChild(ul);
+				} else {
+					Element content = buildSectionBreak(storyboard, card);
+					
+					content.appendChild(ul);
 				}
 			} else {
 				if (card instanceof GroupStartCard) {
@@ -337,6 +352,33 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 				ul.appendChild(li);
 			}
 		}
+	}
+
+	private Element buildSectionBreak(Element storyboard, Card card) {
+		String id = "toggleheader" + card.getCardNumber();
+		
+		Element input = new Element("input");
+		input.setId(id);
+		input.addStyleClass("toggle-box");
+		input.addAttribute("type", "checkbox");
+		
+		Element label = new Element("label");
+		label.addAttribute("for", id);
+		label.addStyleClass("toggle-box");
+		label.addStyleClass(card.getResult().getKey());
+		label.appendText(card.getTitle());
+		
+		Element content = new Element("div");
+		content.addStyleClass("toggle-box-content");
+		
+		Element hr = new Element("hr");
+		
+		storyboard.appendChild(input);
+		storyboard.appendChild(label);
+		storyboard.appendChild(content);
+		storyboard.appendChild(hr);
+		
+		return content;
 	}
 
 	private Element buildCard(final Element storyboard, GroupStartCard collapseGroup, Card card) {
@@ -357,7 +399,8 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		// Summary
 		Element summary = new Element("p");
 		summary.appendText(card.getTitle());
-		summary.addStyleClass("scsummary " + card.getResult().getKey());
+		summary.addStyleClass("scsummary");
+		summary.addStyleClass(card.getResult().getKey());
 
 		li.appendChild(summary);
 
