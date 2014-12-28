@@ -6,7 +6,9 @@ The [demo project](http://github.com/concordion/concordion-storyboard-extension-
 
 # Introduction
 
-Often its difficult to tell from a specification exactly what is being done to the system under test.  This extension solves that dilema by capturing information (screen shots, soap xml, etc) from the system under test and displaying them as a series of cards on a storyboard at the bottom of the specification while it is being executed.
+Often its difficult to tell from a specification exactly what is being done to the system under test.  This extension solves that dilema by capturing information (screen shots, soap xml, etc) from the system under test and displaying them as a series of cards on a storyboard at the bottom of the specification while it is being executed.  
+
+This can also be a great aid in helping to diagnose test failures.  Combine this with the [Logback extension](http://github.com/concordion/concordion-logback-extension) you have a wealth of information at your fingure tips.
 
 Supports:
 * browser screen shots
@@ -15,15 +17,11 @@ Supports:
 * catches displays exceptions and test failures 
 * can group cards into collapsible sections on the storyboard 
 
-This extension is based on the screenshot taker extension and would not be here without it.
-
-# Usage
-
-Further documentation can be found in the [wiki](https://github.com/concordion/concordion-storyboard-extension/wiki).
+This extension is based on the [screenshot taker extension](http://github.com/concordion/concordion-screenshot-extension) and would not be here without it.
 
 # Further info
 
-* [Wiki](https://github.com/concordion/concordion-storyboard-extension/wiki)
+* [Specification](http://concordion.github.io/concordion-storyboard-extension/spec/Storyboard.html)
 * [API](http://concordion.github.io/concordion-storyboard-extension/api/index.html)
 * [Demo project](http://github.com/concordion/concordion-storyboard-extension-demo)
 

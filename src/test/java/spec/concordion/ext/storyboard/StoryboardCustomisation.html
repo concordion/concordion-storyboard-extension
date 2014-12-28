@@ -39,9 +39,10 @@ limitations under the License.
 	</li>
   	<li><code>setScreenshotTaker()</code>: Set a custom screenshot taker
   		<ul>
-  			<li>By default this is set to RobotScreenshotTaker which will capture the full visible screen</li>
+  			<li>By default this is set to <code>java.awt.Robot</code> which will capture the full visible screen</li>
+  			<li>As an alternative, custom screenshots can be captured using the `ScreenshotTaker` interface. For example, when using frameworks such as Selenium, a custom screenshot taker can capture an image of the entire web page, even if the test is running in the background</li>
+  			<li>See the demo application for an example of a custom <code>SeleniumScreenshotTaker</code></li>
 			<li>For a non gui application this won't be the most appropriate behaviour and you will want to set the screenshot taker to null</li>
-	 		<li>See the demo application for an example of a custom SeleniumScreenshotTaker.</li>
 	 	</ul>
 	</li>
   	<li><code>setTakeScreenshotOnCompletion()</code>:  When the test completes and the ScreenshotTaker is not null the storyboard will take a screenshot of the current screen
