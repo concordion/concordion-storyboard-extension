@@ -10,11 +10,12 @@ import org.concordion.api.extension.ConcordionExtension;
 import org.concordion.ext.storyboard.Card;
 import org.concordion.ext.storyboard.CardImage;
 import org.concordion.ext.storyboard.CardResult;
-import org.concordion.ext.storyboard.CollapsibleStartCard;
-import org.concordion.ext.storyboard.CollapsibleStopCard;
+import org.concordion.ext.storyboard.GroupStartCard;
+import org.concordion.ext.storyboard.GroupStopCard;
 import org.concordion.ext.storyboard.CustomCardImage;
 import org.concordion.ext.storyboard.NotificationCard;
 import org.concordion.ext.storyboard.ScreenshotCard;
+import org.concordion.ext.storyboard.SectionBreak;
 import org.concordion.ext.storyboard.StockCardImage;
 import org.concordion.ext.storyboard.StoryboardListener;
 
@@ -47,11 +48,13 @@ public class StoryboardExtension implements ConcordionExtension {
 
 		concordionExtender.withLinkedCSS(path + "/storyboard.css", new Resource("/storyboard.css"));
 		concordionExtender.withLinkedJavaScript(path + "/storyboard.js", new Resource("/storyboard.js"));
+		concordionExtender.withResource(path + StockCardImage.EMAIL, StockCardImage.EMAIL.getResource());
+		concordionExtender.withResource(path + StockCardImage.HTML, StockCardImage.HTML.getResource());
+		concordionExtender.withResource(path + StockCardImage.TEXT, StockCardImage.TEXT.getResource());		
 		concordionExtender.withResource(path + StockCardImage.XML_REQUEST, StockCardImage.XML_REQUEST.getResource());
 		concordionExtender.withResource(path + StockCardImage.XML_RESPONSE, StockCardImage.XML_RESPONSE.getResource());
 		concordionExtender.withResource(path + StockCardImage.EXPAND, StockCardImage.EXPAND.getResource());
 		concordionExtender.withResource(path + StockCardImage.COLLAPSE, StockCardImage.COLLAPSE.getResource());
-		concordionExtender.withResource(path + StockCardImage.EMAIL, StockCardImage.EMAIL.getResource());
 		concordionExtender.withResource(path + StockCardImage.COMPLETE, StockCardImage.COMPLETE.getResource());
 		concordionExtender.withResource(path + StockCardImage.ERROR, StockCardImage.ERROR.getResource());
 
@@ -78,12 +81,50 @@ public class StoryboardExtension implements ConcordionExtension {
 	}
 
 	/**
-	 * Set a custom screenshot taker. If not set, the extension will default to using {@link Robot} which will take a shot of the full visible screen.
+	 * Sets whether a card will be added to the storyboard when an uncaught exception occurs in the test. Defaults to <b><code>true</code></b>. 
+	 * If screenshotTaker is set then it will take a {@link ScreenshotCard}, else it will add a {@link NotificationCard}
+	 * 
+	 * @param value
+	 *            <code>true</code> to add a card when an uncaught exception occurs in the test, <code>false</code> to not add a card.
+	 */
+	public StoryboardExtension setAddCardOnThrowable(final boolean value) {
+		extension.setAddCardOnThrowable(value);
+		return this;
+	}
+
+	/**
+	 * Sets whether a card will be added to the storyboard when a failure occurs in the test. Defaults to <b><code>true</code></b>. 
+	 * If screenshotTaker is set then it will take a {@link ScreenshotCard}, else it will add a {@link NotificationCard}
+	 * 
+	 * @param value
+	 *            <code>true</code> to add a card when a failure occurs in the test, <code>false</code> to not add a card.
+	 */
+	public StoryboardExtension setAddCardOnFailure(final boolean value) {
+		extension.setAddCardOnFailure(value);
+		return this;
+	}
+	
+	/**
+	 * Set a screenshot taker. If not set, the extension will default to using {@link Robot} which will take a shot of the full visible screen.
+	 * 
+	 * For a non gui application this won't be the most appropriate behaviour and you will want to set the screenshot taker to null.
+	 * See the demo application for an example of a custom SeleniumScreenshotTaker.
 	 * 
 	 * @param screenshotTaker
 	 */
 	public StoryboardExtension setScreenshotTaker(final ScreenshotTaker screenshotTaker) {
 		extension.setScreenshotTaker(screenshotTaker);
+		return this;
+	}
+
+	/**
+	 * When the test completes and the ScreenshotTaker is not null, the storyboard will take a screenshot of the current screen.
+	 * 
+	 * @param value
+	 * 			<code>true</code> to take screenshot (default), <code>false</code> to not take screenshot
+	 */
+	public StoryboardExtension setTakeScreenshotOnCompletion(final boolean value) {
+		extension.setTakeScreenshotOnCompletion(value);
 		return this;
 	}
 
@@ -95,28 +136,6 @@ public class StoryboardExtension implements ConcordionExtension {
 	 */
 	public void setAcceptsScreenshots(final boolean accept) {
 		this.acceptsScreenShots = accept;
-	}
-
-	/**
-	 * Sets whether screenshots will be embedded in the output when uncaught Throwables occur in the test. Defaults to <b><code>true</code></b>.
-	 * 
-	 * @param takeShot
-	 *            <code>true</code> to take screenshots on uncaught Throwables, <code>false</code> to not take screenshots.
-	 */
-	public StoryboardExtension setScreenshotOnThrowable(final boolean takeShot) {
-		extension.setAddCardOnThrowable(takeShot);
-		return this;
-	}
-
-	/**
-	 * Sets whether screenshots will be embedded in the output when a failure occurs in the test. Defaults to <b><code>true</code></b>.
-	 * 
-	 * @param takeShot
-	 *            <code>true</code> to take screenshots when a failure occurs in the test, <code>false</code> to not take screenshots.
-	 */
-	public StoryboardExtension setScreenshotOnFailure(final boolean takeShot) {
-		extension.setAddCardOnFailure(takeShot);
-		return this;
 	}
 	
 	/**
@@ -176,25 +195,35 @@ public class StoryboardExtension implements ConcordionExtension {
 	}
 
 	/**
-	 * Adds collapsible section card to story board
+	 * Adds collapsible group card to story board
 	 * 
 	 * @param title
-	 *            Must be unique for each collapsible group added
+	 *            Must be unique for each group added
 	 */
-	public void startCollapsibleGroup(final String title) {
-		CollapsibleStartCard card = new CollapsibleStartCard();
+	public void startGroup(final String title) {
+		GroupStartCard card = new GroupStartCard();
 		card.setTitle(title);
 
 		extension.addCard(card);
 	}
 
 	/**
-	 * Wraps all story cards from startCollapsibleGroup() call to last added card in a collapse/expand region (defaults to collapsed)
+	 * Wraps all story cards from startGroup() call to last added card in a collapse/expand region (defaults to collapsed)
 	 */
-	public void stopCollapsibleGroup() {
-		extension.addCard(new CollapsibleStopCard());
+	public void stopGroup() {
+		extension.addCard(new GroupStopCard());
 	}
 
+	/**
+	 * Wraps all story cards from startGroup() call to last added card in a collapse/expand region (defaults to collapsed)
+	 */
+	public void addSectionBreak(String title) {
+		SectionBreak card = new SectionBreak();
+		card.setTitle(title);
+
+		extension.addCard(card);
+	}
+	
 	/**
 	 * Allow customs cards to be passed into storyboard
 	 * 
@@ -203,5 +232,13 @@ public class StoryboardExtension implements ConcordionExtension {
 	public void addCard(final Card card) {
 		extension.addCard(card);
 	}
-
+	public void addCard(final ScreenshotCard card) {
+		extension.addCard(card);
+	}
+	public void addCard(final GroupStartCard card) {
+		extension.addCard(card);
+	}
+	public void addCard(final GroupStopCard card) {
+		extension.addCard(card);
+	}
 }

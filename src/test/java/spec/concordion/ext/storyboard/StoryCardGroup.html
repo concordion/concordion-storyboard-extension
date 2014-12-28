@@ -1,0 +1,57 @@
+<!-- 
+Copyright (c) 2010 Two Ten Consulting Limited, New Zealand
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+ -->
+<html xmlns:concordion="http://www.concordion.org/2007/concordion" xmlns:cx="urn:concordion-extensions:2010">
+<link href="../../../../concordion.css" rel="stylesheet" type="text/css" />
+<head>
+</head>
+<body>
+
+  <h1>Collapsible Group Card</h1>
+  <p>Sometimes your test might perform a large number of steps and the storyboard becomes unweildy. Adding cards to a collapsible group will allow you to click on the first card to show or hide the rest of the cards in the group.</p>
+  <p>Behaviour:</p>
+  <ul>
+  	<li>A collapsible group may be started by calling the <code>startGroup() or addCard(...)</code> methods</li>
+  	<li>A collapsible group may be stopped by calling the <code>stopGroup() or addCard(...)</code> methods</li>
+  	<li>If a card with a failure or warning status is added to the group then the start and stop group cards will be given that same status</li>
+  	<li>If the group is not stopped it will be left expanded, if it is stopped then it will be rendered collapsed</li>
+  	<li>Clicking on the collapsible group card image will show or hide the rest of the cards in the group</li>  	
+  </ul>
+
+  <div class="example">
+    <h3>Example 1: Start Group</h3>
+    <pre concordion:set="#snippet">&lt;span concordion:execute="startGroup(#TEXT)"&gt;Setup&lt;/span&gt;</pre>
+
+	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
+	  When this snippet is run with this fixture, <span concordion:assertTrue="groupAddedExpanded(#fragment)">this results in a collapsible start card being added to the Storyboard and the group left expanded</span>.
+	</p>
+		
+	<h3>Example 2: Stop Group</h3>
+    <pre concordion:set="#snippet">&lt;span concordion:execute="stopGroup(#TEXT)"&gt;Setup&lt;/span&gt;</pre>
+
+	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
+	  When this snippet is run with this fixture, <span concordion:assertTrue="groupAddedCollapsed(#fragment)">this results in a collapsible stop card being added to the Storyboard and the group rendered collapsed</span>.
+	</p>
+	
+	<h3>Example 3: Add Failure Card to Group</h3>
+    <pre concordion:set="#snippet">&lt;span concordion:execute="addFailureToGroup(#TEXT)"&gt;Setup&lt;/span&gt;</pre>
+
+	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
+	  When this snippet is run with this fixture, <span concordion:assertTrue="groupFailed(#fragment)">this results the start and stop cards getting a failure status</span>.
+	</p>
+  </div>  
+
+</body>
+</html>

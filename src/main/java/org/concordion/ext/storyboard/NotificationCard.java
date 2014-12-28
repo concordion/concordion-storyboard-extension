@@ -10,7 +10,7 @@ import org.concordion.api.Resource;
  */
 public class NotificationCard extends Card {
 	private String dataFileName = "";
-	private CardImage cardImage;
+	private CardImage cardImage = StockCardImage.XML_REQUEST;
 	private String data = "";
 	private String fileExtension = "txt";
 

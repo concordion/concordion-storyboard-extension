@@ -28,6 +28,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	private final List<Card> cards = new ArrayList<Card>();
 	private ScreenshotTaker screenshotTaker = new RobotScreenshotTaker();
+	private boolean takeScreenshotOnCompletion = true;
 	private boolean addCardOnThrowable = true;
 	private boolean addCardOnFailure = true;
 	private boolean lastScreenShotWasThrowable = false;
@@ -47,9 +48,9 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	/**
 	 * Add collapsible section start
 	 */
-	public void addCard(final CollapsibleStartCard card) {
+	public void addCard(final GroupStartCard card) {
 		if (!collapsibleGroup.isEmpty()) {
-			CollapsibleStopCard stopCard = new CollapsibleStopCard();
+			GroupStopCard stopCard = new GroupStopCard();
 			stopCard.setResult(CardResult.WARN);
 			addCard(stopCard);
 		}
@@ -63,19 +64,19 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	/**
 	 * Add collapsible section end
 	 */
-	public void addCard(final CollapsibleStopCard card) {
+	public void addCard(final GroupStopCard card) {
 		if (collapsibleGroup.isEmpty()) {
 			return;
 		}
 
-		CollapsibleStartCard start = getLastCollapsibleStartCard();
+		GroupStartCard start = getLastCollapsibleStartCard();
 		if (start == null) {
 			return;
 		}
-
-		if (card.getResult() != CardResult.FAILURE) {
-			start.setCollapsed(true);
-		}
+		
+		card.setResult(start.getResult());
+		start.setCollapsed(true);
+		
 		card.setTitle(start.getTitle());
 
 		addCard((Card) card);
@@ -83,6 +84,17 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		collapsibleGroup = "";
 	}
 
+	/**
+	 * Add section break
+	 */
+	public void addCard(final SectionBreak card) {
+		if (!collapsibleGroup.isEmpty()) {
+			return;
+		}
+
+		addCard((Card) card);
+	}
+	
 	/**
 	 * Add custom card and/or set common details for all cards
 	 */
@@ -96,24 +108,45 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		card.captureData();
 		cards.add(card);
 
-		if (!collapsibleGroup.isEmpty() && card.getResult() != CardResult.SUCCESS) {
-			CollapsibleStartCard start = getLastCollapsibleStartCard();
-
-			if (start != null) {
-				start.setResult(card.getResult());
+		if (card.getResult() != CardResult.SUCCESS) {
+			if (!collapsibleGroup.isEmpty()) {
+				GroupStartCard start = getLastCollapsibleStartCard();
+	
+				if (start != null) {
+					start.setResult(card.getResult());
+				}
+			}
+			
+			SectionBreak section = getCurrentSectionBreak();
+			if (section != null) {
+				section.setResult(card.getResult());
 			}
 		}
 	}
 
-	private CollapsibleStartCard getLastCollapsibleStartCard() {
-		CollapsibleStartCard last = null;
-
+	private SectionBreak getCurrentSectionBreak() {
+		SectionBreak current = null;
+		
 		for (int i = cards.size() - 1; i >= 0; i--) {
-			if (cards.get(i) instanceof CollapsibleStartCard) {
-				last = (CollapsibleStartCard) cards.get(i);
+			if (cards.get(i) instanceof SectionBreak) {
+				current = (SectionBreak) cards.get(i);
 				break;
 			}
 		}
+		
+		return current;
+	}
+
+	private GroupStartCard getLastCollapsibleStartCard() {
+		GroupStartCard last = null;
+
+		for (int i = cards.size() - 1; i >= 0; i--) {
+			if (cards.get(i) instanceof GroupStartCard) {
+				last = (GroupStartCard) cards.get(i);
+				break;
+			}
+		}
+		
 		return last;
 	}
 
@@ -205,7 +238,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 		overrideIECompatibilityView(event);
 		
-		if (!lastScreenShotWasThrowable && screenshotTaker != null) {
+		if (!lastScreenShotWasThrowable && takeScreenshotOnCompletion && screenshotTaker != null) {
 			ScreenshotCard card = new ScreenshotCard();
 			card.setTitle("Test Completed");
 			card.setDescription("This is the page the test  finished on");
@@ -289,47 +322,97 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	}
 
 	private void addCardsToStoryboard(final Element storyboard) {
-		CollapsibleStartCard collapseGroup = null;
+		GroupStartCard collapseGroup = null;
 
 		Element ul = new Element("ul");
 		storyboard.appendChild(ul);
 
 		for (Card card : cards) {
-			// Story card
-			Element li = new Element("li");
-			li.addStyleClass("storycard");
+			if (card instanceof SectionBreak) {
+				if (!ul.hasChildren()) {
+					storyboard.removeChild(ul);
+				}
+				
+				ul = new Element("ul");
+				
+				if (card.getTitle().trim().isEmpty()) {
+					storyboard.appendChild(ul);
+				} else {
+					Element content = buildSectionBreak(storyboard, card);
+					
+					content.appendChild(ul);
+				}
+			} else {
+				if (card instanceof GroupStartCard) {
+					collapseGroup = (GroupStartCard) card;
+				}
 
-			if (card instanceof CollapsibleStartCard) {
-				collapseGroup = (CollapsibleStartCard) card;
+				Element li = buildCard(storyboard, collapseGroup, card);
+				
+				ul.appendChild(li);
 			}
-
-			if (card.isGroupMember()) {
-				collapseGroup.addHTMLToGroupCard(li, card);
-			}
-
-			ul.appendChild(li);
-
-			Element container = new Element("div");
-			container.addStyleClass("scimgcontainer");
-			li.appendChild(container);
-
-			card.addHTMLToContainer(storyboard, container);
-
-			// Summary
-			Element summary = new Element("p");
-			summary.appendText(card.getTitle());
-			summary.addStyleClass("scsummary " + card.getResult().getKey());
-
-			li.appendChild(summary);
-
-			// Description
-			Element description = new Element("p");
-			description.appendText(card.getDescription());
-			description.addStyleClass("scdescription");
-			description.addAttribute("title", card.getDescription());
-
-			li.appendChild(description);
 		}
+	}
+
+	private Element buildSectionBreak(Element storyboard, Card card) {
+		String id = "toggleheader" + card.getCardNumber();
+		
+		Element input = new Element("input");
+		input.setId(id);
+		input.addStyleClass("toggle-box");
+		input.addAttribute("type", "checkbox");
+		
+		Element label = new Element("label");
+		label.addAttribute("for", id);
+		label.addStyleClass("toggle-box");
+		label.addStyleClass(card.getResult().getKey());
+		label.appendText(card.getTitle());
+		
+		Element content = new Element("div");
+		content.addStyleClass("toggle-box-content");
+		
+		Element hr = new Element("hr");
+		
+		storyboard.appendChild(input);
+		storyboard.appendChild(label);
+		storyboard.appendChild(content);
+		storyboard.appendChild(hr);
+		
+		return content;
+	}
+
+	private Element buildCard(final Element storyboard, GroupStartCard collapseGroup, Card card) {
+		// Story card
+		Element li = new Element("li");
+		li.addStyleClass("storycard");
+
+		if (card.isGroupMember()) {
+			collapseGroup.addHTMLToGroupCard(li, card);
+		}		
+
+		Element container = new Element("div");
+		container.addStyleClass("scimgcontainer");
+		li.appendChild(container);
+
+		card.addHTMLToContainer(storyboard, container);
+
+		// Summary
+		Element summary = new Element("p");
+		summary.appendText(card.getTitle());
+		summary.addStyleClass("scsummary");
+		summary.addStyleClass(card.getResult().getKey());
+
+		li.appendChild(summary);
+
+		// Description
+		Element description = new Element("p");
+		description.appendText(card.getDescription());
+		description.addStyleClass("scdescription");
+		description.addAttribute("title", card.getDescription());
+
+		li.appendChild(description);
+		
+		return li;
 	}
 
 	/**
@@ -343,12 +426,12 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		this.screenshotTaker = screenshotTaker;
 	}
 
-	public void setAddCardOnThrowable(final boolean takeShot) {
-		this.addCardOnThrowable = takeShot;
+	public void setAddCardOnThrowable(final boolean value) {
+		this.addCardOnThrowable = value;
 	}
 
-	public void setAddCardOnFailure(final boolean takeShot) {
-		this.addCardOnFailure = takeShot;
+	public void setAddCardOnFailure(final boolean value) {
+		this.addCardOnFailure = value;
 	}
 	
 	public Resource getResource() {
@@ -357,5 +440,10 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	public Target getTarget() {
 		return target;
+	}
+
+	public void setTakeScreenshotOnCompletion(boolean value) {
+		this.takeScreenshotOnCompletion = value;
+		
 	}
 }

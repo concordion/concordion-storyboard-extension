@@ -1,0 +1,68 @@
+<!-- 
+Copyright (c) 2010 Two Ten Consulting Limited, New Zealand
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+ -->
+<html xmlns:concordion="http://www.concordion.org/2007/concordion" xmlns:cx="urn:concordion-extensions:2010">
+<link href="../../../../concordion.css" rel="stylesheet" type="text/css" />
+<head>
+</head>
+<body>
+
+  <h1>Notification Card</h1>
+  <p>The notification card will display any text based data you wish to present, eg soap, xml, html, text.</p>
+  <p>To distinguish one type of data from another the card will show an image from either the supplied stock images, or a custom image can be passed in.</p>
+  <p>Behaviour:</p>
+  <ul>
+  	<li>A notification card may be added explicitly by calling the <code>addNotification(...) or addCard(...)</code> methods,</li>
+  	<li>or implicitly, when a text failure is encountered, or exception is thrown and there is no active browser and screenshot taker</li>
+  	<li>Clicking on the card image will open a new page and present the data - if any data was supplied</li>
+  	<li>Default behaviour can be overridden by use of the following methods</li> 
+  	<ul>
+  		<li>setAddCardOnThrowable</li>
+  		<li>setAddCardOnFailure</li>
+  	</ul>	
+  </ul>
+
+  <div class="example">
+    <h3>Example 1: Add Card</h3>
+    <pre concordion:set="#snippet">&lt;span concordion:execute="addNotification(#TEXT)"&gt;&lt;b&gt;Hello World:&lt;/b&gt;This is some html!&lt;/span&gt;</pre>
+
+	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
+	  When this snippet is run with this fixture, <span concordion:assertTrue="notificationCardAdded(#fragment)">this results in a Notification Card being added to the Storyboard</span>.
+	</p>
+	
+	<h3>Example 2: Capture Failure</h3>
+    <pre concordion:set="#snippet">&lt;p concordion:assertEquals="true"&gt;false&lt;/p&gt;</pre>
+
+	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
+	  When this snippet is run with this fixture, this results in a Notification Card being added to the Storyboard <span concordion:assertTrue="failureCardAdded(#fragment)">notifying that a test failed on the specification</span>.
+	</p>
+	
+	<h3>Example 3: Capture Exception</h3>
+	<pre concordion:set="#snippet">&lt;p concordion:assertTrue="#TEXT"&gt;false&lt;/p&gt;</pre>
+
+	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
+	  When this snippet is run with this fixture, this results in a Notification Card being added to the Storyboard <span concordion:assertTrue="exceptionCardAdded(#fragment)">notifying that an exception occurred in the fixture</span>.
+	</p>
+	
+	<h3>Example 4: Ignore Failure</h3>
+    <pre concordion:set="#snippet">&lt;p concordion:assertEquals="true"&gt;false&lt;/p&gt;</pre>
+
+	<p concordion:execute="#fragment=renderWithFailureOff(#snippet, #actualValue)">
+	  When this snippet is run with this fixture, this results in <span concordion:assertTrue="noCardAdded(#fragment)">NO cards being added to the Storyboard</span>.
+	</p>
+  </div>  
+
+</body>
+</html>

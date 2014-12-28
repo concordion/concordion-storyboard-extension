@@ -1,0 +1,55 @@
+<!-- 
+Copyright (c) 2010 Two Ten Consulting Limited, New Zealand
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+ -->
+<html xmlns:c="http://www.concordion.org/2007/concordion">
+<link href="../../../../concordion.css" rel="stylesheet" type="text/css" />
+<body>
+  <h1>Customisation</h1>
+
+  <p>The Storyboard can be customised in several different ways:</p>
+  <ul>
+  	<li>Create your own cards to capture and display different types of data by inheriting from the Card class</li>
+  	<li><code>addCardImage()</code>: Add custom card image that will be shared by all tests
+  		<ul>
+  			<li>Must be called before test starts otherwise this will do nothing</li>
+			<li>It is possible to override stock card images if you use the same name</li>
+	 	</ul>
+	</li>
+  	<li><code>setAddCardOnThrowable()</code>: Sets whether a card will be added to the storyboard when an uncaught exception occurs in the test
+  		<ul>
+  			<li>Defaults to true</li>
+	 	</ul>
+	</li>
+  	<li><code>setAddCardOnFailure()</code>: Sets whether a card will be added to the storyboard when a failure occurs in the test
+  		<ul>
+  			<li>Defaults to true</li>
+	 	</ul>
+	</li>
+  	<li><code>setScreenshotTaker()</code>: Set a custom screenshot taker
+  		<ul>
+  			<li>By default this is set to RobotScreenshotTaker which will capture the full visible screen</li>
+			<li>For a non gui application this won't be the most appropriate behaviour and you will want to set the screenshot taker to null</li>
+	 		<li>See the demo application for an example of a custom SeleniumScreenshotTaker.</li>
+	 	</ul>
+	</li>
+  	<li><code>setTakeScreenshotOnCompletion()</code>:  When the test completes and the ScreenshotTaker is not null the storyboard will take a screenshot of the current screen
+  		<ul>
+  			<li>Defaults to true</li>
+	 	</ul>
+	</li>
+  	<li><code>setAcceptsScreenshots()</code>: Set to false to stop screenshot cards being added, this is useful in situations where might be looping and refreshing screen constantly and you don't want to show many screenshots of same screen in storyboard</li>
+  </ul>
+</body>
+</html>

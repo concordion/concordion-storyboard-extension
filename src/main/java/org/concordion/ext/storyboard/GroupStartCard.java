@@ -3,15 +3,15 @@ package org.concordion.ext.storyboard;
 import org.concordion.api.Element;
 
 /**
- * Card that marks the start of a collapsible section in the storyboard. Clicking on this card will show/hide contained cards.
+ * Card that marks the start of a collapsible group in the storyboard. Clicking on this card will show/hide contained cards.
  * 
- * You wouldn't normally add this card directly but would call storyboard.startCollapsibleGroup("groupname");		
+ * You wouldn't normally add this card directly but would call storyboard.startGroup("groupname");		
  */
-public class CollapsibleStartCard extends Card {
+public class GroupStartCard extends Card {
 	private boolean collapsed = false;
 	private String groupOwnership;
 
-	public CollapsibleStartCard() {
+	public GroupStartCard() {
 		setDescription("Click image to show/hide story cards for this section");
 	}
 
