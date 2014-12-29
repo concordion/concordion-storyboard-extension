@@ -1,31 +1,49 @@
-function showScreenPopup(src, id) {
-	var img = document.getElementById(id);
+function showScreenPopup(src) {
+	var img = document.getElementById('StoryCardScreenshotPopup');
+	img.src = src.src
 
 	var width = document.body.clientWidth * .60;
 	if (width < 500) width = 550;
 	if (width > 1000) width = 900;
-	img.style.width = width;
+	img.style.width = width + "px";
+	img.style.height = 'auto';
 	
 	var srcRect = src.getBoundingClientRect();
 	var imgRect = img.getBoundingClientRect();
 	
-	var posLeft = srcRect.left + 10 + document.body.scrollLeft;
-    var posTop = srcRect.top - imgRect.height + document.body.scrollTop + 10;
+	var scrollTop = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
+	var scrollHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+	var scrollLeft = Math.max(document.body.scrollLeft, document.documentElement.scrollLeft);
 	
-	if (posLeft + imgRect.width > document.body.clientWidth) {
-		posLeft = document.body.clientWidth - imgRect.width;
-	}
-	if (posLeft < 0) {
-		posLeft = 0;
+	 var posTop = srcRect.top - imgRect.height + scrollTop + 10;
+     
+	if (posTop < scrollTop) {
+		posTop = scrollTop + srcRect.top + srcRect.height;
+
+		if (posTop > scrollTop + (scrollHeight / 3)) {
+	    	posTop = scrollTop;
+			img.style.height = srcRect.top + "px";
+			img.style.width = 'auto';
+			imgRect = img.getBoundingClientRect();
+		}		
 	}
 
-	img.style.left = posLeft;
-	img.style.top = posTop;
+	var posLeft = srcRect.left + scrollLeft + 10;
+	   
+	if (posLeft + imgRect.width > scrollLeft + document.body.clientWidth) {
+		posLeft = scrollLeft + document.body.clientWidth - imgRect.width;
+	}
+	if (posLeft < scrollLeft) {
+		posLeft = scrollLeft;
+	}
+
+	img.style.left = posLeft + "px";
+	img.style.top = posTop + "px";
 	img.style.visibility = 'visible';	
 }
 
-function hideScreenPopup(id) {
-	document.getElementById(id).style.visibility = 'hidden';
+function hideScreenPopup() {
+	document.getElementById('StoryCardScreenshotPopup').style.visibility = 'hidden';
 }
 
 function showStoryboardSection(img, group, collapse, expand) {

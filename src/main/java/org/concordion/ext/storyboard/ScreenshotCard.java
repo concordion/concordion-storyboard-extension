@@ -55,16 +55,7 @@ public class ScreenshotCard extends Card {
 		img.addAttribute("width", Integer.toString(this.imageWidth));
 		anchorImg.appendChild(img);
 
-		// Add mouseover popup image
-		Element popupImg = new Element("img");
-		popupImg.setId(imageName);
-		popupImg.addStyleClass("screenshot");
-		popupImg.addAttribute("src", imageName);
-		popupImg.addAttribute("width", Integer.toString(Math.min(MAX_WIDTH, imageWidth)));
-
-		img.addAttribute("onMouseOver", "showScreenPopup(this, '" + this.imageName + "');this.style.cursor='pointer'");
-		img.addAttribute("onMouseOut", "hideScreenPopup('" + this.imageName + "');this.style.cursor='default'");
-
-		storyboard.appendChild(popupImg);
+		img.addAttribute("onMouseOver", "showScreenPopup(this);this.style.cursor='pointer'");
+		img.addAttribute("onMouseOut", "hideScreenPopup();this.style.cursor='default'");
 	}
 }

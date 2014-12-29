@@ -309,6 +309,13 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 			header.appendText("Storyboard");
 			div.appendChild(header);
 
+			// Add screenshot popup image div
+			Element popupImg = new Element("img");
+			popupImg.setId("StoryCardScreenshotPopup");
+			popupImg.addStyleClass("screenshot");
+			
+			div.appendChild(popupImg);
+			
 			// If footer exists ensure it is the last element on the page
 			if (footerDiv != null) {
 				body.removeChild(footerDiv);
