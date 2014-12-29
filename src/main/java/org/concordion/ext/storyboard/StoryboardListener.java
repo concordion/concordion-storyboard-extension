@@ -335,50 +335,57 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 				
 				ul = new Element("ul");
 				
-				if (card.getTitle().trim().isEmpty()) {
-					storyboard.appendChild(ul);
-				} else {
-					Element content = buildSectionBreak(storyboard, card);
-					
-					content.appendChild(ul);
-				}
+				buildSectionBreak(storyboard, card).appendChild(ul);
 			} else {
 				if (card instanceof GroupStartCard) {
 					collapseGroup = (GroupStartCard) card;
 				}
-
-				Element li = buildCard(storyboard, collapseGroup, card);
-				
-				ul.appendChild(li);
+		
+				ul.appendChild(buildCard(storyboard, collapseGroup, card));
 			}
 		}
 	}
 
 	private Element buildSectionBreak(Element storyboard, Card card) {
-		String id = "toggleheader" + card.getCardNumber();
+		Element listAppender = null;
 		
-		Element input = new Element("input");
-		input.setId(id);
-		input.addStyleClass("toggle-box");
-		input.addAttribute("type", "checkbox");
+		if (card.getTitle().trim().isEmpty()) {
+			Element spacer = new Element("div");
+			spacer.addStyleClass("toggle-box-spacer");
+			
+			storyboard.appendChild(spacer);
+			
+			listAppender = storyboard;
+		} else {
+			String id = "toggleheader" + card.getCardNumber();
+			
+			Element container = new Element("div");
+			container.addStyleClass("toggle-box-container");
+			
+			Element input = new Element("input");
+			input.setId(id);
+			input.addStyleClass("toggle-box");
+			input.addAttribute("type", "checkbox");
+			
+			Element label = new Element("label");
+			label.addAttribute("for", id);
+			label.addStyleClass("toggle-box");
+			label.addStyleClass(card.getResult().getKey());
+			label.appendText(card.getTitle());
+			
+			Element content = new Element("div");
+			content.addStyleClass("toggle-box-content");
+			
+			container.appendChild(input);
+			container.appendChild(label);
+			container.appendChild(content);
+			
+			storyboard.appendChild(container);
+			
+			listAppender = content;
+		}
 		
-		Element label = new Element("label");
-		label.addAttribute("for", id);
-		label.addStyleClass("toggle-box");
-		label.addStyleClass(card.getResult().getKey());
-		label.appendText(card.getTitle());
-		
-		Element content = new Element("div");
-		content.addStyleClass("toggle-box-content");
-		
-		Element hr = new Element("hr");
-		
-		storyboard.appendChild(input);
-		storyboard.appendChild(label);
-		storyboard.appendChild(content);
-		storyboard.appendChild(hr);
-		
-		return content;
+		return listAppender;
 	}
 
 	private Element buildCard(final Element storyboard, GroupStartCard collapseGroup, Card card) {

@@ -12,7 +12,7 @@
     background-color: #F5FDF9;
     border: 1px solid #C3FFD9;
     margin: 6px 0 28px;
-    padding: 2px 12px 6px;
+    padding: 2px 10px 6px;
 }
 .storyboard h3 {
     font-size: 12pt;
@@ -35,7 +35,10 @@
     font-size: 10pt;
     font-weight: normal;
     height: 178px;
-    margin: 0 12px 12px 0;
+    margin-top:8px;
+    margin-bottom: 4px;
+    margin-left: 0px;
+    margin-right: 4px;
     overflow: hidden;
     padding: 8px;
     position: relative;
@@ -104,9 +107,32 @@
     display: none;
 }
 
+
+
 /* Expanding div support */
+.toggle-box-container {
+	border-top: 1px solid turquoise;
+	border-bottom: 1px solid turquoise;
+	margin-top: -1px;
+	margin-left: -1px;
+	background-color: #EBFCF4;
+}
+
+.toggle-box-content {
+	margin-bottom: 4px;
+}
+
+.toggle-box-spacer {
+	height: 8px;
+}
+
 .toggle-box {
   display: none;
+  background: linear-gradient(#f2f9fe, #d6f0fd);
+}
+
+.toggle-box:hover{
+  background-image: linear-gradient(#cef8ff, #7fe0f8);
 }
 
 .toggle-box + label {
@@ -114,12 +140,14 @@
   display: block;
   font-weight: bold;
   line-height: 21px;
-  margin-bottom: 5px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  
 }
 
 .toggle-box + label + div {
   display: none;
-  margin-bottom: 10px;
+ /*  margin-bottom: 10px; */
 }
 
 .toggle-box:checked + label + div {
@@ -145,4 +173,3 @@
 .toggle-box:checked + label:before {
   content: "\2212";
 }
-
