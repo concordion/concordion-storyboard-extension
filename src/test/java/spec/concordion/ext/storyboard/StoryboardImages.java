@@ -3,8 +3,10 @@ package spec.concordion.ext.storyboard;
 import java.nio.file.Paths;
 
 import org.concordion.api.Resource;
+import org.concordion.api.extension.Extension;
 import org.concordion.api.extension.Extensions;
 import org.concordion.ext.EmbedExtension;
+import org.concordion.ext.StoryboardExtension;
 import org.concordion.ext.storyboard.StockCardImage;
 import org.concordion.integration.junit4.ConcordionRunner;
 import org.junit.runner.RunWith;
@@ -18,6 +20,10 @@ public class StoryboardImages extends AcceptanceTest {
 	public static final String SPEC_NAME = "/" + StoryboardImages.class.getName().replaceAll("\\.","/");
 	TestRig rig = null;
 	ProcessingResult result = null;
+	
+	//TODO This is required to get the images, etc to copy.  Is there any way to avoid this?
+	@Extension
+    public StoryboardExtension storyboard = new StoryboardExtension().setScreenshotTaker(null);
 	
     public void setSystemProperty(String name, String value) {
         System.setProperty(name, value);

@@ -1,13 +1,20 @@
 package spec.concordion.ext.storyboard;
 
+import org.concordion.api.extension.Extension;
+import org.concordion.ext.StoryboardExtension;
 import org.concordion.integration.junit4.ConcordionRunner;
 import org.junit.runner.RunWith;
+
 import test.concordion.ProcessingResult;
 import test.concordion.TestRig;
 
 @RunWith(ConcordionRunner.class)
 public class StoryboardJavaScript extends AcceptanceTest {
 	ProcessingResult result = null;
+	
+	//TODO This is required to get the images, etc to copy.  Is there any way to avoid this?
+	@Extension
+    public StoryboardExtension storyboard = new StoryboardExtension().setScreenshotTaker(null);
 	
     public void setSystemProperty(String name, String value) {
         System.setProperty(name, value);
