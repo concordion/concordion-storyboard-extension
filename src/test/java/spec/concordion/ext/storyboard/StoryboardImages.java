@@ -43,7 +43,7 @@ public class StoryboardImages extends AcceptanceTest {
     	
     	for (StockCardImage stockImage : StockCardImage.values()) {
     		images.append("<li style=\"display: inline-block; padding-right: 20px\">").append("\n");
-    		images.append("<img style=\"border: 1px solid grey\" src=\"" + resource.getRelativePath(stockImage.getResource()) + "\"></img><br/>" + stockImage.name()).append("\n");
+    		images.append("<img style=\"box-shadow: 0.2em 0.2em 0.5em #333333; margin-bottom: 10px;\" src=\"" + resource.getRelativePath(stockImage.getResource()) + "\"></img><br/>" + stockImage.name()).append("\n");
     		images.append("</li>").append("\n");
 		}
     	
