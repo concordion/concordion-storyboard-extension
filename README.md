@@ -6,14 +6,14 @@ The [demo project](http://github.com/concordion/concordion-storyboard-extension-
 
 # Introduction
 
-Often its difficult to tell from a specification exactly what is being done to the system under test.  This extension solves that dilema by capturing information (screen shots, soap xml, etc) from the system under test and displaying them as a series of cards on a storyboard at the bottom of the specification while it is being executed.  
+Often it's difficult to tell from a specification exactly what is being done to the system under test.  This extension solves that dilemma by capturing information (screen shots, soap xml, etc) from the system under test and displaying them as a series of cards on a storyboard at the bottom of the specification while it is being executed.
 
-This can also be a great aid in helping to diagnose test failures.  Combine this with the [Logback extension](http://github.com/concordion/concordion-logback-extension) you have a wealth of information at your fingure tips.
+This can also be a great aid in helping to diagnose test failures.  Combine this with the [Logback extension](http://github.com/concordion/concordion-logback-extension) you have a wealth of information at your finger tips.
+
 
 Supports:
 * browser screen shots
-* text data (eg soap messages)
-* html data (eg email content)
+* text based data such as email content, soap messages and html
 * catches displays exceptions and test failures 
 * can group cards into collapsible sections on the storyboard 
 
