@@ -24,6 +24,13 @@ githubPages {
 	}
 }
 
+sourceSets {
+	test {
+		// Enable concordinon to find the specification next to the fixture
+		resources { srcDir 'src/test/java', srcDir 'src/test/resources' }
+	}
+}
+
 dependencies {
 	compile "org.concordion:concordion-screenshot-extension:1.1.2"
 	testCompile "org.concordion:concordion-embed-extension:1.1.2"
