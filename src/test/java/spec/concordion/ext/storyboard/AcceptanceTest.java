@@ -11,10 +11,6 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.concordion.api.Resource;
-import org.concordion.api.extension.ConcordionExtension;
-import org.concordion.api.extension.ConcordionExtensionFactory;
-import org.concordion.ext.ScreenshotExtension;
-import org.concordion.ext.StoryboardExtension;
 import org.concordion.integration.junit4.ConcordionRunner;
 import org.junit.runner.RunWith;
 

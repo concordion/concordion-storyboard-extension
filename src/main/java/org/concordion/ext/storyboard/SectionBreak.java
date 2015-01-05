@@ -8,14 +8,8 @@ import org.concordion.api.Element;
  * You wouldn't normally add this card directly but would call storyboard.addSectionBreak("section title");		
  */
 public class SectionBreak extends Card {
-	private boolean collapsed = false;
-
 	public SectionBreak() {
 		setDescription("");
-	}
-
-	protected void setCollapsed(final boolean collapsed) {
-		this.collapsed = collapsed;
 	}
 
 	@Override

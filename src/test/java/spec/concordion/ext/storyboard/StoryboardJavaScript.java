@@ -6,7 +6,6 @@ import org.concordion.integration.junit4.ConcordionRunner;
 import org.junit.runner.RunWith;
 
 import test.concordion.ProcessingResult;
-import test.concordion.TestRig;
 
 @RunWith(ConcordionRunner.class)
 public class StoryboardJavaScript extends AcceptanceTest {
