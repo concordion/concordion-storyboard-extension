@@ -4,7 +4,6 @@ import java.io.OutputStream;
 
 import org.concordion.api.Element;
 import org.concordion.api.Resource;
-import org.concordion.ext.ScreenshotTaker;
 
 /**
  * Card that takes and presents screenshots of the system under test.

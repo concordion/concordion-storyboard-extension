@@ -17,8 +17,6 @@ import org.concordion.api.listener.SpecificationProcessingEvent;
 import org.concordion.api.listener.SpecificationProcessingListener;
 import org.concordion.api.listener.ThrowableCaughtEvent;
 import org.concordion.api.listener.ThrowableCaughtListener;
-import org.concordion.ext.ScreenshotTaker;
-import org.concordion.ext.screenshot.RobotScreenshotTaker;
 
 /**
  * Listens to Concordion events and/or method calls and then adds the required cards to the story board. 
