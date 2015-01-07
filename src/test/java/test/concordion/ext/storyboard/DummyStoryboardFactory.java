@@ -2,8 +2,8 @@ package test.concordion.ext.storyboard;
 
 import org.concordion.api.extension.ConcordionExtension;
 import org.concordion.api.extension.ConcordionExtensionFactory;
+import org.concordion.ext.ScreenshotTaker;
 import org.concordion.ext.StoryboardExtension;
-import org.concordion.ext.storyboard.ScreenshotTaker;
 
 public class DummyStoryboardFactory implements ConcordionExtensionFactory {
     private static StoryboardExtension storyboard = null;

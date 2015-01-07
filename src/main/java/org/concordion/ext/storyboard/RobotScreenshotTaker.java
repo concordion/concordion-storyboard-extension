@@ -25,6 +25,9 @@ import java.io.OutputStream;
 
 import javax.imageio.ImageIO;
 
+import org.concordion.ext.ScreenshotTaker;
+import org.concordion.ext.ScreenshotUnavailableException;
+
 /**
  * Takes screenshots using {@link java.awt.Robot}.
  */
@@ -44,7 +47,7 @@ public class RobotScreenshotTaker implements ScreenshotTaker {
         try {
             return new Robot().createScreenCapture(new Rectangle(0, 0, (int) size.getWidth(), (int) size.getHeight()));
         } catch (AWTException e) {
-            throw new RuntimeException(e);
+            throw new ScreenshotUnavailableException(e);
         }
     }
 

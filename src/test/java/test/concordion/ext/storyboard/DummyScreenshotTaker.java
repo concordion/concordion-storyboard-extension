@@ -21,7 +21,7 @@ import java.io.OutputStream;
 
 import javax.imageio.ImageIO;
 
-import org.concordion.ext.storyboard.ScreenshotTaker;
+import org.concordion.ext.ScreenshotTaker;
 
 /**
  * Returns the contents of a static file, so that screenshots of my system don't inadvertently make it onto the net :-)

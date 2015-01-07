@@ -15,7 +15,6 @@ import org.concordion.ext.storyboard.GroupStopCard;
 import org.concordion.ext.storyboard.CustomCardImage;
 import org.concordion.ext.storyboard.NotificationCard;
 import org.concordion.ext.storyboard.ScreenshotCard;
-import org.concordion.ext.storyboard.ScreenshotTaker;
 import org.concordion.ext.storyboard.SectionBreak;
 import org.concordion.ext.storyboard.StockCardImage;
 import org.concordion.ext.storyboard.StoryboardListener;
