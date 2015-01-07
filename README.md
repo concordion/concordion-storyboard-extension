@@ -21,7 +21,7 @@ This extension is based on the [screenshot taker extension](http://github.com/co
 
 # Further info
 
-* [Specification](http://concordion.github.io/concordion-storyboard-extension/spec/Storyboard.html)
+* [Specification](http://concordion.github.io/concordion-storyboard-extension/spec/concordion/ext/storyboard/Storyboard.html)
 * [API](http://concordion.github.io/concordion-storyboard-extension/api/index.html)
 * [Demo project](http://github.com/concordion/concordion-storyboard-extension-demo)
 

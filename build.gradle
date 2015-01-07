@@ -18,7 +18,7 @@ githubPages {
 	pages {
 		from 'docs'
 
-		from ('build/reports/spec/spec/concordion/ext/storyboard/') {
+		from ('build/reports/spec/') {
 			into 'spec'
 		}
 			
