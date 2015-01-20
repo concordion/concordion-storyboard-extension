@@ -10,7 +10,7 @@
   <p>Behaviour:</p>
   <ul>
   	<li>A notification card may be added explicitly by calling the <code>addNotification(...) or addCard(...)</code> methods,</li>
-  	<li>or implicitly, when a text failure is encountered, or exception is thrown and there is no active browser and screenshot taker</li>
+  	<li>or implicitly, when a test failure is encountered, or exception is thrown and there is no active browser and screenshot taker</li>
   	<li>Clicking on the card image will open a new page and present the data - if any data was supplied</li>
   	<li>Default behaviour can be overridden by use of the following methods</li> 
   	<ul>
@@ -45,7 +45,7 @@
     <pre concordion:set="#snippet">&lt;p concordion:assertEquals="true"&gt;false&lt;/p&gt;</pre>
 
 	<p concordion:execute="#fragment=renderWithFailureOff(#snippet, #actualValue)">
-	  When this snippet is run with this fixture, this results in <span concordion:assertTrue="noCardAdded(#fragment)">NO cards being added to the Storyboard</span>.
+	  After calling <code>setAddCardOnFailure(false)</code>, when this snippet is run with this fixture, this results in <span concordion:assertTrue="noCardAdded(#fragment)">NO cards being added to the Storyboard</span>.
 	</p>
   </div>  
 
