@@ -8,8 +8,8 @@
   <p>Sometimes your test might perform a large number of steps and the storyboard becomes unweildy. Adding cards to a collapsible group will allow you to click on the first card to show or hide the rest of the cards in the group.</p>
   <p>Behaviour:</p>
   <ul>
-  	<li>A collapsible group may be started by calling the <code>startGroup() or addCard(...)</code> methods</li>
-  	<li>A collapsible group may be stopped by calling the <code>stopGroup() or addCard(...)</code> methods</li>
+  	<li>A collapsible group may be started by calling the <code>startGroup() or addCard(GroupStartCard card)</code> methods</li>
+  	<li>A collapsible group may be stopped by calling the <code>stopGroup() or addCard(GroupStopCard card)</code> methods</li>
   	<li>If a card with a failure or warning status is added to the group then the start and stop group cards will be given that same status</li>
   	<li>If the group is not stopped it will be left expanded, if it is stopped then it will be rendered collapsed</li>
   	<li>Clicking on the collapsible group card image will show or hide the rest of the cards in the group</li>  	

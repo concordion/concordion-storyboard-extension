@@ -12,7 +12,7 @@
   	<li>or implicitly, when a test failure is encountered, or exception is thrown</li>
   	<li>Hovering over the screenshot image on the card will popup a larger view of the image</li>
   	<li>Clicking on the screenshot image will show the image full screen within the browser</li>
-  	<li>When a test completes and there is an active WebBrowser and ScreenshotTaker, a screenshot will be taken of the final state of the browser</li>
+  	<li>When a test completes and there is an active ScreenshotTaker, a screenshot will be taken of the final state of the browser</li>
   	<li>Default behaviour can be overridden by use of the following methods</li> 
   	<ul>
   		<li>setScreenshotTaker</li>
@@ -52,6 +52,9 @@
 	  After calling <code>setAddCardOnFailure(false)</code>, when this snippet is run with this fixture, this results in <span concordion:assertTrue="noCardAdded(#fragment)">NO cards being added to the Storyboard</span>.
 	</p>
   </div>  
+
+  <h2>Further Details</h2>
+  The ScreenshotTaker interface allows you to control how screenshots are taken.  See <a href="StoryboardCustomisation.html">How do I customise the screenshot extension?</a> for more information.
 
 </body>
 </html>

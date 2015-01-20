@@ -20,12 +20,10 @@ import org.concordion.ext.storyboard.StockCardImage;
 import org.concordion.ext.storyboard.StoryboardListener;
 
 /**
- * Adds screenshots to the Concordion output, typically when failures or exceptions occur. The screenshot is displayed when you hover over the relevant element.
- * Clicking on the element will open the image in the current browser window.
+ * The Storyboard extension provides the capability to embed a series of 'cards' containing screenshots or data (text, xml, or html) in a panel at the bottom of the specification.
  * <p>
- * It can also be used as a command, to explicitly include screenshots in the output.
- * <p>
- * By default, the screenshot will be of the full visible screen. This can be overridden using a custom {@link ScreenshotTaker}.
+ * Further information can be found in the <a href="http://concordion.github.io/concordion-storyboard-extension/spec/spec/concordion/ext/storyboard/Storyboard.html">Specification</a>.
+ * </p>
  */
 public class StoryboardExtension implements ConcordionExtension {
 
@@ -239,6 +237,9 @@ public class StoryboardExtension implements ConcordionExtension {
 		extension.addCard(card);
 	}
 	public void addCard(final GroupStopCard card) {
+		extension.addCard(card);
+	}
+	public void addCard(final SectionBreak card) {
 		extension.addCard(card);
 	}
 }

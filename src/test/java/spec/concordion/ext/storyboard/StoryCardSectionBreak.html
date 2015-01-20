@@ -8,11 +8,11 @@
   <p>Sometimes your test might perform a large number of steps and the storyboard becomes unweildy. Adding cards to a collapsible sections will allow you to group the steps your test has taken into different sections on the storyboard.</p>
   <p>Behaviour:</p>
   <ul>
-  	<li>A section break may be inserted by calling the <code>startSection() or addCard(...)</code> methods</li>
-  	<li>If a card with a failure or warning status is added to the section then the section label will be given that same status</li>
-  	<li>If the section is not given a name it will not be collapsible</li>
-  	<li>Clicking on the section label will show or hide the rest of the cards in the section</li>
-  	<li>Cannot add a section break with an active group - the section break will be ignored</li>
+  	<li>A section break may be inserted by calling the <code>addSectionBreak() or addCard(SectionBreak card)</code> methods</li>
+  	<li>If a card with a failure or warning status is added to the section then the section title will be given that same status</li>
+  	<li>If the section is not given a title it will not be collapsible</li>
+  	<li>Clicking on the section title will show or hide the rest of the cards in the section</li>
+  	<li>Cannot add a section break with to a group - the section break will be ignored</li>
   </ul>
 
   <div class="example">
@@ -34,7 +34,7 @@
     <pre concordion:set="#snippet">&lt;span concordion:execute="addFailureToSection(#TEXT)"&gt;Failure&lt;/span&gt;</pre>
 
 	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
-	  When this snippet is run with this fixture, <span concordion:assertTrue="sectionFailed(#fragment)">this results the section label getting a failure status</span>.
+	  When this snippet is run with this fixture, <span concordion:assertTrue="sectionFailed(#fragment)">this results the section title getting a failure status</span>.
 	</p>
   </div>  
 
