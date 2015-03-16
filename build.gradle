@@ -28,20 +28,21 @@ githubPages {
 	}
 }
 
-sourceSets {
-	test {
-		// Enable concordinon to find the specification next to the fixture
-		resources { srcDirs = ['src/test/java', 'src/test/resources'] }
-	}
-}
-
 dependencies {
 	testCompile "org.concordion:concordion-embed-extension:1.1.2"
 }
 
+sourceSets {
+	test {
+		resources { srcDirs += 'src/test/java' }
+	}
+}
+
 test.dependsOn cleanTest
 test {
-	include '**/Storyboard.*'
 	systemProperties['concordion.output.dir'] = "$reporting.baseDir/spec"
 	outputs.upToDateWhen { false } // force it to run even if test code hasn't changed
+	testLogging {
+		events "passed", "skipped", "failed", "standardError"
+	}
 }
