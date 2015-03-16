@@ -23,9 +23,12 @@ public abstract class Card {
 	 * Add HTML to the storyboard to display the card details
 	 * 
 	 * @param storyboard
+	 *            The storyboard element on the specification
 	 * @param listItem
+	 *            The card element
 	 */
-	protected abstract void addHTMLToContainer(final Element storyboard, final Element listItem);
+	protected abstract void addHTMLToContainer(final Element storyboard,
+			final Element listItem);
 
 	protected void setStoryboardListener(final StoryboardListener listener) {
 		this.listener = listener;
@@ -47,14 +50,18 @@ public abstract class Card {
 	}
 
 	/**
-	 * Gets a unique file name
+	 * Gets a unique file name for data that is to be stored alongside a card
 	 * 
-	 * @param specificationName The name of the specification
+	 * @param specificationName
+	 *            The name of the specification
 	 * @param cardNumber
+	 *            Index of the card in the list
 	 * @param fileExtension
-	 * @return
+	 *            Extension of the file
+	 * @return A unique filename
 	 */
-	protected String getFileName(final String specificationName, final int cardNumber, final String fileExtension) {
+	protected String getFileName(final String specificationName,
+			final int cardNumber, final String fileExtension) {
 		String prefix = specificationName;
 
 		int lastDot = specificationName.lastIndexOf('.');
@@ -95,6 +102,9 @@ public abstract class Card {
 
 	/**
 	 * Set the collapsible section this card belongs to
+	 *
+	 * @param group
+	 *            Name of group
 	 */
 	protected void setGroupMembership(final String group) {
 		this.groupMembership = group;
@@ -102,6 +112,8 @@ public abstract class Card {
 
 	/**
 	 * Check if this card is a member of a group
+	 * 
+	 * @return True if is member of a group
 	 */
 	protected boolean isGroupMember() {
 		return groupMembership != null && !groupMembership.isEmpty();

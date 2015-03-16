@@ -18,7 +18,7 @@ import test.concordion.FileOutputStreamer;
 import test.concordion.TestRig;
 
 @RunWith(ConcordionRunner.class)
-public class AcceptanceTest {
+public abstract class AcceptanceTest {
     
 	private FileOutputStreamer streamer;
 	

@@ -17,7 +17,7 @@ public class GroupStopCard extends Card {
 
 	/**
 	 * Override the default card image of COMPLETE
-	 * @param cardImage
+	 * @param cardImage A card image - can be StockCardImage or a custom image
 	 */
 	protected void setCardImage(final CardImage cardImage) {
 		this.cardImage = cardImage;

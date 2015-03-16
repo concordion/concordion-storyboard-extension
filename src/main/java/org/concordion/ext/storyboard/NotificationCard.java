@@ -15,8 +15,8 @@ public class NotificationCard extends Card {
 	private String fileExtension = "txt";
 
 	/**
-	 * Set the card image that should be displayed
-	 * @param cardImage
+	 * S Override the default card image of XML_REQUEST
+	 * @param cardImage A card image - can be StockCardImage or a custom image
 	 */
 	public void setCardImage(final CardImage cardImage) {
 		this.cardImage = cardImage;
@@ -25,7 +25,7 @@ public class NotificationCard extends Card {
 	/**
 	 * Set the data that you wish the card to display
 	 * 
-	 * @param data
+	 * @param data Data
 	 */
 	public void setData(final String data) {
 		if (data == null) {
@@ -78,7 +78,7 @@ public class NotificationCard extends Card {
 	/**
 	 * Set the file type for the data.  This helps with formatting/display.  Defaults to 'txt'.
 	 * 
-	 * @param fileExtension
+	 * @param fileExtension File extension
 	 */
 	public void setFileExtension(final String fileExtension) {
 		if (fileExtension == null || fileExtension.isEmpty()) {
