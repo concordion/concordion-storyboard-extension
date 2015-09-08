@@ -25,7 +25,7 @@ public class ScreenshotCard extends Card {
 			return;
 		}
 
-		imageName = getFileName(getResource().getName(), getCardNumber(), screenshotTaker.getFileExtension());
+		imageName = getFileName(getResource().getName(), getNextCardIndex(), screenshotTaker.getFileExtension());
 		Resource imageResource = getResource().getRelativeResource(imageName);
 
 		try {

@@ -45,10 +45,17 @@ public abstract class Card {
 	/**
 	 * @return The unique number of this card on the storyboard
 	 */
-	protected int getCardNumber() {
-		return listener.getCardNumber();
+	protected int getCardIndex() {
+		return listener.getCardIndex(this);
 	}
 
+	/**
+	 * @return The unique number of this card on the storyboard
+	 */
+	protected int getNextCardIndex() {
+		return listener.getNextCardIndex();
+	}
+	
 	/**
 	 * Gets a unique file name for data that is to be stored alongside a card
 	 * 

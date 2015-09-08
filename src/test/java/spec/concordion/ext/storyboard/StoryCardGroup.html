@@ -22,14 +22,18 @@
 	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
 	  When this snippet is run with this fixture, <span concordion:assertTrue="groupAddedExpanded(#fragment)">this results in a collapsible start card being added to the Storyboard and the group left expanded</span>.
 	</p>
-		
+  </div>
+  
+  <div class="example">	
 	<h3>Example 2: Stop Group</h3>
     <pre concordion:set="#snippet">&lt;span concordion:execute="stopGroup(#TEXT)"&gt;Setup&lt;/span&gt;</pre>
 
 	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
 	  When this snippet is run with this fixture, <span concordion:assertTrue="groupAddedCollapsed(#fragment)">this results in a collapsible stop card being added to the Storyboard and the group rendered collapsed</span>.
 	</p>
-	
+  </div>
+  
+  <div class="example">	
 	<h3>Example 3: Add Failure Card to Group</h3>
     <pre concordion:set="#snippet">&lt;span concordion:execute="addFailureToGroup(#TEXT)"&gt;Setup&lt;/span&gt;</pre>
 

@@ -56,7 +56,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 		addCard((Card) card);
 
-		collapsibleGroup = "scgroup" + getCardNumber();
+		collapsibleGroup = "scgroup" + card.getCardIndex();
 		card.setGroupOwnership(collapsibleGroup);
 	}
 
@@ -113,6 +113,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	
 				if (start != null) {
 					start.setResult(card.getResult());
+					start.setCollapsed(card.getResult() != CardResult.FAILURE);
 				}
 			}
 			
@@ -363,7 +364,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 			
 			listAppender = storyboard;
 		} else {
-			String id = "toggleheader" + card.getCardNumber();
+			String id = "toggleheader" + card.getCardIndex();
 			
 			Element container = new Element("div");
 			container.addStyleClass("toggle-box-container");
@@ -372,6 +373,10 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 			input.setId(id);
 			input.addStyleClass("toggle-box");
 			input.addAttribute("type", "checkbox");
+			
+			if (card.getResult() == CardResult.FAILURE) {
+				input.addAttribute("checked", "");
+			}
 			
 			Element label = new Element("label");
 			label.addAttribute("for", id);
@@ -428,10 +433,11 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		return li;
 	}
 
-	/**
-	 * @return The number of next card to be added to the storyboard
-	 */
-	public int getCardNumber() {
+	public int getCardIndex(Card card) {
+		return cards.indexOf(card);
+	}
+	
+	public int getNextCardIndex() {
 		return cards.size();
 	}
 

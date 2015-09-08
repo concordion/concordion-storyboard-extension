@@ -22,19 +22,32 @@
 	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
 	  When this snippet is run with this fixture, <span concordion:assertTrue="sectionAddedExpanded(#fragment)">this results in a new section being added to the Storyboard</span>.
 	</p>
-		
+  </div>  
+
+  <div class="example">
 	<h3>Example 2: Stop Section Break</h3>
     <pre concordion:set="#snippet">&lt;span concordion:execute="addSectionBreak()"&gt;&lt;/span&gt;</pre>
 
 	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
 	  When this snippet is run with this fixture, <span concordion:assertTrue="sectionAddedCollapsed(#fragment)">this results in cards being added to the storyboard rather than a section</span>.
 	</p>
-	
+  </div>  
+
+  <div class="example">
 	<h3>Example 3: Add Failure Card to Section</h3>
     <pre concordion:set="#snippet">&lt;span concordion:execute="addFailureToSection(#TEXT)"&gt;Failure&lt;/span&gt;</pre>
 
 	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
 	  When this snippet is run with this fixture, <span concordion:assertTrue="sectionFailed(#fragment)">this results the section title getting a failure status</span>.
+	</p>
+  </div>  
+
+  <div class="example">
+	<h3>Example 4: Multiple Sections</h3>
+    <pre concordion:set="#snippet">&lt;span concordion:execute="addSectionBreaks()"&gt;&lt;/span&gt;</pre>
+    
+	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
+	  When this snippet is run with this fixture, <span concordion:assertTrue="multipleSectionsAdded(#fragment)">this results the section title getting a failure status</span>.
 	</p>
   </div>  
 

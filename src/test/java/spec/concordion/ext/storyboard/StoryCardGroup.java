@@ -28,7 +28,8 @@ public class StoryCardGroup extends AcceptanceTest {
     }
     
     public String render(String fragment, String acronym) throws Exception {    	
-    	ProcessingResult result = getTestRig().processFragment(fragment, SPEC_NAME + ++example);    	
+    	example++;
+    	
     	String title = "";
     	
     	switch (example) {
@@ -42,6 +43,8 @@ public class StoryCardGroup extends AcceptanceTest {
     		title = "Fail Group";
 			break;
     	}
+    	
+    	ProcessingResult result = getTestRig().processFragment(fragment, SPEC_NAME + example);    	
     	
     	NotificationCard card = new NotificationCard();    	
     	card.setTitle("Example " + example + ": " + title);	    

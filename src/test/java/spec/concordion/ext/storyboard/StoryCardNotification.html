@@ -26,21 +26,27 @@
 	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
 	  When this snippet is run with this fixture, <span concordion:assertTrue="notificationCardAdded(#fragment)">this results in a Notification Card being added to the Storyboard</span>.
 	</p>
-	
+  </div>
+  
+  <div class="example">	
 	<h3>Example 2: Capture Failure</h3>
     <pre concordion:set="#snippet">&lt;p concordion:assertEquals="true"&gt;false&lt;/p&gt;</pre>
 
 	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
 	  When this snippet is run with this fixture, this results in a Notification Card being added to the Storyboard <span concordion:assertTrue="failureCardAdded(#fragment)">notifying that a test failed on the specification</span>.
 	</p>
-	
+  </div>
+  
+  <div class="example">	
 	<h3>Example 3: Capture Exception</h3>
 	<pre concordion:set="#snippet">&lt;p concordion:assertTrue="#TEXT"&gt;false&lt;/p&gt;</pre>
 
 	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
 	  When this snippet is run with this fixture, this results in a Notification Card being added to the Storyboard <span concordion:assertTrue="exceptionCardAdded(#fragment)">notifying that an exception occurred in the fixture</span>.
 	</p>
-	
+  </div>
+  
+  <div class="example">	
 	<h3>Example 4: Ignore Failure</h3>
     <pre concordion:set="#snippet">&lt;p concordion:assertEquals="true"&gt;false&lt;/p&gt;</pre>
 

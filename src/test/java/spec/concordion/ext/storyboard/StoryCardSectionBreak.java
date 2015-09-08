@@ -27,8 +27,9 @@ public class StoryCardSectionBreak extends AcceptanceTest {
         DummyStoryboardFactory.prepareWithoutScreenShot();
     }
     
-    public String render(String fragment, String acronym) throws Exception {    	
-    	ProcessingResult result = getTestRig().processFragment(fragment, SPEC_NAME + ++example);    	
+    public String render(String fragment, String acronym) throws Exception {
+    	example++;
+    	
     	String title = "";
     	
     	switch (example) {
@@ -41,8 +42,14 @@ public class StoryCardSectionBreak extends AcceptanceTest {
     	case 3:
     		title = "Add Failure Card to Section";
 			break;
+			
+    	case 4:
+    		title = "Add Multiple Sections";
+			break;
     	}
     	
+    	ProcessingResult result = getTestRig().processFragment(fragment, SPEC_NAME + example);    	
+
     	NotificationCard card = new NotificationCard();    	
     	card.setTitle("Example " + example + ": " + title);	    
     	card.setDescription("Click image to see example");
@@ -71,6 +78,14 @@ public class StoryCardSectionBreak extends AcceptanceTest {
     	DummyStoryboardFactory.getStoryboard().addNotification("Storyboard Member", "Example", "", StockCardImage.TEXT, CardResult.SUCCESS);
     }
     
+    public void addSectionBreaks() {
+    	DummyStoryboardFactory.getStoryboard().addSectionBreak("Example 1");
+    	DummyStoryboardFactory.getStoryboard().addNotification("Example Section Member", "Example", "", StockCardImage.TEXT, CardResult.SUCCESS);
+    	
+    	DummyStoryboardFactory.getStoryboard().addSectionBreak("Example 2");
+    	DummyStoryboardFactory.getStoryboard().addNotification("Storyboard Member", "Example", "", StockCardImage.TEXT, CardResult.SUCCESS);
+    }
+    
     public void addFailureToSection(String data) {
     	DummyStoryboardFactory.getStoryboard().addSectionBreak(data);
     	DummyStoryboardFactory.getStoryboard().addNotification(data + " Section Member", "Example", "", StockCardImage.TEXT, CardResult.FAILURE);
@@ -86,7 +101,10 @@ public class StoryCardSectionBreak extends AcceptanceTest {
     }
     
     public boolean sectionFailed(String fragment) {
-    	return fragment.contains("class=\"toggle-box scfailure\"");    	
+    	return fragment.contains("class=\"toggle-box scfailure\"") && fragment.contains("checked");    	
     }
     
+    public boolean multipleSectionsAdded(String fragment) {    	
+    	return fragment.contains("<input id=\"toggleheader0\"") && fragment.contains("<input id=\"toggleheader2\"");     	
+    }
 }
