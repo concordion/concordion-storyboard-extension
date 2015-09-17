@@ -125,7 +125,7 @@ bintray {
     user = bintrayUsername   // set this in your ~/.gradle/gradle.properties file
     key = bintrayApiKey         // set this in your ~/.gradle/gradle.properties file 
     publications = ['mavenJava'] // see publications closure
-    dryRun = true
+//    dryRun = true
     pkg {
         repo = 'maven'
         userOrg = 'concordion'
