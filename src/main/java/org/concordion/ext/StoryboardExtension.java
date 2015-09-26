@@ -153,6 +153,10 @@ public class StoryboardExtension implements ConcordionExtension {
 		}
 	}
 
+	/**
+	 * Marks any screenshot cards added before this point to be deleted if tests completes successfully.
+	 * If added within a section break then it will only apply to the screenshots in the section break.
+	 */
 	public void setRemovePriorScreenshotsOnSuccess() {
 		extension.setRemovePriorScreenshotsOnSuccess();
 	}

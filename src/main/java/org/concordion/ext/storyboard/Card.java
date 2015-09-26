@@ -126,10 +126,20 @@ public abstract class Card {
 		return groupMembership != null && !groupMembership.isEmpty();
 	}
 
+	/**
+	 * Override this method to update whether the card should be added to the storyboard or not.
+	 * 
+	 * @param hasFailure True if the test failed, or if within a section break, the section was marked as failure
+	 * @return
+	 */
 	protected boolean shouldAppend(boolean hasFailure) {
 		return true;
 	}
 
+	/** 
+	 * Override this method to clean up data belonging to this card - likely to be used in 
+	 * conjunction with the shouldAppend() method
+	 */
 	protected void cleanupData() {
 		
 	}
