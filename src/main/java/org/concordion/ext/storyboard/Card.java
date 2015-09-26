@@ -125,4 +125,12 @@ public abstract class Card {
 	protected boolean isGroupMember() {
 		return groupMembership != null && !groupMembership.isEmpty();
 	}
+
+	protected boolean shouldAppend(boolean hasFailure) {
+		return true;
+	}
+
+	protected void cleanupData() {
+		
+	}
 }

@@ -2,6 +2,7 @@ package org.concordion.ext.storyboard;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.concordion.api.Element;
 import org.concordion.api.Resource;
@@ -34,6 +35,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	private String collapsibleGroup = "";
 	private Resource resource;
 	private Target target;
+	private boolean failureDetected = false;
 
 	/**
 	 * Add screenshot
@@ -157,6 +159,8 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	@Override
 	public void failureReported(final AssertFailureEvent event) {
+		failureDetected = true;
+		
 		if (addCardOnFailure) {
 			String title = "Test Failed";
 
@@ -191,6 +195,8 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	@Override
 	public void throwableCaught(final ThrowableCaughtEvent event) {
+		failureDetected = true;
+		
 		if (addCardOnThrowable) {
 			String title = "Exception Caught";
 
@@ -334,8 +340,16 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		Element ul = new Element("ul");
 		storyboard.appendChild(ul);
 
+		boolean hasFailure = failureDetected;
+		
 		for (Card card : cards) {
 			if (card instanceof SectionBreak) {
+				if (card.getTitle().trim().isEmpty()) {
+					hasFailure = failureDetected;
+				} else {
+					hasFailure = card.getResult() == CardResult.FAILURE;
+				}
+				
 				if (!ul.hasChildren()) {
 					storyboard.removeChild(ul);
 				}
@@ -348,7 +362,11 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 					collapseGroup = (GroupStartCard) card;
 				}
 		
-				ul.appendChild(buildCard(storyboard, collapseGroup, card));
+				if (card.shouldAppend(hasFailure)) {
+					ul.appendChild(buildCard(storyboard, collapseGroup, card));
+				} else {
+					card.cleanupData();
+				}
 			}
 		}
 	}
@@ -463,6 +481,21 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	public void setTakeScreenshotOnCompletion(boolean value) {
 		this.takeScreenshotOnCompletion = value;
+	}
+
+	public void setRemovePriorScreenshotsOnSuccess() {
+		ListIterator<Card> list = cards.listIterator(cards.size());
+
+		while(list.hasPrevious()) {
+			Card card = list.previous();
 		
+			if (card instanceof SectionBreak) {
+				break;
+			}
+			
+			if (card instanceof ScreenshotCard) {
+				((ScreenshotCard)card).setDeleteIfSuccessful(true);
+			}
+		}
 	}
 }

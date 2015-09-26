@@ -1,0 +1,49 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion" xmlns:cx="urn:concordion-extensions:2010">
+<link href="../../../../concordion.css" rel="stylesheet" type="text/css" />
+<head>
+</head>
+<body>
+
+  <h1>Remove Unwanted Screenshots</h1>
+  <p>Screenshots can take up a lot of space, and unless they are adding value its often not worth keeping all screenshots
+  for a test that has completed successfully so this extension allows you to mark screenshots for deletion if the test passes successfully.</p>
+  
+  <p>Behaviour:</p>
+  <ul>
+  	<li>Specific screenshot cards can be marked for deletion</li>
+  	<li>A delete point can be added that will delete all prior screenshot cards if the test passes successfully</li>
+  	<li>If the delete point is withing a section break then the screenshot cards will be deleted when the section is marked as successful</li>
+  </ul>
+
+  <div class="example">
+    <h3>Example 1: Delete cards on success</h3>
+    <pre concordion:set="#snippet">&lt;span concordion:execute="addScreenshots()"&gt;&lt;/span&gt;</pre>
+
+	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
+	  When this snippet is run with this fixture, this results in <span concordion:assertEquals="getCountScreenShots(#fragment)">1</span> screenshot card being added to the Storyboard
+	  and <span concordion:assertEquals="getCountImages()">1</span> image remains in the output folder
+	</p>
+  </div>  
+
+  <div class="example">
+    <h3>Example 2: Don't delete cards on failure</h3>
+    <pre concordion:set="#snippet">&lt;span concordion:execute="addFailedScreenshots()"&gt;&lt;/span&gt;</pre>
+
+	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
+	  When this snippet is run with this fixture, this results in <span concordion:assertEquals="getCountScreenShots(#fragment)">3</span> screenshot card being added to the Storyboard
+	  and <span concordion:assertEquals="getCountImages()">3</span> images remain in the output folder
+	</p>
+  </div>  
+  
+  <div class="example">
+	<h3>Example 3: Delete cards within section break</h3>
+    <pre concordion:set="#snippet">&lt;span concordion:execute="addScreenshotsInSectionBreak()"&gt;&lt;/span&gt;</pre>
+
+	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
+	  When this snippet is run with this fixture, this results in <span concordion:assertEquals="getCountScreenShots(#fragment)">4</span> screenshot cards being added to the Storyboard
+	  and <span concordion:assertEquals="getCountImages()">4</span> images remain in the output folder
+	</p>
+  </div>
+
+</body>
+</html>

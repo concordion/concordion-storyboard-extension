@@ -9,6 +9,7 @@ public class DummyStoryboardFactory implements ConcordionExtensionFactory {
     private static StoryboardExtension storyboard = null;
     private static ScreenshotTaker screenshotTaker = null;
     private static boolean addCardOnFailure = true;
+    private static boolean takeScreenshotOnTestCompletion = true;
     
     public static void prepareWithScreenShot() {
     	screenshotTaker = new DummyScreenshotTaker();
@@ -19,17 +20,25 @@ public class DummyStoryboardFactory implements ConcordionExtensionFactory {
     
     public static void setAddCardOnFailure(final boolean value) {
     	addCardOnFailure = value;
-	}    
+	}
+    
+    public static void setTakeScreenshotOnTestCompletion(final boolean value) {
+		takeScreenshotOnTestCompletion = value;
+	}
     
     @Override
     public ConcordionExtension createExtension() {    	
     	storyboard = new StoryboardExtension();
     	storyboard.setScreenshotTaker(screenshotTaker);
     	storyboard.setAddCardOnFailure(addCardOnFailure);
+    	storyboard.setTakeScreenshotOnCompletion(takeScreenshotOnTestCompletion);
+    	
         return storyboard;
     }
     
     public static StoryboardExtension getStoryboard() {
     	return storyboard;
     }
+	
+	
 }

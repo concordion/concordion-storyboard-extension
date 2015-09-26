@@ -153,6 +153,10 @@ public class StoryboardExtension implements ConcordionExtension {
 		}
 	}
 
+	public void setRemovePriorScreenshotsOnSuccess() {
+		extension.setRemovePriorScreenshotsOnSuccess();
+	}
+	
 	/**
 	 * Adds data/information card to story board
 	 * 
