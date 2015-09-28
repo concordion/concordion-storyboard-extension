@@ -20,13 +20,13 @@ public class StoryCardScreenshot extends AcceptanceTest {
     private int example = 0;
     
     @Extension
-    public StoryboardExtension storyboard = new StoryboardExtension().setAddCardOnFailure(false);
+    public StoryboardExtension storyboard = new StoryboardExtension().setScreenshotTaker(null).setAddCardOnFailure(false);
     
-    public StoryCardScreenshot() {
-    	storyboard.setTakeScreenshotOnCompletion(false);
-    	storyboard.setScreenshotTaker(new DummyScreenshotTaker());
-    }
-    
+//    public StoryCardScreenshot() {
+//    	storyboard.setTakeScreenshotOnCompletion(false);
+//    	storyboard.setScreenshotTaker(new DummyScreenshotTaker());
+//    }
+//    
     @Before 
     public void installExtension() {
         System.setProperty("concordion.extensions", DummyStoryboardFactory.class.getName());

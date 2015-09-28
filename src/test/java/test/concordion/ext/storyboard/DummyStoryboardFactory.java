@@ -12,9 +12,14 @@ public class DummyStoryboardFactory implements ConcordionExtensionFactory {
     private static boolean takeScreenshotOnTestCompletion = true;
     
     public static void prepareWithScreenShot() {
+    	addCardOnFailure = true;
+        takeScreenshotOnTestCompletion = true;
     	screenshotTaker = new DummyScreenshotTaker();
     }
+    
     public static void prepareWithoutScreenShot() {
+    	addCardOnFailure = true;
+        takeScreenshotOnTestCompletion = true;
     	screenshotTaker = null;
 	}
     
