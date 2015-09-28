@@ -10,7 +10,6 @@ import org.junit.Before;
 import org.junit.runner.RunWith;
 
 import test.concordion.ProcessingResult;
-import test.concordion.ext.storyboard.DummyScreenshotTaker;
 import test.concordion.ext.storyboard.DummyStoryboardFactory;
 
 @RunWith(ConcordionRunner.class)
