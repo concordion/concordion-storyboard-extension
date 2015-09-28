@@ -20,7 +20,7 @@ public class StoryCardScreenshot extends AcceptanceTest {
     private int example = 0;
     
     @Extension
-    public StoryboardExtension storyboard = new StoryboardExtension();
+    public StoryboardExtension storyboard = new StoryboardExtension().setAddCardOnFailure(false);
     
     public StoryCardScreenshot() {
     	storyboard.setTakeScreenshotOnCompletion(false);

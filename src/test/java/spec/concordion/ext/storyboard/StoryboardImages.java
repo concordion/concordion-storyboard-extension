@@ -23,7 +23,7 @@ public class StoryboardImages extends AcceptanceTest {
 	
 	//TODO This is required to get the images, etc to copy.  Is there any way to avoid this?
 	@Extension
-    public StoryboardExtension storyboard = new StoryboardExtension().setScreenshotTaker(null);
+    public StoryboardExtension storyboard = new StoryboardExtension().setScreenshotTaker(null).setAddCardOnFailure(false);
 	
     public void setSystemProperty(String name, String value) {
         System.setProperty(name, value);

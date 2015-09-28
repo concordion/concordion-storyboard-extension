@@ -19,7 +19,7 @@ public class StoryCardNotification extends AcceptanceTest {
     private int example = 0;
     
     @Extension
-    public StoryboardExtension storyboard = new StoryboardExtension().setScreenshotTaker(null);
+    public StoryboardExtension storyboard = new StoryboardExtension().setScreenshotTaker(null).setAddCardOnFailure(false);
     
     @Before 
     public void installExtension() {

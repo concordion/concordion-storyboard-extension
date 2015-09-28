@@ -27,9 +27,7 @@ public class RemoveUnwantedScreenshots extends AcceptanceTest {
     TestRig rig = null;
     
     @Extension
-    public StoryboardExtension storyboard = new StoryboardExtension()
-    												.setAddCardOnFailure(false)
-    												.setTakeScreenshotOnCompletion(false);
+    public StoryboardExtension storyboard = new StoryboardExtension().setScreenshotTaker(null).setAddCardOnFailure(false);
     
     @Before 
     public void installExtension() {
@@ -144,7 +142,7 @@ public class RemoveUnwantedScreenshots extends AcceptanceTest {
     private File[] getImages(boolean forSpec) {
     	Path path = Paths.get(this.getBaseOutputDir(), this.getClass().getPackage().getName().replace(".", "/"));
 		
-    	String fileName = this.getClass().getSimpleName() + (forSpec ? example : "");
+    	final String fileName = this.getClass().getSimpleName() + (forSpec ? example : "");
     	File dir = path.toFile();
 		
 		File [] files = dir.listFiles(new FilenameFilter() {
