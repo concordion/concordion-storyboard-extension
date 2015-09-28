@@ -167,43 +167,46 @@ ins {
 <link type="text/css" rel="stylesheet" href="../../../../storyboard.css" /><script type="text/javascript" src="../../../../storyboard.js"></script><link type="text/css" rel="stylesheet" href="../../../../storyboard.css" /><script type="text/javascript" src="../../../../storyboard.js"></script></head>
 <body><span class="breadcrumbs"><a href="../../Concordion.html">Concordion</a> &gt; <a href="Storyboard.html">Storyboard Extension</a> &gt;</span>
 
-  <h1>Collapsible Group Card</h1>
-  <p>Sometimes your test might perform a large number of steps and the storyboard becomes unweildy. Adding cards to a collapsible group will allow you to click on the first card to show or hide the rest of the cards in the group.</p>
+  <h1>Remove Unwanted Screenshots</h1>
+  <p>Screenshots can take up a lot of space, and unless they are adding value its often not worth keeping all screenshots
+  for a test that has completed successfully so this extension allows you to mark screenshots for deletion if the test passes successfully.</p>
+  
   <p>Behaviour:</p>
   <ul>
-  	<li>A collapsible group may be started by calling the <code>startGroup() or addCard(GroupStartCard card)</code> methods</li>
-  	<li>A collapsible group may be stopped by calling the <code>stopGroup() or addCard(GroupStopCard card)</code> methods</li>
-  	<li>If a card with a failure or warning status is added to the group then the start and stop group cards will be given that same status</li>
-  	<li>If the group is not stopped it will be left expanded, if it is stopped then it will be rendered collapsed</li>
-  	<li>Clicking on the collapsible group card image will show or hide the rest of the cards in the group</li>  	
+  	<li>Specific screenshot cards can be marked for deletion</li>
+  	<li>A delete point can be added that will delete all prior screenshot cards if the test passes successfully</li>
+  	<li>If the delete point is withing a section break then the screenshot cards will be deleted when the section is marked as successful</li>
   </ul>
 
   <div class="example">
-    <h3>Example 1: Start Group</h3>
-    <pre concordion:set="#snippet">&lt;span concordion:execute="startGroup(#TEXT)"&gt;Setup&lt;/span&gt;</pre>
+    <h3>Example 1: Delete cards on success</h3>
+    <pre concordion:set="#snippet">&lt;span concordion:execute="addScreenshots()"&gt;&lt;/span&gt;</pre>
 
 	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
-	  When this snippet is run with this fixture, <span concordion:assertTrue="groupAddedExpanded(#fragment)" class="success">this results in a collapsible start card being added to the Storyboard and the group left expanded</span>.
-	</p>
-  </div>
-  
-  <div class="example">	
-	<h3>Example 2: Stop Group</h3>
-    <pre concordion:set="#snippet">&lt;span concordion:execute="stopGroup(#TEXT)"&gt;Setup&lt;/span&gt;</pre>
-
-	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
-	  When this snippet is run with this fixture, <span concordion:assertTrue="groupAddedCollapsed(#fragment)" class="success">this results in a collapsible stop card being added to the Storyboard and the group rendered collapsed</span>.
-	</p>
-  </div>
-  
-  <div class="example">	
-	<h3>Example 3: Add Failure Card to Group</h3>
-    <pre concordion:set="#snippet">&lt;span concordion:execute="addFailureToGroup(#TEXT)"&gt;Setup&lt;/span&gt;</pre>
-
-	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
-	  When this snippet is run with this fixture, <span concordion:assertTrue="groupFailed(#fragment)" class="success">this results the start and stop cards getting a failure status</span>.
+	  When this snippet is run with this fixture, this results in <span concordion:assertEquals="getCountScreenShots(#fragment)" class="success">1</span> screenshot card being added to the Storyboard
+	  and <span concordion:assertEquals="getCountImages()" class="success">1</span> image remains in the output folder
 	</p>
   </div>  
 
-<div class="storyboard"><h3 id="StoryboardHeader">Storyboard</h3><img id="StoryCardScreenshotPopup" class="screenshot" /><ul><li class="storycard"><div class="scimgcontainer"><a href="StoryCardGroup0.html"><img id="Click image to see example" class="sizeheight" src="../../../../html.png" /></a></div><p class="scsummary scsuccess">Example 1: Start Group</p><p class="scdescription" title="Click image to see example">Click image to see example</p></li><li class="storycard"><div class="scimgcontainer"><a href="StoryCardGroup1.html"><img id="Click image to see example" class="sizeheight" src="../../../../html.png" /></a></div><p class="scsummary scsuccess">Example 2: Stop Card</p><p class="scdescription" title="Click image to see example">Click image to see example</p></li><li class="storycard"><div class="scimgcontainer"><a href="StoryCardGroup2.html"><img id="Click image to see example" class="sizeheight" src="../../../../html.png" /></a></div><p class="scsummary scsuccess">Example 3: Fail Group</p><p class="scdescription" title="Click image to see example">Click image to see example</p></li></ul></div><div class="footer">Results generated by <a href="http://www.concordion.org" style="font-weight: bold; text-decoration: none; color: #89C;">Concordion</a><div class="testTime">in 65 ms on 29-Sep-2015 at 09:02:29 NZDT</div></div></body>
+  <div class="example">
+    <h3>Example 2: Don't delete cards on failure</h3>
+    <pre concordion:set="#snippet">&lt;span concordion:execute="addFailedScreenshots()"&gt;&lt;/span&gt;</pre>
+
+	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
+	  When this snippet is run with this fixture, this results in <span concordion:assertEquals="getCountScreenShots(#fragment)" class="success">3</span> screenshot card being added to the Storyboard
+	  and <span concordion:assertEquals="getCountImages()" class="success">3</span> images remain in the output folder
+	</p>
+  </div>  
+  
+  <div class="example">
+	<h3>Example 3: Delete cards within section break</h3>
+    <pre concordion:set="#snippet">&lt;span concordion:execute="addScreenshotsInSectionBreak()"&gt;&lt;/span&gt;</pre>
+
+	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
+	  When this snippet is run with this fixture, this results in <span concordion:assertEquals="getCountScreenShots(#fragment)" class="success">4</span> screenshot cards being added to the Storyboard
+	  and <span concordion:assertEquals="getCountImages()" class="success">4</span> images remain in the output folder
+	</p>
+  </div>
+
+<div class="storyboard"><h3 id="StoryboardHeader">Storyboard</h3><img id="StoryCardScreenshotPopup" class="screenshot" /><ul><li class="storycard"><div class="scimgcontainer"><a href="RemoveUnwantedScreenshots0.html"><img id="Click image to see example" class="sizeheight" src="../../../../html.png" /></a></div><p class="scsummary scsuccess">Example 1: Delete Cards on Success</p><p class="scdescription" title="Click image to see example">Click image to see example</p></li><li class="storycard"><div class="scimgcontainer"><a href="RemoveUnwantedScreenshots1.html"><img id="Click image to see example" class="sizeheight" src="../../../../html.png" /></a></div><p class="scsummary scsuccess">Example 2: Don't delete cards on failure</p><p class="scdescription" title="Click image to see example">Click image to see example</p></li><li class="storycard"><div class="scimgcontainer"><a href="RemoveUnwantedScreenshots2.html"><img id="Click image to see example" class="sizeheight" src="../../../../html.png" /></a></div><p class="scsummary scsuccess">Example 3: Delete Cards within Section Break</p><p class="scdescription" title="Click image to see example">Click image to see example</p></li></ul></div><div class="footer">Results generated by <a href="http://www.concordion.org" style="font-weight: bold; text-decoration: none; color: #89C;">Concordion</a><div class="testTime">in 321 ms on 29-Sep-2015 at 09:02:28 NZDT</div></div></body>
 </html>
