@@ -140,7 +140,9 @@ public class RemoveUnwantedScreenshots extends AcceptanceTest {
     }
     
     private File[] getImages(boolean forSpec) {
+    	System.out.println("Base output directory: " + this.getBaseOutputDir());
     	Path path = Paths.get(this.getBaseOutputDir(), this.getClass().getPackage().getName().replace(".", "/"));
+    	System.out.println("Path to images: " + path.toString());
 		
     	final String fileName = this.getClass().getSimpleName() + (forSpec ? example : "");
     	File dir = path.toFile();
