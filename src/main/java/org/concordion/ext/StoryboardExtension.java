@@ -35,11 +35,12 @@ public class StoryboardExtension implements ConcordionExtension {
 	public void addTo(final ConcordionExtender concordionExtender) {
 		concordionExtender.withSpecificationProcessingListener(extension);
 		concordionExtender.withBuildListener(extension);
+		concordionExtender.withExampleListener(extension);
 		concordionExtender.withAssertEqualsListener(extension);
 		concordionExtender.withAssertTrueListener(extension);
 		concordionExtender.withAssertFalseListener(extension);
 		concordionExtender.withThrowableListener(extension);
-
+		
 		String path = StoryboardListener.class.getPackage().getName();
 		path = path.replaceAll("\\.", "/");
 		path = "/" + path;
@@ -116,7 +117,10 @@ public class StoryboardExtension implements ConcordionExtension {
 	}
 
 	/**
-	 * When the test completes and the ScreenshotTaker is not null, the storyboard will take a screenshot of the current screen.
+	 * When the test, or example completes the storyboard will add a screenshot of the current screen.
+	 * 
+	 * This assumes that the ScreenshotTaker is not null, and in the case of the example command: automatically 
+	 * adding section breaks has not been turned off.
 	 * 
 	 * @param value
 	 * 			<code>true</code> to take screenshot (default), <code>false</code> to not take screenshot
@@ -126,6 +130,19 @@ public class StoryboardExtension implements ConcordionExtension {
 		return this;
 	}
 
+	/**
+	 * By default a section break will be added to the storyboard each time the example command is encountered.  
+	 * 
+	 * The title for the section break will either be first header found in the example section (searched in order h1...h5), if a 
+	 * header is not found the name of the section break will be used>
+	 * 
+	 * @param value
+	 */
+	public StoryboardExtension setAutomaticallyAddSectionBreaksForExamples(boolean value) {
+		extension.setAutomaticallyAddSectionBreaksForExamples(value);
+		return this;
+	}
+	
 	/**
 	 * Set to false to stop screenshot cards being added, this is useful in situations where might be looping and refreshing screen constantly and don't want to
 	 * show many screenshots of same screen in storyboard

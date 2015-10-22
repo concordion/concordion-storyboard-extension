@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.concordion.Concordion;
 import org.concordion.api.EvaluatorFactory;
+import org.concordion.api.Fixture;
 import org.concordion.api.Resource;
 import org.concordion.api.ResultSummary;
 import org.concordion.api.Source;
@@ -40,19 +41,20 @@ public class TestRig {
 
     public ProcessingResult process(Resource resource) {
         EventRecorder eventRecorder = new EventRecorder();
-        Concordion concordion = new ConcordionBuilder()
-            .withAssertEqualsListener(eventRecorder)
-            .withThrowableListener(eventRecorder)
-            .withSource(source)
-            .withEvaluatorFactory(evaluatorFactory)
-            .withTarget(stubTarget)
-            .build();
-        
+
         try {
-            ResultSummary resultSummary = concordion.process(resource, fixture);
+	        Concordion concordion = new ConcordionBuilder()
+	            .withAssertEqualsListener(eventRecorder)
+	            .withThrowableListener(eventRecorder)
+	            .withSource(source)
+	            .withEvaluatorFactory(evaluatorFactory)
+	            .withTarget(stubTarget)
+	            .build();
+	        
+            ResultSummary resultSummary = concordion.process(resource, new Fixture(fixture));
             String xml = stubTarget.getWrittenString(resource);
             return new ProcessingResult(resultSummary, eventRecorder, xml);
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new RuntimeException("Test rig failed to process specification", e);
         } 
     }

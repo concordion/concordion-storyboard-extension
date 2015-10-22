@@ -14,6 +14,8 @@ import org.concordion.api.listener.AssertSuccessEvent;
 import org.concordion.api.listener.AssertTrueListener;
 import org.concordion.api.listener.ConcordionBuildEvent;
 import org.concordion.api.listener.ConcordionBuildListener;
+import org.concordion.api.listener.ExampleEvent;
+import org.concordion.api.listener.ExampleListener;
 import org.concordion.api.listener.SpecificationProcessingEvent;
 import org.concordion.api.listener.SpecificationProcessingListener;
 import org.concordion.api.listener.ThrowableCaughtEvent;
@@ -24,10 +26,11 @@ import org.concordion.ext.ScreenshotTaker;
  * Listens to Concordion events and/or method calls and then adds the required cards to the story board. 
  */
 public class StoryboardListener implements AssertEqualsListener, AssertTrueListener, AssertFalseListener, ConcordionBuildListener,
-		SpecificationProcessingListener, ThrowableCaughtListener {
+		SpecificationProcessingListener, ThrowableCaughtListener, ExampleListener {
 
 	private final List<Card> cards = new ArrayList<Card>();
 	private ScreenshotTaker screenshotTaker = new RobotScreenshotTaker();
+	private boolean automaticallyAddSectionBreaksForExamples = true;
 	private boolean takeScreenshotOnCompletion = true;
 	private boolean addCardOnThrowable = true;
 	private boolean addCardOnFailure = true;
@@ -100,9 +103,10 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	 * Add custom card and/or set common details for all cards
 	 */
 	public void addCard(final Card card) {
-		if (resource == null || target == null) {
-			return;
-		}
+		//TODO - raise issue that order of events has changed with example and now resource not set until after the tests have run
+//		if (resource == null || target == null) {
+//			return;
+//		}
 
 		card.setStoryboardListener(this);
 		card.setGroupMembership(collapsibleGroup);
@@ -247,7 +251,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		if (!lastScreenShotWasThrowable && takeScreenshotOnCompletion && screenshotTaker != null) {
 			ScreenshotCard card = new ScreenshotCard();
 			card.setTitle("Test Completed");
-			card.setDescription("This is the page the test  finished on");
+			card.setDescription("");
 			card.setResult(CardResult.SUCCESS);
 			addCard(card);
 		}
@@ -261,6 +265,43 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 		resource = null;
 		target = null;
+	}
+
+
+	@Override
+	public void beforeExample(ExampleEvent event) {
+		if (!automaticallyAddSectionBreaksForExamples) return;
+		
+		// Automatically add section breaks for each example
+		Element element = event.getElement();
+		String title = element.getAttributeValue("example", "http://www.concordion.org/2007/concordion"); 
+				
+		for (int i = 1; i < 5; i++) {
+			Element header = element.getFirstChildElement("h" + String.valueOf(i));
+			
+			if (header != null) {
+				title = header.getText();
+				break;
+			}		
+		}
+		
+		SectionBreak card = new SectionBreak();
+		card.setTitle(title);
+		addCard(card);
+	}
+
+	@Override
+	public void afterExample(ExampleEvent event) {
+		if (!automaticallyAddSectionBreaksForExamples) return;
+		if (!takeScreenshotOnCompletion) return;
+		
+		if (!lastScreenShotWasThrowable && screenshotTaker != null) {
+			ScreenshotCard card = new ScreenshotCard();
+			card.setTitle("Example Completed");
+			card.setDescription("");
+			card.setResult(CardResult.SUCCESS);
+			addCard(card);
+		}
 	}
 
 	/**
@@ -497,5 +538,9 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 				((ScreenshotCard)card).setDeleteIfSuccessful(true);
 			}
 		}
+	}
+
+	public void setAutomaticallyAddSectionBreaksForExamples(boolean automaticallyAddSectionBreaksForExamples) {
+		this.automaticallyAddSectionBreaksForExamples = automaticallyAddSectionBreaksForExamples;
 	}
 }
