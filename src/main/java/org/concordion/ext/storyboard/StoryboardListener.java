@@ -103,10 +103,9 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	 * Add custom card and/or set common details for all cards
 	 */
 	public void addCard(final Card card) {
-		//TODO - raise issue that order of events has changed with example and now resource not set until after the tests have run
-//		if (resource == null || target == null) {
-//			return;
-//		}
+		if (resource == null || target == null) {
+			return;
+		}
 
 		card.setStoryboardListener(this);
 		card.setGroupMembership(collapsibleGroup);
