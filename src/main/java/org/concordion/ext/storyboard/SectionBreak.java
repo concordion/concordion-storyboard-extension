@@ -8,6 +8,8 @@ import org.concordion.api.Element;
  * You wouldn't normally add this card directly but would call storyboard.addSectionBreak("section title");		
  */
 public class SectionBreak extends Card {
+	private Element exampleElement;
+	
 	public SectionBreak() {
 		setDescription("");
 	}
@@ -19,5 +21,13 @@ public class SectionBreak extends Card {
 
 	@Override
 	protected void addHTMLToContainer(final Element storyboard, final Element container) {
+	}
+
+	public void setExampleElement(Element element) {
+		this.exampleElement = element;
+	}
+	
+	public Element getExampleElement() {
+		return this.exampleElement;
 	}
 }

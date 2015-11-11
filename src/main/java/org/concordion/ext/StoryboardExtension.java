@@ -144,6 +144,17 @@ public class StoryboardExtension implements ConcordionExtension {
 	}
 	
 	/**
+	 * If using the ExampleCommand add cards to the end of the example rather than placing in the 
+	 * storyboard section at the bottom of the specification
+	 * 
+	 * @param value
+	 */
+	public StoryboardExtension setAddCardsToExample(boolean value) {
+		extension.setAddCardsToExample(value);
+		return this;
+	}
+	
+	/**
 	 * Set to false to stop screenshot cards being added, this is useful in situations where might be looping and refreshing screen constantly and don't want to
 	 * show many screenshots of same screen in storyboard
 	 * 

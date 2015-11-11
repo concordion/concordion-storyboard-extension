@@ -1,12 +1,12 @@
 package test.concordion;
 
+import nu.xom.Document;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Paths;
-
-import nu.xom.Document;
 
 import org.concordion.api.Element;
 import org.concordion.api.ResultSummary;
@@ -119,6 +119,10 @@ public class ProcessingResult {
         return getOutputFragment().toXML().replaceAll("</?fragment>", "").replaceAll("\u00A0", "&#160;");
     }
 
+    private Element getHeadElement() {
+        return getRootElement().getFirstChildElement("head");
+    }
+    
     public boolean hasCSSDeclaration(String cssFilename) {
         Element head = getHeadElement();
         for (Element link : head.getChildElements("link")) {
@@ -135,7 +139,8 @@ public class ProcessingResult {
     }
 
     public boolean hasEmbeddedCSS(String css) {
-        for (Element style : getHeadElement().getChildElements("style")) {
+        Element head = getHeadElement();
+        for (Element style : head.getChildElements("style")) {
             if (style.getText().contains(css) ) {
                 return true;
             }
@@ -163,11 +168,12 @@ public class ProcessingResult {
     	 return "";
     }
 
-    public boolean hasJavaScriptDeclaration(String jsFilename) {
-        for (Element script : getHeadElement().getChildElements("script")) {
+    public boolean hasJavaScriptDeclaration(String cssFilename) {
+        Element head = getHeadElement();
+        for (Element script : head.getChildElements("script")) {
             String type = script.getAttributeValue("type");
             String src = script.getAttributeValue("src");
-            if ("text/javascript".equals(type) && jsFilename.equals(src)) {
+            if ("text/javascript".equals(type) && cssFilename.equals(src)) {
                 return true;
             }
         }
@@ -175,7 +181,8 @@ public class ProcessingResult {
     }
 
     public boolean hasEmbeddedJavaScript(String javaScript) {
-        for (Element script : getHeadElement().getChildElements("script")) {
+        Element head = getHeadElement();
+        for (Element script : head.getChildElements("script")) {
             String type = script.getAttributeValue("type");
             if ("text/javascript".equals(type) && script.getText().contains(javaScript)) {
                 return true;
@@ -183,7 +190,7 @@ public class ProcessingResult {
         }
         return false;
     }
-
+    
     public boolean hasLinkedJavaScript(String baseOutputDir, String javaScript) {
         for (Element style : getHeadElement().getChildElements("script")) {
             if ("text/javascript".equals(style.getAttributeValue("type")) && javaScript.equals(style.getAttributeValue("src"))) {
@@ -203,16 +210,7 @@ public class ProcessingResult {
     	}
     	return "";
     }
-
-    public boolean hasJavaScriptFunction(String functionName) {
-        return hasEmbeddedJavaScript("function " + functionName + "(");
-    }
     
-    private Element getHeadElement() {
-        return getRootElement().getFirstChildElement("head");
-    }
-    
-
     private String readFile(String fileName) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(fileName));
         try {
@@ -228,5 +226,5 @@ public class ProcessingResult {
         } finally {
             br.close();
         }
-    }    
+    }   
 }

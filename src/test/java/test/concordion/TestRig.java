@@ -1,68 +1,100 @@
 package test.concordion;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.concordion.Concordion;
 import org.concordion.api.EvaluatorFactory;
 import org.concordion.api.Fixture;
 import org.concordion.api.Resource;
 import org.concordion.api.ResultSummary;
-import org.concordion.api.Source;
+import org.concordion.api.extension.ConcordionExtension;
+import org.concordion.internal.ClassNameBasedSpecificationLocator;
 import org.concordion.internal.ConcordionBuilder;
 import org.concordion.internal.SimpleEvaluatorFactory;
-
+import org.concordion.internal.UnableToBuildConcordionException;
+import org.concordion.internal.extension.FixtureExtensionLoader;
 
 public class TestRig {
 
-    private Object fixture = null;
+    private Fixture fixture;
     private EvaluatorFactory evaluatorFactory = new SimpleEvaluatorFactory();
     private StubSource stubSource = new StubSource();
-    private Source source = stubSource;
     private StubTarget stubTarget = new StubTarget();
-    private String namespaceDeclaration = "xmlns:concordion='" + ConcordionBuilder.NAMESPACE_CONCORDION_2007 + "'";
+    private FixtureExtensionLoader fixtureExtensionLoader = new FixtureExtensionLoader();
+    private ConcordionExtension extension; 
 
     public TestRig withFixture(Object fixture) {
-        this.fixture = fixture;
+        this.fixture = new Fixture(fixture);
         return this;
     }
 
-    public TestRig withNamespaceDeclaration(String prefix, String namespace) {
-        namespaceDeclaration += " " + String.format("xmlns:%s='%s'", prefix, namespace);
-        return this;
+    public ProcessingResult processFragment(String fragment) {
+        return process(wrapFragment(fragment));
+    }
+     
+    public ProcessingResult processFragment(String fragment, String fixtureName) {
+        return process(fixtureName, wrapFragment(fragment));
     }
     
-    public ProcessingResult processFragment(String fragment) {
-        return process(wrapFragment(fragment), "/testrig");
+    public ProcessingResult processFragment(String resourceLocation, String head, String fragment) {
+        return process(resourceLocation, wrapFragment(head, fragment));
     }
 
-    public ProcessingResult processFragment(String fragment, String fixtureName) {
-        return process(wrapFragment(fragment), fixtureName);
+    public ProcessingResult process(String html) {
+        return process("/testrig", html);
     }
-
-    public ProcessingResult process(Resource resource) {
-        EventRecorder eventRecorder = new EventRecorder();
-
-        try {
-	        Concordion concordion = new ConcordionBuilder()
-	            .withAssertEqualsListener(eventRecorder)
-	            .withThrowableListener(eventRecorder)
-	            .withSource(source)
-	            .withEvaluatorFactory(evaluatorFactory)
-	            .withTarget(stubTarget)
-	            .build();
-	        
-            ResultSummary resultSummary = concordion.process(resource, new Fixture(fixture));
-            String xml = stubTarget.getWrittenString(resource);
-            return new ProcessingResult(resultSummary, eventRecorder, xml);
-        } catch (Exception e) {
-            throw new RuntimeException("Test rig failed to process specification", e);
-        } 
-    }
-
-    public ProcessingResult process(String html, String fullName) {
-        Resource resource = new Resource(fullName);
+    
+    public ProcessingResult process(String resourceLocation, String html) {
+        Resource resource = new Resource(resourceLocation);
         withResource(resource, html);
         return process(resource);
+    }
+    
+    public ProcessingResult process(Resource resource) {
+        EventRecorder eventRecorder = new EventRecorder();
+        if (fixture == null) {
+            fixture = new Fixture(new DummyFixture());
+            withResource(new Resource("/spec/concordion/Dummy.html"), "<html/>");
+        } else {
+            withResource(new ClassNameBasedSpecificationLocator("html").locateSpecification(fixture), "<html/>");
+        }
+        ConcordionBuilder concordionBuilder = new ConcordionBuilder()
+            .withAssertEqualsListener(eventRecorder)
+            .withThrowableListener(eventRecorder)
+            .withSource(stubSource)
+            .withEvaluatorFactory(evaluatorFactory)
+            .withTarget(stubTarget)
+            .withFixture(fixture);
+        
+        fixtureExtensionLoader.addExtensions(fixture, concordionBuilder);
+        if (extension != null) {
+            extension.addTo(concordionBuilder);
+        }
+        Concordion concordion = null;
+        try {
+            concordion = concordionBuilder.build();
+        } catch (UnableToBuildConcordionException e) {
+            throw new RuntimeException("Test rig failed to build concordion", e);
+        }
+
+        try {
+
+            ResultSummary resultSummary = null;
+            concordion.override(resource, fixture);
+            List<String> examples = concordion.getExampleNames();
+            if (!examples.isEmpty()) {
+                for (String example : examples) {
+                    resultSummary = concordion.processExample(example);
+                }
+            }
+            concordion.finish();
+
+            String xml = stubTarget.getWrittenString(resource);
+            return new ProcessingResult(resultSummary, eventRecorder, xml);
+        } catch (IOException e) {
+            throw new RuntimeException("Test rig failed to process specification", e);
+        } 
     }
 
     private String wrapFragment(String fragment) {
@@ -70,8 +102,14 @@ public class TestRig {
         return wrapWithNamespaceDeclaration(fragment);
     }
     
+    private String wrapFragment(String head, String fragment) {
+        fragment = head + "<body><fragment>" + fragment + "</fragment></body>";
+        return wrapWithNamespaceDeclaration(fragment);
+    }
+    
     private String wrapWithNamespaceDeclaration(String fragment) {
-        return "<html " + namespaceDeclaration + ">"
+        return "<html xmlns:concordion='"
+            + ConcordionBuilder.NAMESPACE_CONCORDION_2007 + "'>"
             + fragment
             + "</html>";
     }
@@ -81,13 +119,21 @@ public class TestRig {
         return this;
     }
     
-    public TestRig withSourceFilter(String filterPrefix) {
-        this.source = new FilterSource(source, filterPrefix);
+    public TestRig withResource(Resource resource, String content) {
+        stubSource.addResource(resource, content);
         return this;
     }
     
-    public TestRig withResource(Resource resource, String content) {
-        stubSource.addResource(resource, content);
+    public boolean hasCopiedResource(Resource resource) {
+        return stubTarget.hasCopiedResource(resource);
+    }
+
+    public List<Resource> getCopiedResources() {
+    	return stubTarget.getCopiedResources();
+    }
+    
+    public TestRig withExtension(ConcordionExtension extension) {
+        this.extension = extension;
         return this;
     }
     
@@ -95,8 +141,5 @@ public class TestRig {
         stubTarget.setOutputStreamer(streamer);
         return this;
     }
-    
-    public boolean hasCopiedResource(Resource resource) {
-        return stubTarget.hasCopiedResource(resource);
-    }
+
 }

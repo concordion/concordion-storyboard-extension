@@ -55,9 +55,12 @@ public class StubTarget implements Target {
     public OutputStreamer getOutputStreamer() {
         return outputStreamer;
     }
-    
-    @Override
+
     public String resolvedPathFor(Resource resource) {
         return null;
+    }
+    
+    public List<Resource> getCopiedResources() {
+    	return copiedResources;
     }
 }

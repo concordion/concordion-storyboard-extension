@@ -31,6 +31,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	private final List<Card> cards = new ArrayList<Card>();
 	private ScreenshotTaker screenshotTaker = new RobotScreenshotTaker();
 	private boolean automaticallyAddSectionBreaksForExamples = true;
+	private boolean addCardsToExample = false;
 	private boolean takeScreenshotOnCompletion = true;
 	private boolean addCardOnThrowable = true;
 	private boolean addCardOnFailure = true;
@@ -269,7 +270,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	@Override
 	public void beforeExample(ExampleEvent event) {
-		if (!automaticallyAddSectionBreaksForExamples) return;
+		if (!automaticallyAddSectionBreaksForExamples && !addCardsToExample) return;
 		
 		// Automatically add section breaks for each example
 		Element element = event.getElement();
@@ -286,6 +287,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		
 		SectionBreak card = new SectionBreak();
 		card.setTitle(title);
+		card.setExampleElement(element);
 		addCard(card);
 	}
 
@@ -384,19 +386,28 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		
 		for (Card card : cards) {
 			if (card instanceof SectionBreak) {
-				if (card.getTitle().trim().isEmpty()) {
-					hasFailure = failureDetected;
+				SectionBreak breakCard = (SectionBreak)card;
+				
+				if (addCardsToExample && breakCard.getExampleElement() != null) {
+					ul = new Element("ul");
+					
+					//buildExampleBoard(breakCard).appendChild(ul);
+					buildSectionBreak(breakCard.getExampleElement(), breakCard).appendChild(ul);
 				} else {
-					hasFailure = card.getResult() == CardResult.FAILURE;
+					if (card.getTitle().trim().isEmpty()) {
+						hasFailure = failureDetected;
+					} else {
+						hasFailure = card.getResult() == CardResult.FAILURE;
+					}
+					
+					if (!ul.hasChildren()) {
+						storyboard.removeChild(ul);
+					}
+					
+					ul = new Element("ul");
+					
+					buildSectionBreak(storyboard, card).appendChild(ul);
 				}
-				
-				if (!ul.hasChildren()) {
-					storyboard.removeChild(ul);
-				}
-				
-				ul = new Element("ul");
-				
-				buildSectionBreak(storyboard, card).appendChild(ul);
 			} else {
 				if (card instanceof GroupStartCard) {
 					collapseGroup = (GroupStartCard) card;
@@ -409,8 +420,28 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 				}
 			}
 		}
+		
+		if (!storyboard.getChildElements("ul")[0].hasChildren()) {
+			storyboard.addAttribute("style", "display: none");
+		}
 	}
 
+	private Element buildExampleBoard(final SectionBreak breakCard) {
+		Element example = breakCard.getExampleElement();
+		
+		// Append storyboard to page
+		Element div = new Element("div");
+		div.addStyleClass("storyboard");
+		example.appendChild(div);
+
+		Element header = new Element("h3");
+		header.setId("StoryboardHeader");
+		header.appendText("What Title? " + breakCard.getDescription());
+		div.appendChild(header);
+
+		return div;
+	}
+	
 	private Element buildSectionBreak(Element storyboard, Card card) {
 		Element listAppender = null;
 		
@@ -539,7 +570,11 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		}
 	}
 
-	public void setAutomaticallyAddSectionBreaksForExamples(boolean automaticallyAddSectionBreaksForExamples) {
-		this.automaticallyAddSectionBreaksForExamples = automaticallyAddSectionBreaksForExamples;
+	public void setAutomaticallyAddSectionBreaksForExamples(boolean value) {
+		this.automaticallyAddSectionBreaksForExamples = value;
+	}
+
+	public void setAddCardsToExample(boolean value) {
+		this.addCardsToExample = value;
 	}
 }
