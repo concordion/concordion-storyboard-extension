@@ -421,7 +421,8 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 			}
 		}
 		
-		if (!storyboard.getChildElements("ul")[0].hasChildren()) {
+		Element[] uls = storyboard.getChildElements("ul");
+		if (uls.length == 0 || !uls[0].hasChildren()) {
 			storyboard.addAttribute("style", "display: none");
 		}
 	}
