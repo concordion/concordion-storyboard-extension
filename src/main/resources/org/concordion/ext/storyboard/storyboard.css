@@ -9,16 +9,16 @@
 }
 
 .storyboard {
-		padding: 20px;
-	  border: 1px solid #ADADAD;
-		margin-bottom: 30px;
-	  margin-top: 30px;
-		background-color: #fdfdfd;
-	  background-color: #f1f1f1;
+	padding: 20px;
+	border: 1px solid #ADADAD;
+	margin-bottom: 30px;
+	margin-top: 30px;
+	background-color: #fdfdfd;
+	background-color: #f1f1f1;
 }
 
 .storyboard > * {
-  margin-top: 0;
+	margin-top: 0;
 }
 
 .storyboard ul {
@@ -28,7 +28,7 @@
 }
 
 .storycard {
-		background-color: #fff;
+	background-color: #fff;
     box-shadow: 0 1px 4px rgba(0 ,0, 0, 0.4);
     display: inline-block;
     height: 186px;
@@ -102,21 +102,79 @@
     display: none;
 }
 
-/* Expanding div support */
+/* Expanding Example */
+.toggle-example-container ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.toggle-example-container {
+	margin-top: -1px;
+	border-bottom: 1px solid #ADADAD;
+	padding: 0;
+	margin-bottom: 0;
+}
+
+.toggle-example-content {
+	margin-bottom: 4px;
+}
+
+.toggle-example {
+  display: none;
+}
+
+.toggle-example + label {
+	cursor: pointer;
+	display: block;
+	padding-bottom: 0;
+	padding-top: 0;
+	line-height: 22px;
+	font-weight: 500;
+	padding-left: 20px;
+	padding-right: 20px;
+	margin-left: -20px;
+	margin-right: -20px;
+}
+
+.toggle-example + label + div {
+	display: none;
+}
+
+.toggle-example:checked + label + div {
+	display: block;
+}
+
+.toggle-example + label:before {
+	background-color: #319DD8;
+	border-radius: 20px;
+	width: 20px;
+	height: 20px;
+	line-height: 18px;
+	color: white;
+	content: "+";
+	display: block;
+	float: left;
+	margin-right: 10px;
+	text-align: center;
+}
+
+.toggle-example:checked + label:before {
+	content: "\2212";
+}
+
+/* Expanding Section */
+
 .toggle-box-container {
 	margin-top: -1px;
 	border: 1px solid #ADADAD;
 	background-color: #fff;
 	padding-left: 20px;
-  padding-right: 20px;
+	padding-right: 20px;
 }
 
 .toggle-box-content {
 	margin-bottom: 4px;
-}
-
-.toggle-box-spacer {
-	height: 8px;
 }
 
 .toggle-box {
@@ -128,42 +186,42 @@
 }
 
 .toggle-box + label {
-  cursor: pointer;
-  display: block;
-  padding-bottom: 12px;
+	cursor: pointer;
+	display: block;
+	padding-bottom: 12px;
 	padding-top: 12px;
 	line-height: 22px;
 	font-weight: 500;
 	padding-left: 20px;
-  padding-right: 20px;
+	padding-right: 20px;
 	margin-left: -20px;
-  margin-right: -20px;
+	margin-right: -20px;
 }
 
 .toggle-box + label + div {
-  display: none;
+	display: none;
 }
 
 .toggle-box:checked + label + div {
-  display: block;
+	display: block;
 }
 
 .toggle-box + label:before {
-  background-color: #319DD8;
-  border-radius: 20px;
-  width: 20px;
+	background-color: #319DD8;
+	border-radius: 20px;
+	width: 20px;
 	height: 20px;
-  line-height: 18px;
-  color: white;
-  content: "+";
-  display: block;
-  float: left;
-  margin-right: 10px;
-  text-align: center;
+	line-height: 18px;
+	color: white;
+	content: "+";
+	display: block;
+	float: left;
+	margin-right: 10px;
+	text-align: center;
 }
 
 .toggle-box:checked + label:before {
-  content: "\2212";
+	content: "\2212";
 }
 
 .screenshot {

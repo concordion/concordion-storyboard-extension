@@ -293,15 +293,20 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	@Override
 	public void afterExample(ExampleEvent event) {
-		if (!automaticallyAddSectionBreaksForExamples) return;
-		if (!takeScreenshotOnCompletion) return;
-		
-		if (!lastScreenShotWasThrowable && screenshotTaker != null) {
-			ScreenshotCard card = new ScreenshotCard();
-			card.setTitle("Example Completed");
-			card.setDescription("");
-			card.setResult(CardResult.SUCCESS);
+		if (automaticallyAddSectionBreaksForExamples || addCardsToExample) {
+			SectionBreak card = new SectionBreak();
+			card.setTitle("");
 			addCard(card);
+		
+			if (takeScreenshotOnCompletion) {
+				if (!lastScreenShotWasThrowable && screenshotTaker != null) {
+					ScreenshotCard sscard = new ScreenshotCard();
+					sscard.setTitle("Example Completed");
+					sscard.setDescription("");
+					sscard.setResult(CardResult.SUCCESS);
+					addCard(sscard);
+				}
+			}
 		}
 	}
 
@@ -388,26 +393,19 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 			if (card instanceof SectionBreak) {
 				SectionBreak breakCard = (SectionBreak)card;
 				
-				if (addCardsToExample && breakCard.getExampleElement() != null) {
-					ul = new Element("ul");
-					
-					//buildExampleBoard(breakCard).appendChild(ul);
-					buildSectionBreak(breakCard.getExampleElement(), breakCard).appendChild(ul);
+				if (card.getTitle().trim().isEmpty()) {
+					hasFailure = failureDetected;
 				} else {
-					if (card.getTitle().trim().isEmpty()) {
-						hasFailure = failureDetected;
-					} else {
-						hasFailure = card.getResult() == CardResult.FAILURE;
-					}
-					
-					if (!ul.hasChildren()) {
-						storyboard.removeChild(ul);
-					}
-					
-					ul = new Element("ul");
-					
-					buildSectionBreak(storyboard, card).appendChild(ul);
+					hasFailure = card.getResult() == CardResult.FAILURE;
 				}
+				
+				if (!ul.hasChildren()) {
+					storyboard.removeChild(ul);
+				}
+				
+				ul = new Element("ul");
+				
+				buildSectionBreak(storyboard, breakCard).appendChild(ul);
 			} else {
 				if (card instanceof GroupStartCard) {
 					collapseGroup = (GroupStartCard) card;
@@ -422,7 +420,14 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		}
 		
 		Element[] uls = storyboard.getChildElements("ul");
-		if (uls.length == 0 || !uls[0].hasChildren()) {
+		boolean hasChildren = false;
+		for (Element element : uls) {
+			if (element.hasChildren()) {
+				hasChildren = true;
+				break;
+			}
+		}
+		if (!hasChildren) {
 			storyboard.addAttribute("style", "display: none");
 		}
 	}
@@ -443,25 +448,23 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		return div;
 	}
 	
-	private Element buildSectionBreak(Element storyboard, Card card) {
+	private Element buildSectionBreak(Element storyboard, SectionBreak card) {
 		Element listAppender = null;
 		
 		if (card.getTitle().trim().isEmpty()) {
-			Element spacer = new Element("div");
-			spacer.addStyleClass("toggle-box-spacer");
-			
-			storyboard.appendChild(spacer);
-			
 			listAppender = storyboard;
 		} else {
+			boolean isAddToExample = addCardsToExample && card.getExampleElement() != null; 
+			String classname = isAddToExample ? "example" : "box";  
+						
 			String id = "toggleheader" + card.getCardIndex();
 			
 			Element container = new Element("div");
-			container.addStyleClass("toggle-box-container");
+			container.addStyleClass("toggle-" + classname + "-container");
 			
 			Element input = new Element("input");
 			input.setId(id);
-			input.addStyleClass("toggle-box");
+			input.addStyleClass("toggle-" + classname);
 			input.addAttribute("type", "checkbox");
 			
 			if (card.getResult() == CardResult.FAILURE) {
@@ -470,18 +473,22 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 			
 			Element label = new Element("label");
 			label.addAttribute("for", id);
-			label.addStyleClass("toggle-box");
+			label.addStyleClass("toggle-" + classname);
 			label.addStyleClass(card.getResult().getKey());
-			label.appendText(card.getTitle());
+			label.appendText(isAddToExample ? "Storyboard" : card.getTitle());
 			
 			Element content = new Element("div");
-			content.addStyleClass("toggle-box-content");
+			content.addStyleClass("toggle-" + classname + "-content");
 			
 			container.appendChild(input);
 			container.appendChild(label);
 			container.appendChild(content);
 			
-			storyboard.appendChild(container);
+			if (isAddToExample) {
+				card.getExampleElement().appendChild(container);
+			} else {
+				storyboard.appendChild(container);
+			}
 			
 			listAppender = content;
 		}

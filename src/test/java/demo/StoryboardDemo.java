@@ -11,7 +11,9 @@ import org.junit.runner.RunWith;
 public class StoryboardDemo {
 
 	@Extension
-	public final StoryboardExtension storyboard = new StoryboardExtension().setScreenshotTaker(null).setAddCardsToExample(true);
+	public final StoryboardExtension storyboard = new StoryboardExtension().setScreenshotTaker(null)
+		.setAutomaticallyAddSectionBreaksForExamples(true)
+		.setAddCardsToExample(true);
 
 	public boolean addCard(final String description) {
 		storyboard.addNotification("Example", description, null, StockCardImage.TEXT, CardResult.SUCCESS);
