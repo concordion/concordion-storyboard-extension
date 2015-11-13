@@ -477,11 +477,16 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 			label.addStyleClass(card.getResult().getKey());
 			label.appendText(isAddToExample ? "Storyboard" : card.getTitle());
 			
+			Element hr = new Element("hr");
+			
 			Element content = new Element("div");
 			content.addStyleClass("toggle-" + classname + "-content");
 			
 			container.appendChild(input);
 			container.appendChild(label);
+			if (isAddToExample) {
+				container.appendChild(hr);
+			}
 			container.appendChild(content);
 			
 			if (isAddToExample) {
