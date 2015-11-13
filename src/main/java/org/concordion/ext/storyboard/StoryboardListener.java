@@ -28,7 +28,8 @@ import org.concordion.ext.ScreenshotTaker;
 public class StoryboardListener implements AssertEqualsListener, AssertTrueListener, AssertFalseListener, ConcordionBuildListener,
 		SpecificationProcessingListener, ThrowableCaughtListener, ExampleListener {
 
-	private final List<Card> cards = new ArrayList<Card>();
+	private final List<StoryboardItem> cards = new ArrayList<StoryboardItem>();
+	private Container currentContainer = null;
 	private ScreenshotTaker screenshotTaker = new RobotScreenshotTaker();
 	private boolean automaticallyAddSectionBreaksForExamples = true;
 	private boolean addCardsToExample = false;
@@ -90,17 +91,6 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	}
 
 	/**
-	 * Add section break
-	 */
-	public void addCard(final SectionBreak card) {
-		if (!collapsibleGroup.isEmpty()) {
-			return;
-		}
-
-		addCard((Card) card);
-	}
-	
-	/**
 	 * Add custom card and/or set common details for all cards
 	 */
 	public void addCard(final Card card) {
@@ -111,36 +101,40 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		card.setStoryboardListener(this);
 		card.setGroupMembership(collapsibleGroup);
 		card.captureData();
-		cards.add(card);
-
-		if (card.getResult() != CardResult.SUCCESS) {
-			if (!collapsibleGroup.isEmpty()) {
-				GroupStartCard start = getLastCollapsibleStartCard();
-	
-				if (start != null) {
-					start.setResult(card.getResult());
-					start.setCollapsed(card.getResult() != CardResult.FAILURE);
-				}
-			}
+		
+		if (currentContainer != null) {
+			currentContainer.addCard(card);
 			
-			SectionBreak section = getCurrentSectionBreak();
-			if (section != null) {
-				section.setResult(card.getResult());
+			if (card.getResult() != CardResult.SUCCESS) {
+				currentContainer.setResult(card.getResult());
+			}
+		} else {
+			cards.add(card);
+		
+			if (card.getResult() != CardResult.SUCCESS) {
+				if (!collapsibleGroup.isEmpty()) {
+					GroupStartCard start = getLastCollapsibleStartCard();
+		
+					if (start != null) {
+						start.setResult(card.getResult());
+						start.setCollapsed(card.getResult() != CardResult.FAILURE);
+					}
+				}
 			}
 		}
 	}
 
-	private SectionBreak getCurrentSectionBreak() {
-		SectionBreak current = null;
-		
-		for (int i = cards.size() - 1; i >= 0; i--) {
-			if (cards.get(i) instanceof SectionBreak) {
-				current = (SectionBreak) cards.get(i);
-				break;
-			}
+	/**
+	 * Add containers
+	 * @param container if null this is regarded as stating all future cards should be added to storyboard
+	 */
+	public void addContainer(final Container container) {
+		if (container != null) {
+			container.setStoryboardListener(this);
+			cards.add(container);
 		}
 		
-		return current;
+		currentContainer = container;
 	}
 
 	private GroupStartCard getLastCollapsibleStartCard() {
@@ -201,6 +195,10 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	public void throwableCaught(final ThrowableCaughtEvent event) {
 		failureDetected = true;
 		
+		if (currentContainer != null) {
+			currentContainer.setResult(CardResult.FAILURE);
+		}
+		
 		if (addCardOnThrowable) {
 			String title = "Exception Caught";
 
@@ -241,6 +239,60 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	}
 
 	@Override
+	public void beforeExample(ExampleEvent event) {
+		if (!automaticallyAddSectionBreaksForExamples && !addCardsToExample) return;
+		
+		// Automatically add section breaks for each example
+		Element element = event.getElement();		
+		
+		if (addCardsToExample) {
+			ExampleContainer container = new ExampleContainer(); 
+			container.setExampleElement(element);
+			
+			addContainer(container);
+		} else if (automaticallyAddSectionBreaksForExamples) {
+			String title = element.getAttributeValue("example", "http://www.concordion.org/2007/concordion"); 
+			
+			for (int i = 1; i < 5; i++) {
+				Element header = element.getFirstChildElement("h" + String.valueOf(i));
+				
+				if (header != null) {
+					title = header.getText();
+					break;
+				}		
+			}
+			
+			SectionContainer container = new SectionContainer();
+			container.setTitle(title);
+			
+			addContainer(container);
+		}
+	}
+
+	@Override
+	public void afterExample(ExampleEvent event) {
+		if (!automaticallyAddSectionBreaksForExamples && !addCardsToExample) return;
+		
+		if (takeScreenshotOnCompletion) {
+			if (!lastScreenShotWasThrowable && screenshotTaker != null) {
+				ScreenshotCard sscard = new ScreenshotCard();
+				sscard.setTitle("Example Completed");
+				sscard.setDescription("");
+				
+				if (event.getResultSummary().hasExceptions() || event.getResultSummary().getFailureCount() > 0) {
+					sscard.setResult(CardResult.FAILURE);
+				} else {
+					sscard.setResult(CardResult.SUCCESS);
+				}
+				
+				addCard(sscard);
+			}
+		}
+		
+		addContainer(null);
+	}
+	
+	@Override
 	public void afterProcessingSpecification(final SpecificationProcessingEvent event) {
 		if (cards.isEmpty()) {
 			return;
@@ -265,50 +317,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 		resource = null;
 		target = null;
-	}
-
-
-	@Override
-	public void beforeExample(ExampleEvent event) {
-		if (!automaticallyAddSectionBreaksForExamples && !addCardsToExample) return;
-		
-		// Automatically add section breaks for each example
-		Element element = event.getElement();
-		String title = element.getAttributeValue("example", "http://www.concordion.org/2007/concordion"); 
-				
-		for (int i = 1; i < 5; i++) {
-			Element header = element.getFirstChildElement("h" + String.valueOf(i));
-			
-			if (header != null) {
-				title = header.getText();
-				break;
-			}		
-		}
-		
-		SectionBreak card = new SectionBreak();
-		card.setTitle(title);
-		card.setExampleElement(element);
-		addCard(card);
-	}
-
-	@Override
-	public void afterExample(ExampleEvent event) {
-		if (automaticallyAddSectionBreaksForExamples || addCardsToExample) {
-			SectionBreak card = new SectionBreak();
-			card.setTitle("");
-			addCard(card);
-		
-			if (takeScreenshotOnCompletion) {
-				if (!lastScreenShotWasThrowable && screenshotTaker != null) {
-					ScreenshotCard sscard = new ScreenshotCard();
-					sscard.setTitle("Example Completed");
-					sscard.setDescription("");
-					sscard.setResult(CardResult.SUCCESS);
-					addCard(sscard);
-				}
-			}
-		}
-	}
+	}	
 
 	/**
 	 * Insert meta tag '<meta http-equiv="X-UA-Compatible" content="IE=edge" />";' if not already present.  This
@@ -382,43 +391,11 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	}
 
 	private void addCardsToStoryboard(final Element storyboard) {
-		GroupStartCard collapseGroup = null;
-
 		Element ul = new Element("ul");
 		storyboard.appendChild(ul);
 
-		boolean hasFailure = failureDetected;
-		
-		for (Card card : cards) {
-			if (card instanceof SectionBreak) {
-				SectionBreak breakCard = (SectionBreak)card;
+		addItemsToList(storyboard, ul, failureDetected, cards);
 				
-				if (card.getTitle().trim().isEmpty()) {
-					hasFailure = failureDetected;
-				} else {
-					hasFailure = card.getResult() == CardResult.FAILURE;
-				}
-				
-				if (!ul.hasChildren()) {
-					storyboard.removeChild(ul);
-				}
-				
-				ul = new Element("ul");
-				
-				buildSectionBreak(storyboard, breakCard).appendChild(ul);
-			} else {
-				if (card instanceof GroupStartCard) {
-					collapseGroup = (GroupStartCard) card;
-				}
-		
-				if (card.shouldAppend(hasFailure)) {
-					ul.appendChild(buildCard(storyboard, collapseGroup, card));
-				} else {
-					card.cleanupData();
-				}
-			}
-		}
-		
 		Element[] uls = storyboard.getChildElements("ul");
 		boolean hasChildren = false;
 		for (Element element : uls) {
@@ -427,78 +404,54 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 				break;
 			}
 		}
+		
 		if (!hasChildren) {
 			storyboard.addAttribute("style", "display: none");
 		}
 	}
 
-	private Element buildExampleBoard(final SectionBreak breakCard) {
-		Element example = breakCard.getExampleElement();
-		
-		// Append storyboard to page
-		Element div = new Element("div");
-		div.addStyleClass("storyboard");
-		example.appendChild(div);
-
-		Element header = new Element("h3");
-		header.setId("StoryboardHeader");
-		header.appendText("What Title? " + breakCard.getDescription());
-		div.appendChild(header);
-
-		return div;
-	}
+	private void addItemsToList(final Element storyboard, Element ul, boolean hasFailure, List<StoryboardItem> items) {
+		GroupStartCard collapseGroup = null;
 	
-	private Element buildSectionBreak(Element storyboard, SectionBreak card) {
-		Element listAppender = null;
-		
-		if (card.getTitle().trim().isEmpty()) {
-			listAppender = storyboard;
-		} else {
-			boolean isAddToExample = addCardsToExample && card.getExampleElement() != null; 
-			String classname = isAddToExample ? "example" : "box";  
-						
-			String id = "toggleheader" + card.getCardIndex();
-			
-			Element container = new Element("div");
-			container.addStyleClass("toggle-" + classname + "-container");
-			
-			Element input = new Element("input");
-			input.setId(id);
-			input.addStyleClass("toggle-" + classname);
-			input.addAttribute("type", "checkbox");
-			
-			if (card.getResult() == CardResult.FAILURE) {
-				input.addAttribute("checked", "");
-			}
-			
-			Element label = new Element("label");
-			label.addAttribute("for", id);
-			label.addStyleClass("toggle-" + classname);
-			label.addStyleClass(card.getResult().getKey());
-			label.appendText(isAddToExample ? "Storyboard" : card.getTitle());
-			
-			Element hr = new Element("hr");
-			
-			Element content = new Element("div");
-			content.addStyleClass("toggle-" + classname + "-content");
-			
-			container.appendChild(input);
-			container.appendChild(label);
-			if (isAddToExample) {
-				container.appendChild(hr);
-			}
-			container.appendChild(content);
-			
-			if (isAddToExample) {
-				card.getExampleElement().appendChild(container);
+		for (StoryboardItem item : items) {
+			if (item instanceof Container) {
+				Container container = (Container)item;
+				
+				boolean ulOnStoryboard = ul.getParentElement() == storyboard;
+				boolean addUlToStoryboard = false;
+				
+				if (ulOnStoryboard && !ul.hasChildren()) {
+					storyboard.removeChild(ul);
+					addUlToStoryboard = true;
+				}
+				
+				Element containerUl = new Element("ul");
+				container.addContainerToSpecification(storyboard).appendChild(containerUl);
+								
+				addItemsToList(storyboard, containerUl, container.getResult() == CardResult.FAILURE, container.getCards());
+				
+				if (!containerUl.hasChildren()) {
+					containerUl.getParentElement().removeChild(containerUl);
+				}
+				
+				if (addUlToStoryboard) {
+					storyboard.appendChild(ul);
+				}
 			} else {
-				storyboard.appendChild(container);
+				if (item instanceof GroupStartCard) {
+					collapseGroup = (GroupStartCard)item;
+				}
+		
+				Card card = (Card)item;
+				
+				if (card.shouldAppend(hasFailure)) {
+					ul.appendChild(buildCard(storyboard, collapseGroup, card));
+				} else {
+					card.cleanupData();
+				}
 			}
-			
-			listAppender = content;
 		}
 		
-		return listAppender;
 	}
 
 	private Element buildCard(final Element storyboard, GroupStartCard collapseGroup, Card card) {
@@ -535,7 +488,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		return li;
 	}
 
-	public int getCardIndex(Card card) {
+	public int getCardIndex(StoryboardItem card) {
 		return cards.indexOf(card);
 	}
 	
@@ -568,12 +521,12 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	}
 
 	public void setRemovePriorScreenshotsOnSuccess() {
-		ListIterator<Card> list = cards.listIterator(cards.size());
+		ListIterator<StoryboardItem> list = cards.listIterator(cards.size());
 
 		while(list.hasPrevious()) {
-			Card card = list.previous();
+			StoryboardItem card = list.previous();
 		
-			if (card instanceof SectionBreak) {
+			if (card instanceof Container) {
 				break;
 			}
 			

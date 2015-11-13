@@ -7,12 +7,9 @@ import org.concordion.api.Target;
 /**
  * Base class for all cards that can be added to the storyboard
  */
-public abstract class Card {
-	private String title = "";
+public abstract class Card extends StoryboardItem {
 	private String description = "";
-	private CardResult result = CardResult.SUCCESS;
 	private String groupMembership = "";
-	private StoryboardListener listener;
 
 	/**
 	 * Write the data to a file
@@ -27,34 +24,7 @@ public abstract class Card {
 	 * @param listItem
 	 *            The card element
 	 */
-	protected abstract void addHTMLToContainer(final Element storyboard,
-			final Element listItem);
-
-	protected void setStoryboardListener(final StoryboardListener listener) {
-		this.listener = listener;
-	}
-
-	protected Resource getResource() {
-		return listener.getResource();
-	}
-
-	protected Target getTarget() {
-		return listener.getTarget();
-	}
-
-	/**
-	 * @return The unique number of this card on the storyboard
-	 */
-	protected int getCardIndex() {
-		return listener.getCardIndex(this);
-	}
-
-	/**
-	 * @return The unique number of this card on the storyboard
-	 */
-	protected int getNextCardIndex() {
-		return listener.getNextCardIndex();
-	}
+	protected abstract void addHTMLToContainer(final Element storyboard, final Element listItem);
 	
 	/**
 	 * Gets a unique file name for data that is to be stored alongside a card
@@ -79,28 +49,12 @@ public abstract class Card {
 		return String.format("%s%d.%s", prefix, cardNumber, fileExtension);
 	}
 
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(final String title) {
-		this.title = title;
-	}
-
 	public String getDescription() {
 		return description;
 	}
 
 	public void setDescription(final String description) {
 		this.description = description;
-	}
-
-	public CardResult getResult() {
-		return result;
-	}
-
-	public void setResult(final CardResult result) {
-		this.result = result;
 	}
 
 	protected String getGroupMembership() {

@@ -10,12 +10,13 @@ import org.concordion.api.extension.ConcordionExtension;
 import org.concordion.ext.storyboard.Card;
 import org.concordion.ext.storyboard.CardImage;
 import org.concordion.ext.storyboard.CardResult;
+import org.concordion.ext.storyboard.Container;
 import org.concordion.ext.storyboard.GroupStartCard;
 import org.concordion.ext.storyboard.GroupStopCard;
 import org.concordion.ext.storyboard.CustomCardImage;
 import org.concordion.ext.storyboard.NotificationCard;
 import org.concordion.ext.storyboard.ScreenshotCard;
-import org.concordion.ext.storyboard.SectionBreak;
+import org.concordion.ext.storyboard.SectionContainer;
 import org.concordion.ext.storyboard.StockCardImage;
 import org.concordion.ext.storyboard.StoryboardListener;
 
@@ -252,14 +253,14 @@ public class StoryboardExtension implements ConcordionExtension {
 	 * Wraps all story cards from startGroup() call to last added card in a collapse/expand region (defaults to collapsed)
 	 */
 	public void addSectionBreak(String title) {
-		SectionBreak card = new SectionBreak();
+		SectionContainer card = new SectionContainer();
 		card.setTitle(title);
 
-		extension.addCard(card);
+		extension.addContainer(card);
 	}
 	
 	/**
-	 * Allow customs cards to be passed into storyboard
+	 * Allow custom cards to be passed into storyboard
 	 * 
 	 * @param card
 	 */
@@ -275,7 +276,13 @@ public class StoryboardExtension implements ConcordionExtension {
 	public void addCard(final GroupStopCard card) {
 		extension.addCard(card);
 	}
-	public void addCard(final SectionBreak card) {
-		extension.addCard(card);
+	
+	/**
+	 * Allow custom containers to be passed into storyboard
+	 * 
+	 * @param card
+	 */
+	public void addContainer(final Container container) {
+		extension.addContainer(container);
 	}
 }
