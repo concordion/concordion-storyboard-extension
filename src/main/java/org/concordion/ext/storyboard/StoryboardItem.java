@@ -9,10 +9,15 @@ import org.concordion.api.Target;
 public abstract class StoryboardItem {
 	private String title = "";
 	private CardResult result = CardResult.SUCCESS;
-	protected StoryboardListener listener;
+	protected StoryboardListener listener = null;
+	protected Container container = null;
 
 	protected void setStoryboardListener(final StoryboardListener listener) {
 		this.listener = listener;
+	}
+
+	protected void setContainer(final Container container) {
+		this.container = container;
 	}
 
 	protected Resource getResource() {
@@ -38,18 +43,35 @@ public abstract class StoryboardItem {
 	public void setResult(final CardResult result) {
 		this.result = result;
 	}
-	
-	/**
-	 * @return The unique number of this card on the storyboard
-	 */
-	protected int getCardIndex() {
-		return listener.getCardIndex(this);
-	}
 
 	/**
-	 * @return The unique number of this card on the storyboard
+	 * @return The unique number of this card
+//	 */
+//	protected String getItemIndex(StoryboardItem item) {
+//		return String.valueOf(listener.getItemIndex(this)) + "-" + String.valueOf(items.indexOf(item));
+//	}
+//
+//	protected String getCardIndex() {
+//		return String.valueOf(listener.getItemIndex(this));
+//	}
+
+	
+	/**
+	 * @return The unique number of this card in the container
 	 */
-	protected int getNextCardIndex() {
-		return listener.getNextCardIndex();
+	protected String getItemIndex() {
+		if (container != null) {
+			return listener.getItemIndex(container) + "-" + String.valueOf(container.getCards().indexOf(this));
+		} else {
+			return String.valueOf(listener.getItemIndex(this));
+		}
+	}
+
+	protected String getNextCardIndex() {
+		if (container != null) {
+			return listener.getItemIndex(container) + "-" + container.getCards().size();
+		} else {
+			return listener.getItemIndex(this);
+		}
 	}
 }

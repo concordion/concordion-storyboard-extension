@@ -23,14 +23,8 @@ public class ExampleContainer extends Container {
 	}
 
 	@Override
-	public void addCardsToSpecification() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public Element addContainerToSpecification(Element storyboard) {
-		String id = "toggleheader" + getCardIndex();
+		String id = "toggleheader" + getItemIndex();
 		
 		Element container = new Element("div");
 		container.addStyleClass("toggle-example-container");
@@ -63,7 +57,10 @@ public class ExampleContainer extends Container {
 		getExampleElement().appendChild(container);
 
 		return content;
+	}
 
-
+	@Override
+	public Element getParentElement(Element storyboard) {
+		return exampleElement;
 	}
 }

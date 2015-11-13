@@ -56,7 +56,7 @@ public class NotificationCard extends Card {
 	}
 
 	@Override
-	protected void addHTMLToContainer(final Element storyboard, final Element container) {
+	protected void addHTMLToContainer(final Element container) {
 		String imageName = getResource().getRelativePath(cardImage.getResource());
 
 		Element img = new Element("img");

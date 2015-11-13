@@ -77,7 +77,7 @@ public class ScreenshotCard extends Card {
 	};
 	
 	@Override
-	protected void addHTMLToContainer(final Element storyboard, final Element container) {
+	protected void addHTMLToContainer(final Element container) {
 		// Add link to image
 		Element anchorImg = new Element("a");
 		anchorImg.addAttribute("href", this.imageName);

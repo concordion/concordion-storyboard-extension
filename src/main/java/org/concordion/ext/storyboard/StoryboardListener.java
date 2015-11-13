@@ -1,9 +1,5 @@
 package org.concordion.ext.storyboard;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
-
 import org.concordion.api.Element;
 import org.concordion.api.Resource;
 import org.concordion.api.Target;
@@ -28,20 +24,19 @@ import org.concordion.ext.ScreenshotTaker;
 public class StoryboardListener implements AssertEqualsListener, AssertTrueListener, AssertFalseListener, ConcordionBuildListener,
 		SpecificationProcessingListener, ThrowableCaughtListener, ExampleListener {
 
-	private final List<StoryboardItem> cards = new ArrayList<StoryboardItem>();
+	private final Storyboard storyboard = new Storyboard();
 	private Container currentContainer = null;
-	private ScreenshotTaker screenshotTaker = new RobotScreenshotTaker();
-	private boolean automaticallyAddSectionBreaksForExamples = true;
+	private boolean addSectionsForExamples = true;
 	private boolean addCardsToExample = false;
-	private boolean takeScreenshotOnCompletion = true;
 	private boolean addCardOnThrowable = true;
 	private boolean addCardOnFailure = true;
+	private boolean failureDetected = false;
+	private boolean takeScreenshotOnCompletion = true;
+	private ScreenshotTaker screenshotTaker = null;
 	private boolean lastScreenShotWasThrowable = false;
-	private String collapsibleGroup = "";
 	private Resource resource;
 	private Target target;
-	private boolean failureDetected = false;
-
+	
 	/**
 	 * Add screenshot
 	 */
@@ -52,54 +47,14 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	}
 
 	/**
-	 * Add collapsible section start
-	 */
-	public void addCard(final GroupStartCard card) {
-		if (!collapsibleGroup.isEmpty()) {
-			GroupStopCard stopCard = new GroupStopCard();
-			stopCard.setResult(CardResult.WARN);
-			addCard(stopCard);
-		}
-
-		addCard((Card) card);
-
-		collapsibleGroup = "scgroup" + card.getCardIndex();
-		card.setGroupOwnership(collapsibleGroup);
-	}
-
-	/**
-	 * Add collapsible section end
-	 */
-	public void addCard(final GroupStopCard card) {
-		if (collapsibleGroup.isEmpty()) {
-			return;
-		}
-
-		GroupStartCard start = getLastCollapsibleStartCard();
-		if (start == null) {
-			return;
-		}
-		
-		card.setResult(start.getResult());
-		start.setCollapsed(true);
-		
-		card.setTitle(start.getTitle());
-
-		addCard((Card) card);
-
-		collapsibleGroup = "";
-	}
-
-	/**
 	 * Add custom card and/or set common details for all cards
 	 */
 	public void addCard(final Card card) {
-		if (resource == null || target == null) {
+		if (getResource() == null || getTarget() == null) {
 			return;
 		}
 
 		card.setStoryboardListener(this);
-		card.setGroupMembership(collapsibleGroup);
 		card.captureData();
 		
 		if (currentContainer != null) {
@@ -109,18 +64,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 				currentContainer.setResult(card.getResult());
 			}
 		} else {
-			cards.add(card);
-		
-			if (card.getResult() != CardResult.SUCCESS) {
-				if (!collapsibleGroup.isEmpty()) {
-					GroupStartCard start = getLastCollapsibleStartCard();
-		
-					if (start != null) {
-						start.setResult(card.getResult());
-						start.setCollapsed(card.getResult() != CardResult.FAILURE);
-					}
-				}
-			}
+			storyboard.addItem(card);
 		}
 	}
 
@@ -131,23 +75,10 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	public void addContainer(final Container container) {
 		if (container != null) {
 			container.setStoryboardListener(this);
-			cards.add(container);
+			storyboard.addItem(container);
 		}
 		
 		currentContainer = container;
-	}
-
-	private GroupStartCard getLastCollapsibleStartCard() {
-		GroupStartCard last = null;
-
-		for (int i = cards.size() - 1; i >= 0; i--) {
-			if (cards.get(i) instanceof GroupStartCard) {
-				last = (GroupStartCard) cards.get(i);
-				break;
-			}
-		}
-		
-		return last;
 	}
 
 	@Override
@@ -240,7 +171,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	@Override
 	public void beforeExample(ExampleEvent event) {
-		if (!automaticallyAddSectionBreaksForExamples && !addCardsToExample) return;
+		if (!addSectionsForExamples && !addCardsToExample) return;
 		
 		// Automatically add section breaks for each example
 		Element element = event.getElement();		
@@ -250,7 +181,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 			container.setExampleElement(element);
 			
 			addContainer(container);
-		} else if (automaticallyAddSectionBreaksForExamples) {
+		} else if (addSectionsForExamples) {
 			String title = element.getAttributeValue("example", "http://www.concordion.org/2007/concordion"); 
 			
 			for (int i = 1; i < 5; i++) {
@@ -271,7 +202,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	@Override
 	public void afterExample(ExampleEvent event) {
-		if (!automaticallyAddSectionBreaksForExamples && !addCardsToExample) return;
+		if (!addSectionsForExamples && !addCardsToExample) return;
 		
 		if (takeScreenshotOnCompletion) {
 			if (!lastScreenShotWasThrowable && screenshotTaker != null) {
@@ -294,208 +225,26 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	
 	@Override
 	public void afterProcessingSpecification(final SpecificationProcessingEvent event) {
-		if (cards.isEmpty()) {
-			return;
-		}
-
-		overrideIECompatibilityView(event);
-		
-		if (!lastScreenShotWasThrowable && takeScreenshotOnCompletion && screenshotTaker != null) {
-			ScreenshotCard card = new ScreenshotCard();
-			card.setTitle("Test Completed");
-			card.setDescription("");
-			card.setResult(CardResult.SUCCESS);
-			addCard(card);
-		}
-
-		Element storyboard = getStoryboard(event);
-		if (storyboard == null) {
-			return;
-		}
-
-		addCardsToStoryboard(storyboard);
-
-		resource = null;
-		target = null;
-	}	
-
-	/**
-	 * Insert meta tag '<meta http-equiv="X-UA-Compatible" content="IE=edge" />";' if not already present.  This
-	 * allows the storyboard to display correctly in IE if Compatibility View mode is on - as can happen in a corporate environment.
-	 */
-	private void overrideIECompatibilityView(final SpecificationProcessingEvent event) {
-		Element head = event.getRootElement().getFirstChildElement("head");
-		if (head == null) {
-			head = event.getRootElement();
-		}
-		
-		Element[] metaTags = head.getChildElements("meta");
-		for (Element tag : metaTags) {
-			if(tag.getAttributeValue("http-equiv").equalsIgnoreCase("X-UA-Compatible")) {
-				if(tag.getAttributeValue("content").equalsIgnoreCase("IE=edge")) {
-					return;
-				}
+		try {
+			if (storyboard.getItems().isEmpty()) {
+				return;
 			}
-		}
-		
-		Element meta = new Element("meta");
-		meta.addAttribute("http-equiv", "X-UA-Compatible");
-		meta.addAttribute("content", "IE=edge");
-		head.prependChild(meta);
-	}
-	
-	private Element getStoryboard(final SpecificationProcessingEvent event) {
-		Element body = event.getRootElement().getFirstChildElement("body");
-		if (body != null) {
-			Element footerDiv = null;
-
-			// Search for storyboard
-			Element[] divs = body.getChildElements("div");
-			for (Element div : divs) {
-				if ("storyboard".equals(div.getAttributeValue("class"))) {
-					return div;
-				}
-
-				if ("footer".equals(div.getAttributeValue("class"))) {
-					footerDiv = div;
-				}
-			}
-
-			// Append storyboard to page
-			Element div = new Element("div");
-			div.addStyleClass("storyboard");
-			body.appendChild(div);
-
-			Element header = new Element("h3");
-			header.setId("StoryboardHeader");
-			header.appendText("Storyboard");
-			div.appendChild(header);
-
-			// Add screenshot popup image div
-			Element popupImg = new Element("img");
-			popupImg.setId("StoryCardScreenshotPopup");
-			popupImg.addStyleClass("screenshot");
 			
-			div.appendChild(popupImg);
-			
-			// If footer exists ensure it is the last element on the page
-			if (footerDiv != null) {
-				body.removeChild(footerDiv);
-				body.appendChild(footerDiv);
+			if (!lastScreenShotWasThrowable && takeScreenshotOnCompletion && screenshotTaker != null) {
+				ScreenshotCard card = new ScreenshotCard();
+				card.setTitle("Test Completed");
+				card.setDescription("");
+				card.setResult(CardResult.SUCCESS);
+				addCard(card);
 			}
-
-			return div;
-		}
-
-		return body;
-	}
-
-	private void addCardsToStoryboard(final Element storyboard) {
-		Element ul = new Element("ul");
-		storyboard.appendChild(ul);
-
-		addItemsToList(storyboard, ul, failureDetected, cards);
-				
-		Element[] uls = storyboard.getChildElements("ul");
-		boolean hasChildren = false;
-		for (Element element : uls) {
-			if (element.hasChildren()) {
-				hasChildren = true;
-				break;
-			}
-		}
-		
-		if (!hasChildren) {
-			storyboard.addAttribute("style", "display: none");
-		}
-	}
-
-	private void addItemsToList(final Element storyboard, Element ul, boolean hasFailure, List<StoryboardItem> items) {
-		GroupStartCard collapseGroup = null;
 	
-		for (StoryboardItem item : items) {
-			if (item instanceof Container) {
-				Container container = (Container)item;
-				
-				boolean ulOnStoryboard = ul.getParentElement() == storyboard;
-				boolean addUlToStoryboard = false;
-				
-				if (ulOnStoryboard && !ul.hasChildren()) {
-					storyboard.removeChild(ul);
-					addUlToStoryboard = true;
-				}
-				
-				Element containerUl = new Element("ul");
-				container.addContainerToSpecification(storyboard).appendChild(containerUl);
-								
-				addItemsToList(storyboard, containerUl, container.getResult() == CardResult.FAILURE, container.getCards());
-				
-				if (!containerUl.hasChildren()) {
-					containerUl.getParentElement().removeChild(containerUl);
-				}
-				
-				if (addUlToStoryboard) {
-					storyboard.appendChild(ul);
-				}
-			} else {
-				if (item instanceof GroupStartCard) {
-					collapseGroup = (GroupStartCard)item;
-				}
-		
-				Card card = (Card)item;
-				
-				if (card.shouldAppend(hasFailure)) {
-					ul.appendChild(buildCard(storyboard, collapseGroup, card));
-				} else {
-					card.cleanupData();
-				}
-			}
+			storyboard.addToSpecification(event, failureDetected);
+		} finally {
+			resource = null;
+			target = null;
 		}
-		
-	}
-
-	private Element buildCard(final Element storyboard, GroupStartCard collapseGroup, Card card) {
-		// Story card
-		Element li = new Element("li");
-		li.addStyleClass("storycard");
-
-		if (card.isGroupMember()) {
-			collapseGroup.addHTMLToGroupCard(li, card);
-		}		
-
-		Element container = new Element("div");
-		container.addStyleClass("scimgcontainer");
-		li.appendChild(container);
-
-		card.addHTMLToContainer(storyboard, container);
-
-		// Summary
-		Element summary = new Element("p");
-		summary.appendText(card.getTitle());
-		summary.addStyleClass("scsummary");
-		summary.addStyleClass(card.getResult().getKey());
-
-		li.appendChild(summary);
-
-		// Description
-		Element description = new Element("p");
-		description.appendText(card.getDescription());
-		description.addStyleClass("scdescription");
-		description.addAttribute("title", card.getDescription());
-
-		li.appendChild(description);
-		
-		return li;
-	}
-
-	public int getCardIndex(StoryboardItem card) {
-		return cards.indexOf(card);
 	}
 	
-	public int getNextCardIndex() {
-		return cards.size();
-	}
-
 	public void setScreenshotTaker(final ScreenshotTaker screenshotTaker) {
 		this.screenshotTaker = screenshotTaker;
 	}
@@ -521,26 +270,18 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	}
 
 	public void setRemovePriorScreenshotsOnSuccess() {
-		ListIterator<StoryboardItem> list = cards.listIterator(cards.size());
-
-		while(list.hasPrevious()) {
-			StoryboardItem card = list.previous();
-		
-			if (card instanceof Container) {
-				break;
-			}
-			
-			if (card instanceof ScreenshotCard) {
-				((ScreenshotCard)card).setDeleteIfSuccessful(true);
-			}
-		}
+		storyboard.setRemovePriorScreenshotsOnSuccess();
 	}
 
 	public void setAutomaticallyAddSectionBreaksForExamples(boolean value) {
-		this.automaticallyAddSectionBreaksForExamples = value;
+		this.addSectionsForExamples = value;
 	}
 
 	public void setAddCardsToExample(boolean value) {
 		this.addCardsToExample = value;
+	}
+	
+	public String getItemIndex(StoryboardItem item) {
+		return String.valueOf(storyboard.getItems().indexOf(item));
 	}
 }

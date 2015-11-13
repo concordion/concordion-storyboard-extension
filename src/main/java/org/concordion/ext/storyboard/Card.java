@@ -1,15 +1,12 @@
 package org.concordion.ext.storyboard;
 
 import org.concordion.api.Element;
-import org.concordion.api.Resource;
-import org.concordion.api.Target;
 
 /**
  * Base class for all cards that can be added to the storyboard
  */
 public abstract class Card extends StoryboardItem {
 	private String description = "";
-	private String groupMembership = "";
 
 	/**
 	 * Write the data to a file
@@ -19,12 +16,10 @@ public abstract class Card extends StoryboardItem {
 	/**
 	 * Add HTML to the storyboard to display the card details
 	 * 
-	 * @param storyboard
-	 *            The storyboard element on the specification
 	 * @param listItem
 	 *            The card element
 	 */
-	protected abstract void addHTMLToContainer(final Element storyboard, final Element listItem);
+	protected abstract void addHTMLToContainer(final Element listItem);
 	
 	/**
 	 * Gets a unique file name for data that is to be stored alongside a card
@@ -38,7 +33,7 @@ public abstract class Card extends StoryboardItem {
 	 * @return A unique filename
 	 */
 	protected String getFileName(final String specificationName,
-			final int cardNumber, final String fileExtension) {
+			final String cardNumber, final String fileExtension) {
 		String prefix = specificationName;
 
 		int lastDot = specificationName.lastIndexOf('.');
@@ -55,29 +50,6 @@ public abstract class Card extends StoryboardItem {
 
 	public void setDescription(final String description) {
 		this.description = description;
-	}
-
-	protected String getGroupMembership() {
-		return groupMembership;
-	}
-
-	/**
-	 * Set the collapsible section this card belongs to
-	 *
-	 * @param group
-	 *            Name of group
-	 */
-	protected void setGroupMembership(final String group) {
-		this.groupMembership = group;
-	}
-
-	/**
-	 * Check if this card is a member of a group
-	 * 
-	 * @return True if is member of a group
-	 */
-	protected boolean isGroupMember() {
-		return groupMembership != null && !groupMembership.isEmpty();
 	}
 
 	/**

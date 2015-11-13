@@ -9,19 +9,17 @@ import org.concordion.api.Element;
  * Base class for all items that can contain cards
  */
 public abstract class Container extends StoryboardItem {
-	List<StoryboardItem> cards = new ArrayList<StoryboardItem>();
+	List<StoryboardItem> items = new ArrayList<StoryboardItem>();
 	
 	public void addCard(Card card) {
-		cards.add(card);
+		items.add(card);
 	}
 
 	public List<StoryboardItem> getCards() {
-		return cards;
+		return items;
 	}
 	
-	public abstract void addCardsToSpecification();
-
 	public abstract Element addContainerToSpecification(Element storyboard);
 
-	
+	public abstract Element getParentElement(Element storyboard);
 }

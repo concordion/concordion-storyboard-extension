@@ -11,8 +11,6 @@ import org.concordion.ext.storyboard.Card;
 import org.concordion.ext.storyboard.CardImage;
 import org.concordion.ext.storyboard.CardResult;
 import org.concordion.ext.storyboard.Container;
-import org.concordion.ext.storyboard.GroupStartCard;
-import org.concordion.ext.storyboard.GroupStopCard;
 import org.concordion.ext.storyboard.CustomCardImage;
 import org.concordion.ext.storyboard.NotificationCard;
 import org.concordion.ext.storyboard.ScreenshotCard;
@@ -230,26 +228,6 @@ public class StoryboardExtension implements ConcordionExtension {
 	}
 
 	/**
-	 * Adds collapsible group card to story board
-	 * 
-	 * @param title
-	 *            Must be unique for each group added
-	 */
-	public void startGroup(final String title) {
-		GroupStartCard card = new GroupStartCard();
-		card.setTitle(title);
-
-		extension.addCard(card);
-	}
-
-	/**
-	 * Wraps all story cards from startGroup() call to last added card in a collapse/expand region (defaults to collapsed)
-	 */
-	public void stopGroup() {
-		extension.addCard(new GroupStopCard());
-	}
-
-	/**
 	 * Wraps all story cards from startGroup() call to last added card in a collapse/expand region (defaults to collapsed)
 	 */
 	public void addSectionBreak(String title) {
@@ -268,12 +246,6 @@ public class StoryboardExtension implements ConcordionExtension {
 		extension.addCard(card);
 	}
 	public void addCard(final ScreenshotCard card) {
-		extension.addCard(card);
-	}
-	public void addCard(final GroupStartCard card) {
-		extension.addCard(card);
-	}
-	public void addCard(final GroupStopCard card) {
 		extension.addCard(card);
 	}
 	
