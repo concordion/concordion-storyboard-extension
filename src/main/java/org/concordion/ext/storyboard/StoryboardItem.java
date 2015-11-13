@@ -43,18 +43,6 @@ public abstract class StoryboardItem {
 	public void setResult(final CardResult result) {
 		this.result = result;
 	}
-
-	/**
-	 * @return The unique number of this card
-//	 */
-//	protected String getItemIndex(StoryboardItem item) {
-//		return String.valueOf(listener.getItemIndex(this)) + "-" + String.valueOf(items.indexOf(item));
-//	}
-//
-//	protected String getCardIndex() {
-//		return String.valueOf(listener.getItemIndex(this));
-//	}
-
 	
 	/**
 	 * @return The unique number of this card in the container
@@ -69,9 +57,9 @@ public abstract class StoryboardItem {
 
 	protected String getNextCardIndex() {
 		if (container != null) {
-			return listener.getItemIndex(container) + "-" + container.getCards().size();
+			return listener.getItemIndex(container) + "-" + String.valueOf(container.getCards().size());
 		} else {
-			return listener.getItemIndex(this);
+			return listener.getNextCardIndex();
 		}
 	}
 }

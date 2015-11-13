@@ -54,9 +54,6 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 			return;
 		}
 
-		card.setStoryboardListener(this);
-		card.captureData();
-		
 		if (currentContainer != null) {
 			currentContainer.addCard(card);
 			
@@ -66,6 +63,10 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		} else {
 			storyboard.addItem(card);
 		}
+		
+		card.setStoryboardListener(this);
+		card.setContainer(currentContainer);
+		card.captureData();
 	}
 
 	/**
@@ -225,24 +226,22 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	
 	@Override
 	public void afterProcessingSpecification(final SpecificationProcessingEvent event) {
-		try {
-			if (storyboard.getItems().isEmpty()) {
-				return;
-			}
-			
-			if (!lastScreenShotWasThrowable && takeScreenshotOnCompletion && screenshotTaker != null) {
-				ScreenshotCard card = new ScreenshotCard();
-				card.setTitle("Test Completed");
-				card.setDescription("");
-				card.setResult(CardResult.SUCCESS);
-				addCard(card);
-			}
-	
-			storyboard.addToSpecification(event, failureDetected);
-		} finally {
-			resource = null;
-			target = null;
+		if (storyboard.getItems().isEmpty()) {
+			return;
 		}
+		
+		if (!lastScreenShotWasThrowable && takeScreenshotOnCompletion && screenshotTaker != null) {
+			ScreenshotCard card = new ScreenshotCard();
+			card.setTitle("Test Completed");
+			card.setDescription("");
+			card.setResult(CardResult.SUCCESS);
+			addCard(card);
+		}
+
+		storyboard.addToSpecification(event, failureDetected);
+
+//		resource = null;
+//		target = null;
 	}
 	
 	public void setScreenshotTaker(final ScreenshotTaker screenshotTaker) {
@@ -284,4 +283,9 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	public String getItemIndex(StoryboardItem item) {
 		return String.valueOf(storyboard.getItems().indexOf(item));
 	}
+	
+	public String getNextCardIndex() {
+		return String.valueOf(storyboard.getItems().size());
+	}
+	
 }

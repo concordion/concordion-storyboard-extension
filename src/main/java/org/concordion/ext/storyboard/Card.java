@@ -41,7 +41,7 @@ public abstract class Card extends StoryboardItem {
 			prefix = specificationName.substring(0, lastDot);
 		}
 
-		return String.format("%s%d.%s", prefix, cardNumber, fileExtension);
+		return String.format("%s%s.%s", prefix, cardNumber, fileExtension);
 	}
 
 	public String getDescription() {
