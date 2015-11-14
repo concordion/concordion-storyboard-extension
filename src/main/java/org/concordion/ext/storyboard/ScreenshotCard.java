@@ -39,7 +39,7 @@ public class ScreenshotCard extends Card {
 			return;
 		}
 
-		this.imageName = getFileName(getResource().getName(), getNextCardIndex(), screenshotTaker.getFileExtension());
+		this.imageName = getFileName(getResource().getName(), getItemIndex(), screenshotTaker.getFileExtension());
 		Resource imageResource = getResource().getRelativeResource(imageName);
 		this.imagePath = imageResource.getPath();
 		

@@ -19,6 +19,10 @@ public class Storyboard {
 		return items;
 	}
 	
+	public String getItemIndex(StoryboardItem item) {
+		return String.valueOf(items.indexOf(item));
+	}
+	
 	//TODO this will need to only do currentContainer?
 	public void setRemovePriorScreenshotsOnSuccess() {
 		ListIterator<StoryboardItem> list = items.listIterator(items.size());

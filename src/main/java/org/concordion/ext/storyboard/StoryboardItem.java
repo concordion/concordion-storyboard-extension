@@ -49,17 +49,9 @@ public abstract class StoryboardItem {
 	 */
 	protected String getItemIndex() {
 		if (container != null) {
-			return listener.getItemIndex(container) + "-" + String.valueOf(container.getCards().indexOf(this));
+			return listener.getItemIndex(container) + "-" + container.getItemIndex(this);
 		} else {
-			return String.valueOf(listener.getItemIndex(this));
-		}
-	}
-
-	protected String getNextCardIndex() {
-		if (container != null) {
-			return listener.getItemIndex(container) + "-" + String.valueOf(container.getCards().size());
-		} else {
-			return listener.getNextCardIndex();
+			return listener.getItemIndex(this);
 		}
 	}
 }

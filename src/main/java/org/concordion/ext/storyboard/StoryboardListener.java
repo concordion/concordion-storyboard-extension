@@ -281,11 +281,6 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	}
 	
 	public String getItemIndex(StoryboardItem item) {
-		return String.valueOf(storyboard.getItems().indexOf(item));
+		return storyboard.getItemIndex(item);
 	}
-	
-	public String getNextCardIndex() {
-		return String.valueOf(storyboard.getItems().size());
-	}
-	
 }

@@ -19,6 +19,10 @@ public abstract class Container extends StoryboardItem {
 		return items;
 	}
 	
+	public String getItemIndex(StoryboardItem item) {
+		return String.valueOf(items.indexOf(item));
+	}
+	
 	public abstract Element addContainerToSpecification(Element storyboard);
 
 	public abstract Element getParentElement(Element storyboard);

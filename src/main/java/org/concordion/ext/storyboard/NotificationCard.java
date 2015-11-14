@@ -38,7 +38,7 @@ public class NotificationCard extends Card {
 	@Override
 	protected void captureData() {
 		if (data != null && !data.isEmpty()) {
-			dataFileName = getFileName(getResource().getName(), getNextCardIndex(), fileExtension);
+			dataFileName = getFileName(getResource().getName(), getItemIndex(), fileExtension);
 			Resource xmlResource = getResource().getRelativeResource(dataFileName);
 
 			try {
