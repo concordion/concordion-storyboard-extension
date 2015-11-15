@@ -8,8 +8,12 @@ import org.concordion.api.Element;
 import org.concordion.api.listener.SpecificationProcessingEvent;
 
 public class Storyboard {
-	Element storyboard = null;
-	List<StoryboardItem> items = new ArrayList<StoryboardItem>();
+	private Element storyboard = null;
+	private List<StoryboardItem> items = new ArrayList<StoryboardItem>();
+	
+	public Element getElement() {
+		return storyboard;
+	}
 	
 	public void addItem(StoryboardItem item) {
 		items.add(item);
@@ -86,12 +90,12 @@ public class Storyboard {
 				Container container = (Container)item;
 				
 				Element child = container.build();
-				container.getParentElement(parent).appendChild(child);
+				container.getParentElement().appendChild(child);
 								
 				addItemsToList(container.getCards(), container.getContent(), container.getResult() == CardResult.FAILURE);
 				
 				if (!hasChildren(container.getContent())) {
-					container.getParentElement(parent).removeChild(child);
+					container.getParentElement().removeChild(child);
 				}
 			} else {
 				Card card = (Card)item;

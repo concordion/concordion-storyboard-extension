@@ -289,11 +289,11 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	}
 
 	public String getExampleTitle() {
-		if (currentExample != null) {
-			return getExampleTitle(currentExample.getElement());
+		if (currentExample == null) {
+			return "";
 		}
 		
-		return "";
+		return getExampleTitle(getExampleElement());
 	}
 	
 	public String getExampleTitle(Element element) {
@@ -309,6 +309,17 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		}
 
 		return title;
+	}
 
+	public Element getExampleElement() {
+		if (currentExample == null) {
+			return null;
+		}
+		
+		return currentExample.getElement();
+	}
+
+	public Element getStoryboardElement() {
+		return storyboard.getElement();
 	}
 }

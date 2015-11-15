@@ -13,9 +13,9 @@ import test.concordion.ProcessingResult;
 import test.concordion.ext.storyboard.DummyStoryboardFactory;
 
 @RunWith(ConcordionRunner.class)
-public class StoryCardSectionBreak extends AcceptanceTest {
+public class StoryGroupSectionContainer extends AcceptanceTest {
     
-    public static final String SPEC_NAME = "/" + StoryCardSectionBreak.class.getName().replaceAll("\\.","/");
+    public static final String SPEC_NAME = "/" + StoryGroupSectionContainer.class.getName().replaceAll("\\.","/");
     private int example = 0;
     
     @Extension

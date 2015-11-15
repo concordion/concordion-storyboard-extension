@@ -10,6 +10,8 @@ public class DummyStoryboardFactory implements ConcordionExtensionFactory {
     private static ScreenshotTaker screenshotTaker = null;
     private static boolean addCardOnFailure = true;
     private static boolean takeScreenshotOnTestCompletion = true;
+    private static boolean addCardsToExample = false;
+    private static boolean autoAddSectionForExample = false;
     
     public static void prepareWithScreenShot() {
     	addCardOnFailure = true;
@@ -21,6 +23,14 @@ public class DummyStoryboardFactory implements ConcordionExtensionFactory {
     	addCardOnFailure = true;
         takeScreenshotOnTestCompletion = true;
     	screenshotTaker = null;
+	}
+    
+    public static void setAddCardsToExample(final boolean value) {
+    	addCardsToExample = value;
+	}
+    
+    public static void setAutoAddSectionForExample(final boolean value) {
+    	autoAddSectionForExample = value;
 	}
     
     public static void setAddCardOnFailure(final boolean value) {
@@ -37,6 +47,9 @@ public class DummyStoryboardFactory implements ConcordionExtensionFactory {
     	storyboard.setScreenshotTaker(screenshotTaker);
     	storyboard.setAddCardOnFailure(addCardOnFailure);
     	storyboard.setTakeScreenshotOnCompletion(takeScreenshotOnTestCompletion);
+    	storyboard.setAddCardsToExample(addCardsToExample);
+    	storyboard.setAutomaticallyAddSectionBreaksForExamples(autoAddSectionForExample);
+    	
     	storyboard.setwho("dummy");
     	
         return storyboard;

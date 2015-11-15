@@ -51,9 +51,6 @@ public class StoryboardExtension implements ConcordionExtension {
 		concordionExtender.withResource(path + StockCardImage.TEXT, StockCardImage.TEXT.getResource());		
 		concordionExtender.withResource(path + StockCardImage.XML_REQUEST, StockCardImage.XML_REQUEST.getResource());
 		concordionExtender.withResource(path + StockCardImage.XML_RESPONSE, StockCardImage.XML_RESPONSE.getResource());
-		concordionExtender.withResource(path + StockCardImage.EXPAND, StockCardImage.EXPAND.getResource());
-		concordionExtender.withResource(path + StockCardImage.COLLAPSE, StockCardImage.COLLAPSE.getResource());
-		concordionExtender.withResource(path + StockCardImage.COMPLETE, StockCardImage.COMPLETE.getResource());
 		concordionExtender.withResource(path + StockCardImage.ERROR, StockCardImage.ERROR.getResource());
 
 		for (CustomCardImage image : customImages.values()) {
@@ -187,6 +184,21 @@ public class StoryboardExtension implements ConcordionExtension {
 	public void setRemovePriorScreenshotsOnSuccess() {
 		extension.setRemovePriorScreenshotsOnSuccess();
 	}
+
+	/**
+	 * 
+	 * @param title
+	 *            short description
+	 * @param description
+	 *            card summary
+	 * @param image
+	 * 			StockCardImage or custom CardImage to display 
+	 * @param result
+	 * 			Success/failure status 
+	 */
+	public void addNotification(final String title, final String description, final CardImage image, final CardResult result) {
+		addNotification(title, description, null, null, image, result);
+	}
 	
 	/**
 	 * Adds data/information card to story board
@@ -197,6 +209,10 @@ public class StoryboardExtension implements ConcordionExtension {
 	 *            card summary
 	 * @param data
 	 *            any data that may want to present to user when they click on it, can be empty, xml, json, etc
+	 * @param image
+	 * 			StockCardImage or custom CardImage to display 
+	 * @param result
+	 * 			Success/failure status
 	 */
 	public void addNotification(final String title, final String description, final String data, final CardImage image, final CardResult result) {
 		addNotification(title, description, data, "", image, result);
@@ -213,6 +229,10 @@ public class StoryboardExtension implements ConcordionExtension {
 	 *            any data that may want to present to user when they click on it, can be empty, xml, json, etc
 	 * @param fileExtension
 	 *            file extension of file to write data to, defaults to txt
+	 * @param image
+	 * 			StockCardImage or custom CardImage to display 
+	 * @param result
+	 * 			Success/failure status
 	 */
 	public void addNotification(final String title, final String description, final String data, final String fileExtension, final CardImage image,
 			final CardResult result) {

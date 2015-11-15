@@ -35,7 +35,7 @@ public class StoryboardImages extends AcceptanceTest {
     }
     
     public boolean hasImage(String fileName) throws Exception {
-    	return rig.hasCopiedResource(StockCardImage.COMPLETE.getResource()) && Paths.get(getBaseOutputDir(), fileName).toFile().exists();
+    	return rig.hasCopiedResource(StockCardImage.TEXT.getResource()) && Paths.get(getBaseOutputDir(), fileName).toFile().exists();
     }
     
     public String getBaseFolder() {

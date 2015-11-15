@@ -27,5 +27,5 @@ public abstract class Container extends StoryboardItem {
 	
 	public abstract Element getContent();
 
-	public abstract Element getParentElement(Element storyboard);
+	public abstract Element getParentElement();
 }

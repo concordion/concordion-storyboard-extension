@@ -49,7 +49,7 @@ public class SectionContainer extends Container {
 	}
 
 	@Override
-	public Element getParentElement(Element storyboard) {
-		return storyboard;
+	public Element getParentElement() {
+		return listener.getStoryboardElement();
 	}
 }

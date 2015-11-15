@@ -19,10 +19,6 @@ public class ExampleContainer extends Container {
 		this.exampleElement = element;
 	}
 	
-	public Element getExampleElement() {
-		return this.exampleElement;
-	}
-
 	@Override
 	public Element build() {
 		String id = "toggleheader" + getItemIndex();
@@ -59,7 +55,7 @@ public class ExampleContainer extends Container {
 	}
 
 	@Override
-	public Element getParentElement(Element storyboard) {
+	public Element getParentElement() {
 		return exampleElement;
 	}
 

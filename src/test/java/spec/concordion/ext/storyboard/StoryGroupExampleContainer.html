@@ -1,0 +1,51 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion" xmlns:cx="urn:concordion-extensions:2010">
+<link href="../../../../concordion.css" rel="stylesheet" type="text/css" />
+<head>
+</head>
+<body>
+
+  <h1>Add Cards To Example</h1>
+  
+  <dl><dt><b>Since:</b></dt>
+  <dd>Concordion 2.0.0</dd></dl>
+    
+  <p>If you use the Concordion's Example Command this will append all cards added to the storyboard while the example is being executed to the example element.</p>
+  <p>Behaviour:</p>
+  <ul>
+  	<li>This behaviour is enabled by calling the <code>setAddCardsToExample(true)</code> method on the extension</li>
+  	<li>If a card with a failure or warning status is added to the section then the section title will be given that same status</li>
+  	<li>Clicking on the section title will show or hide the rest of the cards in the section</li>
+  </ul>
+
+  <div concordion:example="example1">
+    <h3>Example 1: Add To Example</h3>
+    <pre concordion:set="#snippet">
+&lt;div class="testinput" concordion:example="example1"&gt;
+    Add a success card titled
+    &lt;span concordion:assertTrue="addCard(#TEXT)"&gt;Card 1&lt;/span&gt;
+&lt;/div&gt;
+	</pre>
+
+	<p concordion:execute="#fragment=render(#snippet)">
+	  When this snippet is run with this fixture, this results in <span concordion:assertTrue="sectionAddedExpanded(#fragment)">a new section being added to the 
+	  Example and the section is collapsed</span>.
+	</p>
+  </div>  
+
+  <div concordion:example="example3">
+	<h3>Example 2: Add Failure Card</h3>
+    <pre concordion:set="#snippet">
+&lt;div class="testinput" concordion:example="example1"&gt;
+    Add a failure card titled
+    &lt;span concordion:assertTrue="addFailureCard(#TEXT)"&gt;Failure&lt;/span&gt;
+&lt;/div&gt;
+	</pre>
+
+	<p concordion:execute="#fragment=render(#snippet)">
+	  When this snippet is run with this fixture, this results in <span concordion:assertTrue="sectionAddedCollapsed(#fragment)">a new section being added to the
+	  Example and the section is collapsed</span> and <span concordion:assertTrue="sectionFailed(#fragment)">the section title getting a failure status</span>.
+	</p>
+  </div>  
+
+</body>
+</html>
