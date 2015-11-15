@@ -27,7 +27,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	private final Storyboard storyboard = new Storyboard();
 	private Container currentContainer = null;
 	private ExampleEvent currentExample = null;
-	private boolean addSectionsForExamples = true;
+	private boolean addSectionsForExamples = false;
 	private boolean addCardsToExample = false;
 	private boolean addCardOnThrowable = true;
 	private boolean addCardOnFailure = true;

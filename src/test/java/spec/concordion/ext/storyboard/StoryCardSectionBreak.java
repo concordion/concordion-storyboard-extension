@@ -19,9 +19,7 @@ public class StoryCardSectionBreak extends AcceptanceTest {
     private int example = 0;
     
     @Extension
-    public StoryboardExtension storyboard = new StoryboardExtension().setScreenshotTaker(null)
-    	.setAddCardOnFailure(false)
-    	.setAutomaticallyAddSectionBreaksForExamples(false);
+    public StoryboardExtension storyboard = new StoryboardExtension().setScreenshotTaker(null).setAddCardOnFailure(false);
     
     @Before 
     public void installExtension() {
