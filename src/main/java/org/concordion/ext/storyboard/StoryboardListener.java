@@ -26,6 +26,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	private final Storyboard storyboard = new Storyboard();
 	private Container currentContainer = null;
+	private ExampleEvent currentExample = null;
 	private boolean addSectionsForExamples = true;
 	private boolean addCardsToExample = false;
 	private boolean addCardOnThrowable = true;
@@ -172,6 +173,8 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	@Override
 	public void beforeExample(ExampleEvent event) {
+		this.currentExample  = event;
+		
 		if (!addSectionsForExamples && !addCardsToExample) return;
 		
 		// Automatically add section breaks for each example
@@ -183,19 +186,8 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 			
 			addContainer(container);
 		} else if (addSectionsForExamples) {
-			String title = element.getAttributeValue("example", "http://www.concordion.org/2007/concordion"); 
-			
-			for (int i = 1; i < 5; i++) {
-				Element header = element.getFirstChildElement("h" + String.valueOf(i));
-				
-				if (header != null) {
-					title = header.getText();
-					break;
-				}		
-			}
-			
 			SectionContainer container = new SectionContainer();
-			container.setTitle(title);
+			container.setTitle(getExampleTitle(element));
 			
 			addContainer(container);
 		}
@@ -203,21 +195,23 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	@Override
 	public void afterExample(ExampleEvent event) {
+		this.currentExample = null;
+		
 		if (!addSectionsForExamples && !addCardsToExample) return;
 		
 		if (takeScreenshotOnCompletion) {
 			if (!lastScreenShotWasThrowable && screenshotTaker != null) {
-				ScreenshotCard sscard = new ScreenshotCard();
-				sscard.setTitle("Example Completed");
-				sscard.setDescription("");
+				ScreenshotCard card = new ScreenshotCard();
+				card.setTitle("Example Completed");
+				card.setDescription("");
 				
 				if (event.getResultSummary().hasExceptions() || event.getResultSummary().getFailureCount() > 0) {
-					sscard.setResult(CardResult.FAILURE);
+					card.setResult(CardResult.FAILURE);
 				} else {
-					sscard.setResult(CardResult.SUCCESS);
+					card.setResult(CardResult.SUCCESS);
 				}
 				
-				addCard(sscard);
+				addCard(card);
 			}
 		}
 		
@@ -282,5 +276,29 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	
 	public String getItemIndex(StoryboardItem item) {
 		return storyboard.getItemIndex(item);
+	}
+
+	public String getExampleTitle() {
+		if (currentExample != null) {
+			return getExampleTitle(currentExample.getElement());
+		}
+		
+		return "";
+	}
+	
+	public String getExampleTitle(Element element) {
+		String title = element.getAttributeValue("example", "http://www.concordion.org/2007/concordion"); 
+		
+		for (int i = 1; i < 5; i++) {
+			Element header = element.getFirstChildElement("h" + String.valueOf(i));
+			
+			if (header != null) {
+				title = header.getText();
+				break;
+			}		
+		}
+
+		return title;
+
 	}
 }

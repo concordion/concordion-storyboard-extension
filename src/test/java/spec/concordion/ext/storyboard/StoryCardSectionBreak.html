@@ -15,7 +15,7 @@
   	<li>Cannot add a section break with to a group - the section break will be ignored</li>
   </ul>
 
-  <div class="example">
+  <div class="example" concordion:example="example1">
     <h3>Example 1: Add Section Break</h3>
     <pre concordion:set="#snippet">&lt;span concordion:execute="addSectionBreak(#TEXT)"&gt;Setup&lt;/span&gt;</pre>
 
@@ -24,7 +24,7 @@
 	</p>
   </div>  
 
-  <div class="example">
+  <div class="example" concordion:example="example2">
 	<h3>Example 2: Stop Section Break</h3>
     <pre concordion:set="#snippet">&lt;span concordion:execute="addSectionBreak()"&gt;&lt;/span&gt;</pre>
 
@@ -33,7 +33,7 @@
 	</p>
   </div>  
 
-  <div class="example">
+  <div class="example" concordion:example="example3">
 	<h3>Example 3: Add Failure Card to Section</h3>
     <pre concordion:set="#snippet">&lt;span concordion:execute="addFailureToSection(#TEXT)"&gt;Failure&lt;/span&gt;</pre>
 
@@ -42,7 +42,7 @@
 	</p>
   </div>  
 
-  <div class="example">
+  <div class="example" concordion:example="example4">
 	<h3>Example 4: Multiple Sections</h3>
     <pre concordion:set="#snippet">&lt;span concordion:execute="addSectionBreaks()"&gt;&lt;/span&gt;</pre>
     

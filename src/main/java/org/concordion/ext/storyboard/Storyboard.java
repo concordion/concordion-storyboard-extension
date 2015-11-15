@@ -60,9 +60,16 @@ public class Storyboard {
 	}
 
 	private boolean hasChildren(Element el) {
-		Element[] uls = el.getChildElements("ul");
+		Element[] children = el.getChildElements("ul");
 
-		for (Element element : uls) {
+		for (Element element : children) {
+			if (element.hasChildren()) {
+				return true;
+			}
+		}
+		
+		children = el.getChildElements("div");
+		for (Element element : children) {
 			if (element.hasChildren()) {
 				return true;
 			}
@@ -78,12 +85,13 @@ public class Storyboard {
 			if (item instanceof Container) {
 				Container container = (Container)item;
 				
-				Element child = container.addContainerToSpecification(storyboard);
+				Element child = container.build();
+				container.getParentElement(parent).appendChild(child);
 								
-				addItemsToList(container.getCards(), child, container.getResult() == CardResult.FAILURE);
+				addItemsToList(container.getCards(), container.getContent(), container.getResult() == CardResult.FAILURE);
 				
-				if (!hasChildren(child)) {
-					container.getParentElement(storyboard).removeChild(child);
+				if (!hasChildren(container.getContent())) {
+					container.getParentElement(parent).removeChild(child);
 				}
 			} else {
 				Card card = (Card)item;

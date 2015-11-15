@@ -231,10 +231,14 @@ public class StoryboardExtension implements ConcordionExtension {
 	 * Wraps all story cards from startGroup() call to last added card in a collapse/expand region (defaults to collapsed)
 	 */
 	public void addSectionBreak(String title) {
-		SectionContainer card = new SectionContainer();
-		card.setTitle(title);
-
-		extension.addContainer(card);
+		SectionContainer container = null;
+		
+		if (title != null && !title.isEmpty()) {
+			container = new SectionContainer();
+			container.setTitle(title);
+		}
+		
+		extension.addContainer(container);
 	}
 	
 	/**
@@ -256,5 +260,13 @@ public class StoryboardExtension implements ConcordionExtension {
 	 */
 	public void addContainer(final Container container) {
 		extension.addContainer(container);
+	}
+
+	/**
+	 * Get the title of the current example
+	 * @return Title if executing an example, otherwise an empty string
+	 */
+	public String getExampleTitle() {
+		return extension.getExampleTitle();
 	}
 }

@@ -19,7 +19,9 @@ public class StoryCardSectionBreak extends AcceptanceTest {
     private int example = 0;
     
     @Extension
-    public StoryboardExtension storyboard = new StoryboardExtension().setScreenshotTaker(null).setAddCardOnFailure(false);
+    public StoryboardExtension storyboard = new StoryboardExtension().setScreenshotTaker(null)
+    	.setAddCardOnFailure(false)
+    	.setAutomaticallyAddSectionBreaksForExamples(false);
     
     @Before 
     public void installExtension() {
@@ -28,30 +30,12 @@ public class StoryCardSectionBreak extends AcceptanceTest {
     }
     
     public String render(String fragment, String acronym) throws Exception {
-    	example++;
-    	
-    	String title = "";
-    	
-    	switch (example) {
-    	case 1:
-    		title = "Add Section Break";
-			break;
-    	case 2:
-    		title = "Stop Section Break";
-			break;
-    	case 3:
-    		title = "Add Failure Card to Section";
-			break;
-			
-    	case 4:
-    		title = "Add Multiple Sections";
-			break;
-    	}
+    	String title = storyboard.getExampleTitle();
     	
     	ProcessingResult result = getTestRig().processFragment(fragment, SPEC_NAME + example);    	
 
     	NotificationCard card = new NotificationCard();    	
-    	card.setTitle("Example " + example + ": " + title);	    
+    	card.setTitle(title);	    
     	card.setDescription("Click image to see example");
     	
 	    //TODO Not sure what going on with this html but it doesn't like this script definition in short form

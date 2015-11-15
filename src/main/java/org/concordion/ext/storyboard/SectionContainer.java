@@ -9,8 +9,10 @@ import org.concordion.api.Element;
  */
 public class SectionContainer extends Container {
 
+	Element content;
+	
 	@Override
-	public Element addContainerToSpecification(Element storyboard) {
+	public Element build() {
 		String id = "toggleheader" + getItemIndex();
 		
 		Element container = new Element("div");
@@ -31,16 +33,19 @@ public class SectionContainer extends Container {
 		label.addStyleClass(getResult().getKey());
 		label.appendText(getTitle());
 		
-		Element content = new Element("div");
-		content.addStyleClass("toggle-box-content");
+		this.content = new Element("div");
+		this.content.addStyleClass("toggle-box-content");
 		
 		container.appendChild(input);
 		container.appendChild(label);
-		container.appendChild(content);
-		
-		storyboard.appendChild(container);
+		container.appendChild(this.content);
 		
 		return container;
+	}
+	
+	@Override
+	public Element getContent() {
+		return this.content;
 	}
 
 	@Override

@@ -23,7 +23,9 @@ public abstract class Container extends StoryboardItem {
 		return String.valueOf(items.indexOf(item));
 	}
 	
-	public abstract Element addContainerToSpecification(Element storyboard);
+	public abstract Element build();
+	
+	public abstract Element getContent();
 
 	public abstract Element getParentElement(Element storyboard);
 }
