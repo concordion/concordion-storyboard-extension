@@ -37,7 +37,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	private boolean lastScreenShotWasThrowable = false;
 	private Resource resource;
 	private Target target;
-	
+	public String whoami;
 	/**
 	 * Add screenshot
 	 */
@@ -163,6 +163,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	@Override
 	public void beforeProcessingSpecification(final SpecificationProcessingEvent event) {
+		if (whoami != "dummy") System.out.println("beforeProcessingSpecification: " + whoami + ", " + getExampleTitle());
 		resource = event.getResource();
 	}
 
@@ -174,6 +175,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	@Override
 	public void beforeExample(ExampleEvent event) {
 		this.currentExample  = event;
+		if (whoami != "dummy") System.out.println("beforeExample: " + whoami + ", " + getExampleTitle());
 		
 		if (!addSectionsForExamples && !addCardsToExample) return;
 		
@@ -195,6 +197,8 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	@Override
 	public void afterExample(ExampleEvent event) {
+		if (whoami != "dummy") System.out.println("afterExample: " + whoami + ", " + getExampleTitle());
+		
 		this.currentExample = null;
 		
 		if (!addSectionsForExamples && !addCardsToExample) return;
@@ -220,6 +224,12 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	
 	@Override
 	public void afterProcessingSpecification(final SpecificationProcessingEvent event) {
+		if (whoami != "dummy") System.out.println("afterProcessingSpecification: " + whoami + ", " + getExampleTitle());
+		for (StoryboardItem item : storyboard.getItems()) {
+			if (whoami != "dummy") System.out.println("\t" + item.getClass().getName());
+		}
+		
+		
 		if (storyboard.getItems().isEmpty()) {
 			return;
 		}

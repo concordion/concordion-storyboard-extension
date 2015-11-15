@@ -19,7 +19,8 @@ public class StoryCardSectionBreak extends AcceptanceTest {
     private int example = 0;
     
     @Extension
-    public StoryboardExtension storyboard = new StoryboardExtension().setScreenshotTaker(null).setAddCardOnFailure(false);
+    public StoryboardExtension storyboard = new StoryboardExtension().setScreenshotTaker(null)
+    .setAddCardOnFailure(false).setwho("StoryCardSectionBreakTest");
     
     @Before 
     public void installExtension() {
@@ -33,7 +34,7 @@ public class StoryCardSectionBreak extends AcceptanceTest {
     	ProcessingResult result = getTestRig().processFragment(fragment, SPEC_NAME + example);    	
 
     	NotificationCard card = new NotificationCard();    	
-    	card.setTitle(title);	    
+    	card.setTitle(title);
     	card.setDescription("Click image to see example");
     	
 	    //TODO Not sure what going on with this html but it doesn't like this script definition in short form
