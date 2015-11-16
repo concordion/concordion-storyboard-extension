@@ -30,7 +30,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	private final Storyboard storyboard = new Storyboard();
 	private Container currentContainer = null;
 	private ExampleEvent currentExample = null;
-	private boolean addAutoAddSectionPerExample = false;
+	private boolean addAutoAddSectionForExample = false;
 	private boolean addCardsToExample = false;
 	private boolean addCardOnThrowable = true;
 	private boolean addCardOnFailure = true;
@@ -180,7 +180,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		this.currentExample  = event;
 		if (whoami != "dummy") System.out.println("beforeExample: " + whoami + ", " + getExampleTitle());
 		
-		if (!addAutoAddSectionPerExample && !addCardsToExample) return;
+		if (!addAutoAddSectionForExample && !addCardsToExample) return;
 		
 		// Automatically add section breaks for each example
 		Element element = event.getElement();		
@@ -190,7 +190,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 			container.setExampleElement(element);
 			
 			addContainer(container);
-		} else if (addAutoAddSectionPerExample) {
+		} else if (addAutoAddSectionForExample) {
 			SectionContainer container = new SectionContainer();
 			container.setTitle(getExampleTitle(element));
 			
@@ -204,7 +204,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		
 		this.currentExample = null;
 		
-		if (!addAutoAddSectionPerExample && !addCardsToExample) return;
+		if (!addAutoAddSectionForExample && !addCardsToExample) return;
 		
 		if (takeScreenshotOnCompletion) {
 			if (!lastScreenShotWasThrowable && screenshotTaker != null) {
@@ -300,8 +300,8 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		}
 	}
 	
-	public void setAutoAddSectionPerExample(boolean value) {
-		this.addAutoAddSectionPerExample = value;
+	public void setAutoAddSectionForExample(boolean value) {
+		this.addAutoAddSectionForExample = value;
 	}
 
 	public void setAddCardsToExample(boolean value) {

@@ -14,25 +14,30 @@
 	be shown in the movie.  In general, storyboards are a series of photos or drawings that outline the sequence of scenes and major changes in
 	the movie.</p>
 	
-	<h2>Card Types</h2>
+	<h2>Cards</h2>
 	
-	This extension currently supports two types of cards out of the box:
+	<p>This extension currently supports two types of cards out of the box:</p>
 	<ul>
-		<li><a c:run="concordion" href="StoryCardScreenshot.html">Capturing screenshots</a></li>
-		<li><a c:run="concordion" href="StoryCardNotification.html">Capturing actions or data that is not gui based</a></li>
+		<li><a c:run="concordion" href="StoryCardScreenshot.html">ScreenshotCard: for capturing screenshots</a></li>
+		<li><a c:run="concordion" href="StoryCardNotification.html">Notification Card: for capturing actions or data that is not gui based</a></li>
 	</ul>
-	See the Customisation link below for ideas on adding your own Card types.
 	
 	
-	<h2>Grouping Cards</h2>
+	<h2>Containers</h2>
 	
-	This extension currently supports two types of containers out of the box:
+	<p>If there are a lot of steps, or many examples in a specification the storyboard can get overly large, this is where containers can aid us.  
+	This extension comes with two containers:</p>
 	<ul>
-		<li><a c:run="concordion" href="StoryGroupSectionContainer.html">Spliting cards into sections</a></li>
-		<li><a c:run="concordion" href="StoryGroupExampleContainer.html">Add cards directly to example</a></li>
+		<li><a c:run="concordion" href="StoryGroupSectionContainer.html">SectionContainer: group cards into expandable regions</a></li>
+		<li><a c:run="concordion" href="StoryGroupExampleContainer.html">ExampleContainer: add cards directly to the example</a></li>
 	</ul>
-	See the Customisation link below for ideas on adding your own Container types.
-		
+	
+	<p>Note:</p>
+	<ul>
+		<li>SectionContainers can be configured to be automatically added to the output when using the Example Command added in Concordion 2.0.</li>
+		<li></li>
+	</ul>
+	
 		
 	<h2>Further Details</h2>
 	<ul>

@@ -134,8 +134,8 @@ public class StoryboardExtension implements ConcordionExtension {
 	 * 
 	 * @param value
 	 */
-	public StoryboardExtension setAutoAddSectionPerExample(boolean value) {
-		extension.setAutoAddSectionPerExample(value);
+	public StoryboardExtension setAutoAddSectionForExample(boolean value) {
+		extension.setAutoAddSectionForExample(value);
 		return this;
 	}
 	
