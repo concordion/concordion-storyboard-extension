@@ -48,7 +48,7 @@ public class DummyStoryboardFactory implements ConcordionExtensionFactory {
     	storyboard.setAddCardOnFailure(addCardOnFailure);
     	storyboard.setTakeScreenshotOnCompletion(takeScreenshotOnTestCompletion);
     	storyboard.setAddCardsToExample(addCardsToExample);
-    	storyboard.setAutomaticallyAddSectionBreaksForExamples(autoAddSectionForExample);
+    	storyboard.setAutoAddSectionPerExample(autoAddSectionForExample);
     	
     	storyboard.setwho("dummy");
     	

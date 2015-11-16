@@ -12,7 +12,7 @@ public class StoryboardDemo {
 
 	@Extension
 	public final StoryboardExtension storyboard = new StoryboardExtension().setScreenshotTaker(null)
-		.setAutomaticallyAddSectionBreaksForExamples(true)
+		.setAutoAddSectionPerExample(true)
 		.setAddCardsToExample(true);
 
 	public boolean addCard(final String description) {

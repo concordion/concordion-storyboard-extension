@@ -19,8 +19,7 @@ public class StoryGroupSectionContainer extends AcceptanceTest {
     private int example = 0;
     
     @Extension
-    public StoryboardExtension storyboard = new StoryboardExtension().setScreenshotTaker(null)
-    .setAddCardOnFailure(false).setwho("StoryCardSectionBreakTest");
+    public StoryboardExtension storyboard = new StoryboardExtension().setScreenshotTaker(null).setAddCardOnFailure(false).setwho("StoryCardSectionBreakTest");
     
     @Before 
     public void installExtension() {
@@ -28,11 +27,23 @@ public class StoryGroupSectionContainer extends AcceptanceTest {
         DummyStoryboardFactory.prepareWithoutScreenShot();
     }
     
-    public String render(String fragment, String acronym) throws Exception {
+    public String renderAutoAddSection(String fragment) throws Exception {
+    	return render(fragment, true);
+    }
+    
+    public String render(String fragment) throws Exception {
+    	return render(fragment, false);
+    }
+    
+    private String render(String fragment, boolean autoAdd) throws Exception {
     	String title = storyboard.getExampleTitle();
+    	
+    	DummyStoryboardFactory.setAutoAddSectionForExample(autoAdd);
     	
     	ProcessingResult result = getTestRig().processFragment(fragment, SPEC_NAME + example);    	
 
+    	DummyStoryboardFactory.setAutoAddSectionForExample(false);
+    	
     	NotificationCard card = new NotificationCard();    	
     	card.setTitle(title);
     	card.setDescription("Click image to see example");
@@ -48,12 +59,25 @@ public class StoryGroupSectionContainer extends AcceptanceTest {
         return result.getElementXML("storyboard");
     }
     
+    public boolean addCard(String title) {    	
+    	DummyStoryboardFactory.getStoryboard().addNotification(title, "", StockCardImage.TEXT, CardResult.SUCCESS);
+    	return true;
+    }
+    
     public void addSectionBreak(String data) {    	
     	DummyStoryboardFactory.getStoryboard().addSectionBreak(data);
     	DummyStoryboardFactory.getStoryboard().addNotification(data + " Section Member", "Example", "", StockCardImage.TEXT, CardResult.SUCCESS);
     }
- 
+    
     public void addSectionBreak() {
+    	DummyStoryboardFactory.getStoryboard().addSectionBreak("Example");
+    	DummyStoryboardFactory.getStoryboard().addNotification("Example Section Member", "Example", "", StockCardImage.TEXT, CardResult.SUCCESS);
+    	
+    	DummyStoryboardFactory.getStoryboard().addSectionBreak("");
+    	DummyStoryboardFactory.getStoryboard().addNotification("Storyboard Member", "Example", "", StockCardImage.TEXT, CardResult.SUCCESS);
+    }
+    
+    public void autoAddSectionBreak() {
     	DummyStoryboardFactory.getStoryboard().addSectionBreak("Example");
     	DummyStoryboardFactory.getStoryboard().addNotification("Example Section Member", "Example", "", StockCardImage.TEXT, CardResult.SUCCESS);
     	
