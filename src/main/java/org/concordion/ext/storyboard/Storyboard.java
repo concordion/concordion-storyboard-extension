@@ -2,8 +2,6 @@ package org.concordion.ext.storyboard;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
-
 import org.concordion.api.Element;
 import org.concordion.api.listener.SpecificationProcessingEvent;
 
@@ -27,23 +25,6 @@ public class Storyboard {
 		return String.valueOf(items.indexOf(item));
 	}
 	
-	//TODO this will need to only do currentContainer?
-	public void setRemovePriorScreenshotsOnSuccess() {
-		ListIterator<StoryboardItem> list = items.listIterator(items.size());
-
-		while(list.hasPrevious()) {
-			StoryboardItem card = list.previous();
-		
-			if (card instanceof Container) {
-				break;
-			}
-			
-			if (card instanceof ScreenshotCard) {
-				((ScreenshotCard)card).setDeleteIfSuccessful(true);
-			}
-		}
-	}
-		
 	public void addToSpecification(final SpecificationProcessingEvent event, boolean failureDetected) {
 		if (items.isEmpty()) {
 			return;

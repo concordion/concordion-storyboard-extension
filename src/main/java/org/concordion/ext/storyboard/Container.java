@@ -2,7 +2,6 @@ package org.concordion.ext.storyboard;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.concordion.api.Element;
 
 /**

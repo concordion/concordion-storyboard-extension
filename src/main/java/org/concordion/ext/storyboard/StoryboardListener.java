@@ -1,5 +1,8 @@
 package org.concordion.ext.storyboard;
 
+import java.util.List;
+import java.util.ListIterator;
+
 import org.concordion.api.Element;
 import org.concordion.api.Resource;
 import org.concordion.api.Target;
@@ -273,9 +276,30 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	}
 
 	public void setRemovePriorScreenshotsOnSuccess() {
-		storyboard.setRemovePriorScreenshotsOnSuccess();
-	}
+		List<StoryboardItem> items;	
+		ListIterator<StoryboardItem> iter;
+	
+		if (currentContainer == null) {
+			items = storyboard.getItems();
+		} else {
+			items = currentContainer.getCards();
+		}
+		
+		iter = items.listIterator(items.size());
 
+		while(iter.hasPrevious()) {
+			StoryboardItem card = iter.previous();
+		
+			if (card instanceof Container) {
+				break;
+			}
+			
+			if (card instanceof ScreenshotCard) {
+				((ScreenshotCard)card).setDeleteIfSuccessful(true);
+			}
+		}
+	}
+	
 	public void setAutoAddSectionPerExample(boolean value) {
 		this.addAutoAddSectionPerExample = value;
 	}
