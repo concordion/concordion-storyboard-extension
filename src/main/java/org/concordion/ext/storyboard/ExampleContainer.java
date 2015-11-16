@@ -8,7 +8,8 @@ import org.concordion.api.Element;
  * You wouldn't normally add this card directly but would call storyboard.addSectionBreak("section title");		
  */
 public class ExampleContainer extends Container {
-	Element content;
+	private Element container;
+	private Element content;
 	private Element exampleElement;
 	
 	public ExampleContainer() {
@@ -20,10 +21,10 @@ public class ExampleContainer extends Container {
 	}
 	
 	@Override
-	public Element build() {
+	public void appendToParent() {
 		String id = "toggleheader" + getItemIndex();
 		
-		Element container = new Element("div");
+		container = new Element("div");
 		container.addStyleClass("toggle-example-container");
 		
 		Element input = new Element("input");
@@ -41,26 +42,32 @@ public class ExampleContainer extends Container {
 		label.addStyleClass(getResult().getKey());
 		label.appendText(getTitle());
 		
-		Element hr = new Element("hr");
-		
 		this.content = new Element("div");
 		this.content.addStyleClass("toggle-example-content");
 		
 		container.appendChild(input);
 		container.appendChild(label);
-		container.appendChild(hr);
 		container.appendChild(this.content);
 		
-		return container;
+		Element hr = new Element("hr");
+		hr.addStyleClass("toggle-separator");
+				
+		getParentElement().appendChild(hr);		
+		getParentElement().appendChild(container);
 	}
 
+	@Override
+	public Element getElement() {
+		return container;
+	}
+	
+	@Override
+	public Element getContentElement() {
+		return this.content;
+	}
+	
 	@Override
 	public Element getParentElement() {
 		return exampleElement;
-	}
-
-	@Override
-	public Element getContent() {
-		return this.content;
 	}
 }

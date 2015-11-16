@@ -22,9 +22,12 @@ public abstract class Container extends StoryboardItem {
 		return String.valueOf(items.indexOf(item));
 	}
 	
-	public abstract Element build();
+	public abstract void appendToParent();
+
+	public abstract Element getElement();
 	
-	public abstract Element getContent();
+	public abstract Element getContentElement();
 
 	public abstract Element getParentElement();
+
 }

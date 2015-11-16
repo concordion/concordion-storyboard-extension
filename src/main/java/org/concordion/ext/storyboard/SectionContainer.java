@@ -9,13 +9,14 @@ import org.concordion.api.Element;
  */
 public class SectionContainer extends Container {
 
-	Element content;
+	private Element container;
+	private Element content;
 	
 	@Override
-	public Element build() {
+	public void appendToParent() {
 		String id = "toggleheader" + getItemIndex();
 		
-		Element container = new Element("div");
+		container = new Element("div");
 		container.addStyleClass("toggle-box-container");
 		
 		Element input = new Element("input");
@@ -38,14 +39,19 @@ public class SectionContainer extends Container {
 		
 		container.appendChild(input);
 		container.appendChild(label);
-		container.appendChild(this.content);
+		container.appendChild(content);
 		
-		return container;
+		getParentElement().appendChild(container);
 	}
 	
 	@Override
-	public Element getContent() {
-		return this.content;
+	public Element getElement() {
+		return container;
+	}
+
+	@Override
+	public Element getContentElement() {
+		return content;
 	}
 
 	@Override

@@ -70,13 +70,12 @@ public class Storyboard {
 			if (item instanceof Container) {
 				Container container = (Container)item;
 				
-				Element child = container.build();
-				container.getParentElement().appendChild(child);
-								
-				addItemsToList(container.getCards(), container.getContent(), container.getResult() == CardResult.FAILURE);
+				container.appendToParent();
+												
+				addItemsToList(container.getCards(), container.getContentElement(), container.getResult() == CardResult.FAILURE);
 				
-				if (!hasChildren(container.getContent())) {
-					container.getParentElement().removeChild(child);
+				if (!hasChildren(container.getContentElement())) {
+					container.getParentElement().removeChild(container.getElement());
 				}
 			} else {
 				Card card = (Card)item;

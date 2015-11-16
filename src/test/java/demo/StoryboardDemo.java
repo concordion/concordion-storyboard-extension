@@ -16,6 +16,10 @@ public class StoryboardDemo {
 		.setAddCardsToExample(true);
 
 	public boolean addCard(final String description) {
+		if (storyboard.getExampleTitle().isEmpty()) {
+			storyboard.addSectionBreak("Demo");
+		}
+		
 		storyboard.addNotification("Example", description, null, StockCardImage.TEXT, CardResult.SUCCESS);
 		return true;
 	}

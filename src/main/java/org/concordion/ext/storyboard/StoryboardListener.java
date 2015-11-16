@@ -202,27 +202,27 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	public void afterExample(ExampleEvent event) {
 		if (whoami != "dummy") System.out.println("afterExample: " + whoami + ", " + getExampleTitle());
 		
-		this.currentExample = null;
-		
-		if (!addAutoAddSectionForExample && !addCardsToExample) return;
-		
-		if (takeScreenshotOnCompletion) {
-			if (!lastScreenShotWasThrowable && screenshotTaker != null) {
-				ScreenshotCard card = new ScreenshotCard();
-				card.setTitle("Example Completed");
-				card.setDescription("");
-				
-				if (event.getResultSummary().hasExceptions() || event.getResultSummary().getFailureCount() > 0) {
-					card.setResult(CardResult.FAILURE);
-				} else {
-					card.setResult(CardResult.SUCCESS);
+		if (addAutoAddSectionForExample || addCardsToExample) {
+			if (takeScreenshotOnCompletion) {
+				if (!lastScreenShotWasThrowable && screenshotTaker != null) {
+					ScreenshotCard card = new ScreenshotCard();
+					card.setTitle("Example Completed");
+					card.setDescription("");
+					
+					if (event.getResultSummary().hasExceptions() || event.getResultSummary().getFailureCount() > 0) {
+						card.setResult(CardResult.FAILURE);
+					} else {
+						card.setResult(CardResult.SUCCESS);
+					}
+					
+					addCard(card);
 				}
-				
-				addCard(card);
 			}
+			
+			addContainer(null);
 		}
 		
-		addContainer(null);
+		this.currentExample = null;
 	}
 	
 	@Override
