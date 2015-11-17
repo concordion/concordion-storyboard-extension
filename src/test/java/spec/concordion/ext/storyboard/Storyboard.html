@@ -18,24 +18,23 @@
 	
 	<p>This extension currently supports two types of cards out of the box:</p>
 	<ul>
-		<li><a c:run="concordion" href="StoryCardScreenshot.html">ScreenshotCard: for capturing screenshots</a></li>
-		<li><a c:run="concordion" href="StoryCardNotification.html">Notification Card: for capturing actions or data that is not gui based</a></li>
+		<li><a c:run="concordion" href="StoryCardScreenshot.html">ScreenshotCard</a>: for capturing screenshots</li>
+		<li><a c:run="concordion" href="StoryCardNotification.html">Notification Card</a>: for capturing actions or data that is not gui based</li>
 	</ul>
 	
 	
 	<h2>Containers</h2>
 	
 	<p>If there are a lot of steps, or many examples in a specification the storyboard can get overly large, this is where containers can aid us.  
-	This extension comes with two containers:</p>
+	This extension comes with one container:</p>
 	<ul>
-		<li><a c:run="concordion" href="StoryGroupSectionContainer.html">SectionContainer: group cards into expandable regions</a></li>
-		<li><a c:run="concordion" href="StoryGroupExampleContainer.html">ExampleContainer: add cards directly to the example</a></li>
-	</ul>
-	
-	<p>Note:</p>
-	<ul>
-		<li>SectionContainers can be configured to be automatically added to the output when using the Example Command added in Concordion 2.0.</li>
-		<li></li>
+		<li>
+			<a c:run="concordion" href="StoryGroupSectionContainer.html">SectionContainer</a>: group cards into expandable regions
+			<ul>
+				<li>Can be added to the storyboard manually or automatically for each new example</li>
+				<li>A single SectionContainer can be appended to the example html element so that cards related to the example are located within the example</li>
+			</ul>
+		</li>		
 	</ul>
 	
 		

@@ -248,7 +248,11 @@ public class StoryboardExtension implements ConcordionExtension {
 	}
 
 	/**
-	 * Wraps all story cards from startGroup() call to last added card in a collapse/expand region (defaults to collapsed)
+	 * Adds a section break to the storyboard
+	 *
+	 * @param title 
+	 * 		Title of the section break, pass in null or empty string to close
+	 * 	 	the section break and add subsequent cards to the storyboard
 	 */
 	public void addSectionBreak(String title) {
 		SectionContainer container = null;

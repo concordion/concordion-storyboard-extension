@@ -19,7 +19,7 @@ public class StoryGroupSectionContainer extends AcceptanceTest {
     private int example = 0;
     
     @Extension
-    public StoryboardExtension storyboard = new StoryboardExtension().setScreenshotTaker(null).setAddCardOnFailure(false).setwho("StoryCardSectionBreakTest");
+    public StoryboardExtension storyboard = new StoryboardExtension().setScreenshotTaker(null).setAddCardOnThrowable(false).setAddCardOnFailure(false).setwho("StoryCardSectionBreakTest");
     
     @Before 
     public void installExtension() {
@@ -28,22 +28,30 @@ public class StoryGroupSectionContainer extends AcceptanceTest {
     }
     
     public String renderAutoAddSection(String fragment) throws Exception {
-    	return render(fragment, true);
+    	DummyStoryboardFactory.setAutoAddSectionForExample(true);
+    	ProcessingResult result = renderTest(fragment);
+    	DummyStoryboardFactory.setAutoAddSectionForExample(false);
+    	
+    	return result.getElementXML("storyboard");
+    }
+    
+    public String renderAddToExample(String fragment) throws Exception {
+    	DummyStoryboardFactory.setAddCardsToExample(true);
+    	ProcessingResult result = renderTest(fragment);
+    	DummyStoryboardFactory.setAddCardsToExample(false);
+    	
+    	return result.getElementXML("testinput");
     }
     
     public String render(String fragment) throws Exception {
-    	return render(fragment, false);
+    	return renderTest(fragment).getElementXML("storyboard");
     }
     
-    private String render(String fragment, boolean autoAdd) throws Exception {
+    private ProcessingResult renderTest(String fragment) throws Exception {
     	String title = storyboard.getExampleTitle();
-    	
-    	DummyStoryboardFactory.setAutoAddSectionForExample(autoAdd);
     	
     	ProcessingResult result = getTestRig().processFragment(fragment, SPEC_NAME + example);    	
 
-    	DummyStoryboardFactory.setAutoAddSectionForExample(false);
-    	
     	NotificationCard card = new NotificationCard();    	
     	card.setTitle(title);
     	card.setDescription("Click image to see example");
@@ -56,62 +64,64 @@ public class StoryGroupSectionContainer extends AcceptanceTest {
     	
     	storyboard.addCard(card);
     	
-        return result.getElementXML("storyboard");
+        return result;
     }
     
     public boolean addCard(String title) {    	
-    	DummyStoryboardFactory.getStoryboard().addNotification(title, "", StockCardImage.TEXT, CardResult.SUCCESS);
+    	DummyStoryboardFactory.getStoryboard().addNotification(title, "Success", StockCardImage.TEXT, CardResult.SUCCESS);
     	return true;
     }
     
-    public void addSectionBreak(String data) {    	
-    	DummyStoryboardFactory.getStoryboard().addSectionBreak(data);
-    	DummyStoryboardFactory.getStoryboard().addNotification(data + " Section Member", "Example", "", StockCardImage.TEXT, CardResult.SUCCESS);
+     public boolean addFailureCard(String title) {
+    	DummyStoryboardFactory.getStoryboard().addNotification(title, "Failure", StockCardImage.TEXT, CardResult.FAILURE);
+    	return true;
     }
     
-    public void addSectionBreak() {
-    	DummyStoryboardFactory.getStoryboard().addSectionBreak("Example");
-    	DummyStoryboardFactory.getStoryboard().addNotification("Example Section Member", "Example", "", StockCardImage.TEXT, CardResult.SUCCESS);
-    	
-    	DummyStoryboardFactory.getStoryboard().addSectionBreak("");
-    	DummyStoryboardFactory.getStoryboard().addNotification("Storyboard Member", "Example", "", StockCardImage.TEXT, CardResult.SUCCESS);
+    public void addSectionBreak(String title) {    	
+    	DummyStoryboardFactory.getStoryboard().addSectionBreak(title);
     }
     
-    public void autoAddSectionBreak() {
-    	DummyStoryboardFactory.getStoryboard().addSectionBreak("Example");
-    	DummyStoryboardFactory.getStoryboard().addNotification("Example Section Member", "Example", "", StockCardImage.TEXT, CardResult.SUCCESS);
-    	
-    	DummyStoryboardFactory.getStoryboard().addSectionBreak("");
-    	DummyStoryboardFactory.getStoryboard().addNotification("Storyboard Member", "Example", "", StockCardImage.TEXT, CardResult.SUCCESS);
-    }
-    
-    public void addSectionBreaks() {
-    	DummyStoryboardFactory.getStoryboard().addSectionBreak("Example 1");
-    	DummyStoryboardFactory.getStoryboard().addNotification("Example Section Member", "Example", "", StockCardImage.TEXT, CardResult.SUCCESS);
-    	
-    	DummyStoryboardFactory.getStoryboard().addSectionBreak("Example 2");
-    	DummyStoryboardFactory.getStoryboard().addNotification("Storyboard Member", "Example", "", StockCardImage.TEXT, CardResult.SUCCESS);
-    }
-    
-    public void addFailureToSection(String data) {
-    	DummyStoryboardFactory.getStoryboard().addSectionBreak(data);
-    	DummyStoryboardFactory.getStoryboard().addNotification(data + " Section Member", "Example", "", StockCardImage.TEXT, CardResult.FAILURE);
+    public void closeSectionBreak() {
+    	DummyStoryboardFactory.getStoryboard().addSectionBreak(null);
     }
     
         
     public boolean sectionAddedCollapsed(String fragment) {
-    	return fragment.contains("class=\"toggle-box scsuccess\">Example</label>");    	
+    	return fragment.contains("class=\"toggle-box scsuccess\">") && !fragment.contains("checked");    	
     }
-    
+
     public boolean sectionAddedExpanded(String fragment) {
-    	return fragment.contains("class=\"toggle-box scsuccess\">Setup</label>");    	
-    }
-    
-    public boolean sectionFailed(String fragment) {
     	return fragment.contains("class=\"toggle-box scfailure\"") && fragment.contains("checked");    	
     }
-    
-    public boolean multipleSectionsAdded(String fragment) {    	
-    	return fragment.contains("<input id=\"toggleheader0\"") && fragment.contains("<input id=\"toggleheader2\"");     	
+
+    public int getSectionCount(String fragment) {
+    	int found = 0;
+    	int pos = 0;
+    	
+    	while ((pos = fragment.indexOf("<div class=\"toggle-box-container\">", pos + 1)) > 0) {
+    		found ++;
+    	}
+    	
+    	return found;
+    }
+
+    public int getCardCount(String fragment) {
+    	int found = 0;
+    	int pos = 0;
+    	
+    	pos = fragment.lastIndexOf("<div class=\"toggle-box-content\">");
+    	if (pos < 0) return 0;
+    	
+    	pos = fragment.indexOf("<ul>", pos);
+    	if (pos < 0) return 0;
+    	
+    	pos = fragment.indexOf("<ul>", pos + 1);
+    	if (pos < 0) return 0;
+    	    	
+    	while ((pos = fragment.indexOf("<li class=\"storycard\">", pos + 1)) > 0) {
+    		found ++;
+    	}
+    	
+    	return found;
     }
 }
