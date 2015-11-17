@@ -11,6 +11,11 @@ public class SectionContainer extends Container {
 
 	private Element container;
 	private Element content;
+	private Element exampleElement = null;
+	
+	public void setExampleElement(Element element) {
+		this.exampleElement = element;
+	}
 	
 	@Override
 	public void appendToParent() {
@@ -56,6 +61,10 @@ public class SectionContainer extends Container {
 
 	@Override
 	public Element getParentElement() {
+		if (exampleElement != null) {
+			return exampleElement;
+		}
+		
 		return listener.getStoryboardElement();
 	}
 }

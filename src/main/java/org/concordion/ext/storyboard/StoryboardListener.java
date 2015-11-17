@@ -186,7 +186,8 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		Element element = event.getElement();		
 		
 		if (addCardsToExample) {
-			ExampleContainer container = new ExampleContainer(); 
+			SectionContainer container = new SectionContainer();
+			container.setTitle("Storyboard");
 			container.setExampleElement(element);
 			
 			addContainer(container);

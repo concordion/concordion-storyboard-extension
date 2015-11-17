@@ -6,6 +6,8 @@
 	height: auto;
 	border:solid 1px black;
 	z-index:3000;
+	border: none;
+	box-shadow: 0 1px 4px rgba(0 ,0, 0, 0.4);
 }
 
 .storyboard {
@@ -102,97 +104,23 @@
     display: none;
 }
 
-/* Expanding Example */
-.toggle-separator {
-    height: 1px;
-    background: #c3d9ff;
-	padding: 0;
-	border: 0;
-	margin: 5px -16px 0 -16px;
-}
-.toggle-example-container ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-
-.toggle-example-container {
-	margin-top: 0;
-	padding: 0;
-	margin-bottom: 0;
-}
-
-.toggle-example-container  + .toggle-example:checked{
-	border-bottom: 1px solid #ADADAD;
-}
-
-.toggle-example-content {
-	margin-bottom: 4px;
-}
-
-.toggle-example {
-  display: none;
-}
-
-.toggle-example:hover{
-	background-color: #f1f1f1;
-}
-
-.toggle-example + label {
-	cursor: pointer;
-	display: block;
-	padding-bottom: 0;
-	padding-top: 5px;
-	line-height: 22px;
-	font-weight: 500;
-	padding-left: 16px;
-	padding-right: 16px;
-	margin-left: -16px;
-	margin-right: -16px;
-}
-
-.toggle-example + label + div {
-	display: none;
-}
-
-.toggle-example:checked + label + div {
-	display: block;
-}
-
-.toggle-example + label:before {
-	content: "";
-	position: relative;
-	top: 20px;
-	margin-right: 10px;
-	padding-top: 10px;	
-	/* CSS Triangle: The four borders of a square element meet at 45° angles so by only colouring one of the borders you end up with a triangle */
-	width: 0;
-	height: 0;
-	border: 6px solid transparent;
-	border-top-color: #000;
-}
-
-.toggle-example:checked + label:before {
-	position: relative;
-	top: -12px;
-	/* CSS Triangle: The four borders of a square element meet at 45° angles so by only colouring one of the borders you end up with a triangle */
-	height: 0;
-	width: 0;
-	border: 6px solid transparent;
-	border-bottom-color: #000;
-}
-
-/* Expanding Section */
+/* SectionContainer */
 .toggle-box-container {
 	margin-top: -1px;
 	border: 1px solid #ADADAD;
 	background-color: #fff;
-	padding-left: 20px;
-	padding-right: 20px;
+	padding-left: 16px;
+	padding-right: 16px;
 }
 
 .toggle-box-content {
 	margin-bottom: 4px;
+}
+
+.toggle-box-content ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
 }
 
 .toggle-box {
@@ -206,14 +134,14 @@
 .toggle-box + label {
 	cursor: pointer;
 	display: block;
-	padding-bottom: 12px;
-	padding-top: 12px;
+	padding-bottom: 8px;
+	padding-top: 8px;
 	line-height: 22px;
 	font-weight: 500;
-	padding-left: 20px;
-	padding-right: 20px;
-	margin-left: -20px;
-	margin-right: -20px;
+	padding-left: 16px;
+	padding-right: 16px;
+	margin-left: -16px;
+	margin-right: -16px;
 }
 
 .toggle-box + label + div {
@@ -240,9 +168,4 @@
 
 .toggle-box:checked + label:before {
 	content: "\2212";
-}
-
-.screenshot {
-	border: none;
-	box-shadow: 0 1px 4px rgba(0 ,0, 0, 0.4);
 }
