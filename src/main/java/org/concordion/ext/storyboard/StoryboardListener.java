@@ -1,8 +1,5 @@
 package org.concordion.ext.storyboard;
 
-import java.util.List;
-import java.util.ListIterator;
-
 import org.concordion.api.Element;
 import org.concordion.api.Resource;
 import org.concordion.api.Target;
@@ -28,8 +25,7 @@ import org.concordion.ext.StoryboardExtension.AppendMode;
 public class StoryboardListener implements AssertEqualsListener, AssertTrueListener, AssertFalseListener, ConcordionBuildListener,
 		SpecificationProcessingListener, ThrowableCaughtListener, ExampleListener {
 
-	private final Storyboard storyboard = new Storyboard();
-	private Container currentContainer = null;
+	private final Storyboard storyboard = new Storyboard(this);
 	private ExampleEvent currentExample = null;
 	private boolean addCardOnThrowable = true;
 	private boolean addCardOnFailure = true;
@@ -58,19 +54,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 			return;
 		}
 
-		if (currentContainer != null) {
-			currentContainer.addCard(card);
-			
-			if (card.getResult() != CardResult.SUCCESS) {
-				currentContainer.setResult(card.getResult());
-			}
-		} else {
-			storyboard.addItem(card);
-		}
-		
-		card.setStoryboardListener(this);
-		card.setContainer(currentContainer);
-		card.captureData();
+		storyboard.addItem(card);
 	}
 
 	/**
@@ -78,12 +62,11 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	 * @param container if null this is regarded as stating all future cards should be added to storyboard
 	 */
 	public void addContainer(final Container container) {
-		if (container != null) {
-			container.setStoryboardListener(this);
-			storyboard.addItem(container);
+		if (getResource() == null || getTarget() == null) {
+			return;
 		}
 		
-		currentContainer = container;
+		storyboard.addItem(container);
 	}
 
 	@Override
@@ -130,10 +113,6 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	@Override
 	public void throwableCaught(final ThrowableCaughtEvent event) {
 		failureDetected = true;
-		
-		if (currentContainer != null) {
-			currentContainer.setResult(CardResult.FAILURE);
-		}
 		
 		if (addCardOnThrowable) {
 			String title = "Exception Caught";
@@ -221,7 +200,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 				}
 			}
 			
-			addContainer(null);
+			storyboard.resetContainers();
 			break;
 		default:
 			break;
@@ -274,29 +253,8 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		this.takeScreenshotOnCompletion = value;
 	}
 
-	public void setRemovePriorScreenshotsOnSuccess() {
-		List<StoryboardItem> items;	
-		ListIterator<StoryboardItem> iter;
-	
-		if (currentContainer == null) {
-			items = storyboard.getItems();
-		} else {
-			items = currentContainer.getCards();
-		}
-		
-		iter = items.listIterator(items.size());
-
-		while(iter.hasPrevious()) {
-			StoryboardItem card = iter.previous();
-		
-			if (card instanceof Container) {
-				break;
-			}
-			
-			if (card instanceof ScreenshotCard) {
-				((ScreenshotCard)card).setDeleteIfSuccessful(true);
-			}
-		}
+	public void markPriorScreenshotsForRemoval() {
+		storyboard.markPriorScreenshotsForRemoval();
 	}
 	
 	public String getItemIndex(StoryboardItem item) {

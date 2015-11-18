@@ -42,16 +42,24 @@ public abstract class StoryboardItem {
 
 	public void setResult(final CardResult result) {
 		this.result = result;
+		
+		if (container != null) {
+			container.setResult(result);
+		}
 	}
 	
 	/**
 	 * @return The unique number of this card in the container
 	 */
 	protected String getItemIndex() {
+		String index;
+		
 		if (container != null) {
-			return listener.getItemIndex(container) + "-" + container.getItemIndex(this);
+			index = container.getItemIndex(this);
 		} else {
-			return listener.getItemIndex(this);
+			index = listener.getItemIndex(this);
 		}
+		
+		return index;
 	}
 }

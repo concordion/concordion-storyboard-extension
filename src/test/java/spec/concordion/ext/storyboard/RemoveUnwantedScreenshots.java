@@ -86,7 +86,7 @@ public class RemoveUnwantedScreenshots extends AcceptanceTest {
     	
     	dummyboard.addScreenshot("Screen 1", "Screenshot 1");
     	dummyboard.addScreenshot("Screen 2", "Screenshot 2");
-    	dummyboard.setRemovePriorScreenshotsOnSuccess();
+    	dummyboard.markPriorScreenshotsForRemoval();
     	dummyboard.addScreenshot("Screen 3", "Screenshot 3");
     }
  
@@ -95,7 +95,7 @@ public class RemoveUnwantedScreenshots extends AcceptanceTest {
     	
     	dummyboard.addScreenshot("Screen 1", "Screenshot 1");
     	dummyboard.addScreenshot("Screen 2", "Screenshot 2");
-    	dummyboard.setRemovePriorScreenshotsOnSuccess();
+    	dummyboard.markPriorScreenshotsForRemoval();
     	
     	throw new RuntimeException("Random Error");
     }
@@ -106,13 +106,13 @@ public class RemoveUnwantedScreenshots extends AcceptanceTest {
     	dummyboard.addSectionBreak("Example 1");
     	dummyboard.addScreenshot("Screen 1", "Screenshot 1");
     	dummyboard.addScreenshot("Screen 2", "Screenshot 2");
-    	dummyboard.setRemovePriorScreenshotsOnSuccess();
+    	dummyboard.markPriorScreenshotsForRemoval();
     	dummyboard.addScreenshot("Screen 3", "Screenshot 3");
     	
     	dummyboard.addSectionBreak("Example 2");
     	dummyboard.addScreenshot("Screen 1", "Screenshot 1");
     	dummyboard.addScreenshot("Screen 2", "Screenshot 2");
-    	dummyboard.setRemovePriorScreenshotsOnSuccess();
+    	dummyboard.markPriorScreenshotsForRemoval();
     	
     	ScreenshotCard card = new ScreenshotCard();
     	card.setTitle("Screen 3");

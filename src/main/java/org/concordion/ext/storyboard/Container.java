@@ -10,19 +10,31 @@ import org.concordion.api.Element;
 public abstract class Container extends StoryboardItem {
 	List<StoryboardItem> items = new ArrayList<StoryboardItem>();
 	
-	public void addCard(Card card) {
+	public void addItem(StoryboardItem card) {
 		items.add(card);
+		
+		if (card.getResult() != CardResult.SUCCESS) {
+			setResult(card.getResult());
+		}
 	}
 
-	public List<StoryboardItem> getCards() {
+	public List<StoryboardItem> getItems() {
 		return items;
 	}
 	
 	public String getItemIndex(StoryboardItem item) {
-		return String.valueOf(items.indexOf(item));
+		String index;
+		
+		if (container != null) {
+			index = container.getItemIndex(this) + "-";
+		} else {
+			index = listener.getItemIndex(this) + "-";
+		}
+		
+		return index += String.valueOf(items.indexOf(item));
 	}
 	
-	public abstract void appendToParent();
+	public abstract void writeTo(Element parent);
 
 	public abstract Element getElement();
 	

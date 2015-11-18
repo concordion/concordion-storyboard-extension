@@ -2,20 +2,68 @@ package org.concordion.ext.storyboard;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
+
 import org.concordion.api.Element;
 import org.concordion.api.listener.SpecificationProcessingEvent;
 
-public class Storyboard {
+class Storyboard {
+	private StoryboardListener listener;
 	private Element storyboard = null;
 	private List<StoryboardItem> items = new ArrayList<StoryboardItem>();
+	private List<Container> containers = new ArrayList<Container>();
 	private String title = "Storyboard";
+		
+	Storyboard(StoryboardListener listener) {
+		this.listener = listener;
+	}
 	
 	public Element getElement() {
 		return storyboard;
 	}
 	
-	public void addItem(StoryboardItem item) {
-		items.add(item);
+	private int getCurrentContainerIndex() {
+		return containers.size() - 1;
+	}
+	
+	public void addItem(Card card) {
+		card.setStoryboardListener(listener);
+		
+		if (containers.isEmpty()) {
+			items.add(card);
+		} else {
+			Container container = containers.get(getCurrentContainerIndex());
+			card.setContainer(container);
+			container.addItem(card);
+		}		
+
+		card.captureData();
+	}
+	
+	public void addItem(Container container) {
+		
+		if (container == null) {
+			if (!containers.isEmpty()) {
+				containers.remove(getCurrentContainerIndex());
+			}
+		} else {
+			container.setStoryboardListener(listener);
+			
+			if (containers.isEmpty()) {
+				items.add(container);
+			} else {
+				Container current = containers.get(getCurrentContainerIndex());
+				
+				container.setContainer(current);
+				current.addItem(container);
+			}
+			
+			containers.add(container);
+		}
+	}
+
+	public void resetContainers() {
+		containers.clear();
 	}
 	
 	public List<StoryboardItem> getItems() {
@@ -24,6 +72,31 @@ public class Storyboard {
 	
 	public String getItemIndex(StoryboardItem item) {
 		return String.valueOf(items.indexOf(item));
+	}
+	
+	public void markPriorScreenshotsForRemoval() {
+		List<StoryboardItem> items;	
+		ListIterator<StoryboardItem> iter;
+	
+		if (containers.isEmpty()) {
+			items = this.items;
+		} else {
+			items = containers.get(getCurrentContainerIndex()).getItems();
+		}
+		
+		iter = items.listIterator(items.size());
+
+		while(iter.hasPrevious()) {
+			StoryboardItem card = iter.previous();
+		
+			if (card instanceof Container) {
+				break;
+			}
+			
+			if (card instanceof ScreenshotCard) {
+				((ScreenshotCard)card).setDeleteIfSuccessful(true);
+			}
+		}
 	}
 	
 	public String getTitle() {
@@ -79,9 +152,9 @@ public class Storyboard {
 			if (item instanceof Container) {
 				Container container = (Container)item;
 				
-				container.appendToParent();
+				container.writeTo(parent);
 												
-				addItemsToList(container.getCards(), container.getContentElement(), container.getResult() == CardResult.FAILURE);
+				addItemsToList(container.getItems(), container.getContentElement(), container.getResult() == CardResult.FAILURE);
 				
 				if (!hasChildren(container.getContentElement())) {
 					container.getParentElement().removeChild(container.getElement());

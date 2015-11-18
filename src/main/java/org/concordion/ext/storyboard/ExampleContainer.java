@@ -21,7 +21,7 @@ public class ExampleContainer extends Container {
 	}
 	
 	@Override
-	public void appendToParent() {
+	public void writeTo(Element parent) {
 		String id = "toggleheader" + getItemIndex();
 		
 		container = new Element("div");

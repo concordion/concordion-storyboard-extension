@@ -16,11 +16,17 @@ public class StoryboardDemo {
 		.setAppendMode(AppendMode.ItemsToExample);
 
 	public boolean addCard(final String description) {
-		if (storyboard.getCurrentExampleTitle().isEmpty()) {
-			storyboard.addSectionBreak("Demo");
-		}
+		String title = storyboard.getCurrentExampleTitle();
 		
-		storyboard.addNotification("Example", description, null, StockCardImage.TEXT, CardResult.SUCCESS);
+		if (title.isEmpty()) title = "Demo";
+		
+		storyboard.addSectionBreak(title);
+		//storyboard.addNotification("Example", description, null, StockCardImage.TEXT, CardResult.SUCCESS);
+		storyboard.addSectionBreak("Inner");
+		storyboard.addNotification("Example", description, null, StockCardImage.TEXT, CardResult.FAILURE);
+		storyboard.addSectionBreak("");
+		storyboard.addSectionBreak("");
+		
 		return true;
 	}
 

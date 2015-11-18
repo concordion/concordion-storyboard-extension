@@ -9,16 +9,14 @@ import org.concordion.api.Element;
  */
 public class SectionContainer extends Container {
 
+	private Element parent;
 	private Element container;
 	private Element content;
-	private Element exampleElement = null;
-	
-	public void setExampleElement(Element element) {
-		this.exampleElement = element;
-	}
-	
+		
 	@Override
-	public void appendToParent() {
+	public void writeTo(Element parent) {
+		this.parent = parent;
+		
 		String id = "toggleheader" + getItemIndex();
 		
 		container = new Element("div");
@@ -61,10 +59,6 @@ public class SectionContainer extends Container {
 
 	@Override
 	public Element getParentElement() {
-		if (exampleElement != null) {
-			return exampleElement;
-		}
-		
-		return listener.getStoryboardElement();
+		return parent;
 	}
 }
