@@ -16,7 +16,7 @@ public class StoryboardDemo {
 		.setAddCardsToExample(true);
 
 	public boolean addCard(final String description) {
-		if (storyboard.getExampleTitle().isEmpty()) {
+		if (storyboard.getCurrentExampleTitle().isEmpty()) {
 			storyboard.addSectionBreak("Demo");
 		}
 		

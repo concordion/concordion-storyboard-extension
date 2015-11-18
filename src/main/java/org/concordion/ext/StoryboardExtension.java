@@ -76,6 +76,17 @@ public class StoryboardExtension implements ConcordionExtension {
 	}
 
 	/**
+	 * Set the title to display on the Storyboard and/or ExampleContainer
+	 * 
+	 * Is a very small attempt at multi-language support.
+	 * @param title
+	 */
+	public StoryboardExtension setTitle(String title) {
+		extension.setTitle(title);
+		return this;
+	}
+	
+	/**
 	 * Sets whether a card will be added to the storyboard when an uncaught exception occurs in the test. Defaults to <b><code>true</code></b>. 
 	 * If screenshotTaker is set then it will take a {@link ScreenshotCard}, else it will add a {@link NotificationCard}
 	 * 
@@ -290,7 +301,7 @@ public class StoryboardExtension implements ConcordionExtension {
 	 * Get the title of the current example
 	 * @return Title if executing an example, otherwise an empty string
 	 */
-	public String getExampleTitle() {
-		return extension.getExampleTitle();
+	public String getCurrentExampleTitle() {
+		return extension.getCurrentExampleTitle();
 	}
 }

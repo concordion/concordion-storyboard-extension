@@ -31,7 +31,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	private Container currentContainer = null;
 	private ExampleEvent currentExample = null;
 	private boolean addAutoAddSectionForExample = false;
-	private boolean addCardsToExample = false;
+	private boolean addCardsToExample = true;
 	private boolean addCardOnThrowable = true;
 	private boolean addCardOnFailure = true;
 	private boolean failureDetected = false;
@@ -184,8 +184,9 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		Element element = event.getElement();		
 		
 		if (addCardsToExample) {
-			ExampleContainer container = new ExampleContainer(); 
-			container.setExampleElement(element);
+			ExampleContainer container = new ExampleContainer();
+			container.setTitle(storyboard.getTitle());
+			container.setExampleElement(element);			
 			
 			addContainer(container);
 		} else if (addAutoAddSectionForExample) {
@@ -237,8 +238,8 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 		storyboard.addToSpecification(event, failureDetected);
 
-//		resource = null;
-//		target = null;
+		resource = null;
+		target = null;
 	}
 	
 	public void setScreenshotTaker(final ScreenshotTaker screenshotTaker) {
@@ -302,7 +303,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		return storyboard.getItemIndex(item);
 	}
 
-	public String getExampleTitle() {
+	public String getCurrentExampleTitle() {
 		if (currentExample == null) {
 			return "";
 		}
@@ -335,5 +336,9 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	public Element getStoryboardElement() {
 		return storyboard.getElement();
+	}
+
+	public void setTitle(String title) {
+		storyboard.setTitle(title);		
 	}
 }

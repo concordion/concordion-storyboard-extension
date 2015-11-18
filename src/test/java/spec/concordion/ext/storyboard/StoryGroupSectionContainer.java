@@ -48,7 +48,7 @@ public class StoryGroupSectionContainer extends AcceptanceTest {
     }
     
     private ProcessingResult renderTest(String fragment) throws Exception {
-    	String title = storyboard.getExampleTitle();
+    	String title = storyboard.getCurrentExampleTitle();
     	
     	ProcessingResult result = getTestRig().processFragment(fragment, SPEC_NAME + example);    	
 

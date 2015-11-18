@@ -29,7 +29,7 @@ public class StoryGroupExampleContainer extends AcceptanceTest {
     }
     
     public String render(String fragment) throws Exception {
-    	String title = storyboard.getExampleTitle();
+    	String title = storyboard.getCurrentExampleTitle();
     	
     	ProcessingResult result = getTestRig().processFragment(fragment, SPEC_NAME + example);  	
 

@@ -8,6 +8,7 @@ import org.concordion.api.listener.SpecificationProcessingEvent;
 public class Storyboard {
 	private Element storyboard = null;
 	private List<StoryboardItem> items = new ArrayList<StoryboardItem>();
+	private String title = "Storyboard";
 	
 	public Element getElement() {
 		return storyboard;
@@ -23,6 +24,14 @@ public class Storyboard {
 	
 	public String getItemIndex(StoryboardItem item) {
 		return String.valueOf(items.indexOf(item));
+	}
+	
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	
 	public void addToSpecification(final SpecificationProcessingEvent event, boolean failureDetected) {
@@ -177,11 +186,13 @@ public class Storyboard {
 			div.addStyleClass("storyboard");
 			body.appendChild(div);
 
-			Element header = new Element("h3");
-			header.setId("StoryboardHeader");
-			header.appendText("Storyboard");
-			div.appendChild(header);
-
+			if (getTitle() != null && !getTitle().isEmpty()) {
+				Element header = new Element("h3");
+				header.setId("StoryboardHeader");
+				header.appendText(title);
+				div.appendChild(header);
+			}
+			
 			// Add screenshot popup image div
 			Element popupImg = new Element("img");
 			popupImg.setId("StoryCardScreenshotPopup");
@@ -199,6 +210,5 @@ public class Storyboard {
 		}
 
 		return body;
-	}
-	
+	}	
 }
