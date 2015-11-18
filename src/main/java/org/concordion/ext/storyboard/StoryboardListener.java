@@ -20,6 +20,7 @@ import org.concordion.api.listener.SpecificationProcessingListener;
 import org.concordion.api.listener.ThrowableCaughtEvent;
 import org.concordion.api.listener.ThrowableCaughtListener;
 import org.concordion.ext.ScreenshotTaker;
+import org.concordion.ext.StoryboardExtension.AppendMode;
 
 /**
  * Listens to Concordion events and/or method calls and then adds the required cards to the story board. 
@@ -30,8 +31,6 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	private final Storyboard storyboard = new Storyboard();
 	private Container currentContainer = null;
 	private ExampleEvent currentExample = null;
-	private boolean addAutoAddSectionForExample = false;
-	private boolean addCardsToExample = true;
 	private boolean addCardOnThrowable = true;
 	private boolean addCardOnFailure = true;
 	private boolean failureDetected = false;
@@ -40,6 +39,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	private boolean lastScreenShotWasThrowable = false;
 	private Resource resource;
 	private Target target;
+	private AppendMode appendMode = AppendMode.ItemsToExample;
 
 	/**
 	 * Add screenshot
@@ -178,28 +178,33 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	public void beforeExample(ExampleEvent event) {
 		this.currentExample  = event;
 		
-		if (!addAutoAddSectionForExample && !addCardsToExample) return;
-		
 		// Automatically add section breaks for each example
-		Element element = event.getElement();		
-		
-		if (addCardsToExample) {
-			ExampleContainer container = new ExampleContainer();
-			container.setTitle(storyboard.getTitle());
-			container.setExampleElement(element);			
+		switch (appendMode) {
+		case ItemsToExample:
+			ExampleContainer c = new ExampleContainer();
+			c.setTitle(storyboard.getTitle());
+			c.setExampleElement(event.getElement());			
 			
-			addContainer(container);
-		} else if (addAutoAddSectionForExample) {
-			SectionContainer container = new SectionContainer();
-			container.setTitle(getExampleTitle(element));
+			addContainer(c);
+			break;
 			
-			addContainer(container);
+		case ExampleToNewStoryboardSection:
+			SectionContainer sc = new SectionContainer();
+			sc.setTitle(getExampleTitle(event.getElement()));
+			
+			addContainer(sc);
+			break;
+			
+		default:
+			break;
 		}
 	}
 
 	@Override
 	public void afterExample(ExampleEvent event) {
-		if (addAutoAddSectionForExample || addCardsToExample) {
+		switch (appendMode) {
+		case ItemsToExample:
+		case ExampleToNewStoryboardSection:
 			if (takeScreenshotOnCompletion) {
 				if (!lastScreenShotWasThrowable && screenshotTaker != null) {
 					ScreenshotCard card = new ScreenshotCard();
@@ -217,6 +222,9 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 			}
 			
 			addContainer(null);
+			break;
+		default:
+			break;
 		}
 		
 		this.currentExample = null;
@@ -291,14 +299,6 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		}
 	}
 	
-	public void setAutoAddSectionForExample(boolean value) {
-		this.addAutoAddSectionForExample = value;
-	}
-
-	public void setAddCardsToExample(boolean value) {
-		this.addCardsToExample = value;
-	}
-	
 	public String getItemIndex(StoryboardItem item) {
 		return storyboard.getItemIndex(item);
 	}
@@ -340,5 +340,9 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	public void setTitle(String title) {
 		storyboard.setTitle(title);		
+	}
+
+	public void setAppendMode(AppendMode appendMode) {
+		this.appendMode = appendMode;		
 	}
 }

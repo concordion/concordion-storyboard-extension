@@ -85,7 +85,24 @@ public class StoryboardExtension implements ConcordionExtension {
 		extension.setTitle(title);
 		return this;
 	}
-	
+
+	/**
+	 * Set how items are added to the storyboard
+	 * 
+	 * <ul>
+	 * 	 <li>Append to end of Storyboard (original behaviour)</li>
+	 * 	 <li>If item is added within currently executing Example Command append to example element, otherwise append to Storyboard <b>(default)</b></li>
+	 *   <li>If item is added within currently executing Example Command append to new section container in Storyboard, otherwise append to Storyboard</li>
+	 * </ul> 
+	 * 
+	 * @param appendMode
+	 */
+	public StoryboardExtension setAppendMode(AppendMode appendMode) {
+		extension.setAppendMode(appendMode);
+		return this;
+	}
+
+		
 	/**
 	 * Sets whether a card will be added to the storyboard when an uncaught exception occurs in the test. Defaults to <b><code>true</code></b>. 
 	 * If screenshotTaker is set then it will take a {@link ScreenshotCard}, else it will add a {@link NotificationCard}
@@ -137,30 +154,6 @@ public class StoryboardExtension implements ConcordionExtension {
 		return this;
 	}
 
-	/**
-	 * By default a section break will be added to the storyboard each time the example command is encountered.  
-	 * 
-	 * The title for the section break will either be first header found in the example section (searched in order h1...h5), if a 
-	 * header is not found the name of the section break will be used>
-	 * 
-	 * @param value
-	 */
-	public StoryboardExtension setAutoAddSectionForExample(boolean value) {
-		extension.setAutoAddSectionForExample(value);
-		return this;
-	}
-	
-	/**
-	 * If using the ExampleCommand add cards to the end of the example rather than placing in the 
-	 * storyboard section at the bottom of the specification
-	 * 
-	 * @param value
-	 */
-	public StoryboardExtension setAddCardsToExample(boolean value) {
-		extension.setAddCardsToExample(value);
-		return this;
-	}
-	
 	/**
 	 * Set to false to stop screenshot cards being added, this is useful in situations where might be looping and refreshing screen constantly and don't want to
 	 * show many screenshots of same screen in storyboard
@@ -303,5 +296,31 @@ public class StoryboardExtension implements ConcordionExtension {
 	 */
 	public String getCurrentExampleTitle() {
 		return extension.getCurrentExampleTitle();
+	}
+	
+	public enum AppendTo {
+		Storyboard,
+		
+		Eample,
+		
+		SectionContainer
+	}
+	
+	public enum AppendMode {
+		/**
+		 * Cards and Containers are added to the Storyboard (original behaviour)
+		 */
+		ItemsToStoryboard,
+		
+		/**
+		 * Cards and Containers are added to the Example if using the Example Command, otherwise added to the Storyboard (default behaviour)
+		 */
+		ItemsToExample,
+		
+		/**
+		 *  If using the Example Command then any cards added during exection of the example will be added to a new Section Container on the Storyboard,
+		 *  otherwise cards and containers are added to the Storyboard
+		 */
+		ExampleToNewStoryboardSection
 	}
 }

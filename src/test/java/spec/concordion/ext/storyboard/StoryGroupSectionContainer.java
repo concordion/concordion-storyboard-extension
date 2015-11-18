@@ -2,6 +2,7 @@ package spec.concordion.ext.storyboard;
 
 import org.concordion.api.extension.Extension;
 import org.concordion.ext.StoryboardExtension;
+import org.concordion.ext.StoryboardExtension.AppendMode;
 import org.concordion.ext.storyboard.CardResult;
 import org.concordion.ext.storyboard.NotificationCard;
 import org.concordion.ext.storyboard.StockCardImage;
@@ -28,22 +29,22 @@ public class StoryGroupSectionContainer extends AcceptanceTest {
     }
     
     public String renderAutoAddSection(String fragment) throws Exception {
-    	DummyStoryboardFactory.setAutoAddSectionForExample(true);
+    	DummyStoryboardFactory.setAppendMode(AppendMode.ExampleToNewStoryboardSection);
     	ProcessingResult result = renderTest(fragment);
-    	DummyStoryboardFactory.setAutoAddSectionForExample(false);
     	
     	return result.getElementXML("storyboard");
     }
     
     public String renderAddToExample(String fragment) throws Exception {
-    	DummyStoryboardFactory.setAddCardsToExample(true);
+    	DummyStoryboardFactory.setAppendMode(AppendMode.ItemsToExample);
     	ProcessingResult result = renderTest(fragment);
-    	DummyStoryboardFactory.setAddCardsToExample(false);
     	
     	return result.getElementXML("testinput");
     }
     
     public String render(String fragment) throws Exception {
+    	DummyStoryboardFactory.setAppendMode(AppendMode.ItemsToStoryboard);
+    	
     	return renderTest(fragment).getElementXML("storyboard");
     }
     
