@@ -31,23 +31,7 @@ public class StoryCardNotification extends AcceptanceTest {
     	ProcessingResult result = getTestRig().processFragment(fragment, SPEC_NAME + ++example);    	
     	
     	NotificationCard card = new NotificationCard();    	
-    	card.setTitle("Example " + example);
-    	
-    	switch (example) {
-    	case 1:
-    		card.setDescription("Add Card");
-			break;
-    	case 2:
-    		card.setDescription("Capture Failure");
-			break;
-    	case 3:
-    		card.setDescription("Capture Exception");
-			break;
-    	case 4:
-    		card.setDescription("Ignore Failure");
-			break;			
-    	}
-	    
+    	card.setTitle(storyboard.getCurrentExampleTitle());
     	card.setDescription(card.getDescription() + ": click image to see example");
     	
 	    //Not sure what going on with this html but it doesn't like this script definition in short form

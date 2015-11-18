@@ -44,30 +44,14 @@ public class RemoveUnwantedScreenshots extends AcceptanceTest {
         DummyStoryboardFactory.setTakeScreenshotOnTestCompletion(false);
     }
     
-    public String render(String fragment, String acronym) throws Exception {
+    public String render(String fragment) throws Exception {
     	example++;
-    	
-    	String title = "";
-    	
-    	switch (example) {
-    	case 1:
-    		title = "Delete Cards on Success";
-			break;
-			
-    	case 2:
-    		title = "Don't delete cards on failure";
-    		break;
-    		
-    	case 3:
-    		title = "Delete Cards within Section Break";
-			break;
-    	}
     	
     	rig = getTestRig();
     	ProcessingResult result = rig.processFragment(fragment, SPEC_NAME + example);    	
 
     	NotificationCard card = new NotificationCard();    	
-    	card.setTitle("Example " + example + ": " + title);	    
+    	card.setTitle(storyboard.getCurrentExampleTitle());	    
     	card.setDescription("Click image to see example");
     	
 	    //Not sure what going on with this html but it doesn't like this script definition in short form
@@ -108,18 +92,18 @@ public class RemoveUnwantedScreenshots extends AcceptanceTest {
     	dummyboard.addScreenshot("Screen 2", "Screenshot 2");
     	dummyboard.markPriorScreenshotsForRemoval();
     	dummyboard.addScreenshot("Screen 3", "Screenshot 3");
+    	dummyboard.completeContainer();
     	
     	dummyboard.addSectionBreak("Example 2");
     	dummyboard.addScreenshot("Screen 1", "Screenshot 1");
     	dummyboard.addScreenshot("Screen 2", "Screenshot 2");
     	dummyboard.markPriorScreenshotsForRemoval();
-    	
     	ScreenshotCard card = new ScreenshotCard();
     	card.setTitle("Screen 3");
     	card.setDescription("Screenshot 3");
     	card.setResult(CardResult.FAILURE);
-    	
     	dummyboard.addCard(card);
+    	dummyboard.completeContainer();
     } 
     
     public int getCountScreenShots(String fragment) {

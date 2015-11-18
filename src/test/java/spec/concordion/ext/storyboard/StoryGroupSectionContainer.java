@@ -49,12 +49,12 @@ public class StoryGroupSectionContainer extends AcceptanceTest {
     }
     
     private ProcessingResult renderTest(String fragment) throws Exception {
-    	String title = storyboard.getCurrentExampleTitle();
+    	example++;
     	
     	ProcessingResult result = getTestRig().processFragment(fragment, SPEC_NAME + example);    	
 
     	NotificationCard card = new NotificationCard();    	
-    	card.setTitle(title);
+    	card.setTitle(storyboard.getCurrentExampleTitle());
     	card.setDescription("Click image to see example");
     	
 	    //Not sure what going on with this html but it doesn't like this script definition in short form

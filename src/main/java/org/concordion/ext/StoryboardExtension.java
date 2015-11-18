@@ -270,6 +270,13 @@ public class StoryboardExtension implements ConcordionExtension {
 	}
 	
 	/**
+	 * Mark current container as completed, any cards added past this point will go to the parent container.
+	 */
+	public void completeContainer() {
+		extension.addContainer(null);
+	}
+	
+	/**
 	 * Allow custom cards to be passed into storyboard
 	 * 
 	 * @param card

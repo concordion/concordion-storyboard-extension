@@ -15,31 +15,31 @@
   	<li>If the delete point is withing a section break then the screenshot cards will be deleted when the section is marked as successful</li>
   </ul>
 
-  <div class="example">
+  <div concordion:example="example1">
     <h3>Example 1: Delete cards on success</h3>
     <pre concordion:set="#snippet">&lt;span concordion:execute="addScreenshots()"&gt;&lt;/span&gt;</pre>
 
-	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
+	<p concordion:execute="#fragment=render(#snippet)">
 	  When this snippet is run with this fixture, this results in <span concordion:assertEquals="getCountScreenShots(#fragment)">1</span> screenshot card being added to the Storyboard
 	  and <span concordion:assertEquals="getCountImages()">1</span> image remains in the output folder
 	</p>
   </div>  
 
-  <div class="example">
+  <div concordion:example="example2">
     <h3>Example 2: Don't delete cards on failure</h3>
     <pre concordion:set="#snippet">&lt;span concordion:execute="addFailedScreenshots()"&gt;&lt;/span&gt;</pre>
 
-	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
+	<p concordion:execute="#fragment=render(#snippet)">
 	  When this snippet is run with this fixture, this results in <span concordion:assertEquals="getCountScreenShots(#fragment)">3</span> screenshot card being added to the Storyboard
 	  and <span concordion:assertEquals="getCountImages()">3</span> images remain in the output folder
 	</p>
   </div>  
   
-  <div class="example">
+  <div concordion:example="example3">
 	<h3>Example 3: Delete cards within section break</h3>
     <pre concordion:set="#snippet">&lt;span concordion:execute="addScreenshotsInSectionBreak()"&gt;&lt;/span&gt;</pre>
 
-	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
+	<p concordion:execute="#fragment=render(#snippet)">
 	  When this snippet is run with this fixture, this results in <span concordion:assertEquals="getCountScreenShots(#fragment)">4</span> screenshot cards being added to the Storyboard
 	  and <span concordion:assertEquals="getCountImages()">4</span> images remain in the output folder
 	</p>
