@@ -20,7 +20,7 @@ public class StoryGroupExampleContainer extends AcceptanceTest {
     private int example = 0;
     
     @Extension
-    public StoryboardExtension storyboard = new StoryboardExtension().setScreenshotTaker(null).setAddCardOnFailure(false);
+    public StoryboardExtension storyboard = new StoryboardExtension().setScreenshotTaker(null).setAddCardOnFailure(false).setAppendMode(AppendMode.ItemsToStoryboard);
     
     @Before 
     public void installExtension() {

@@ -11,7 +11,7 @@
         
         <p concordion:execute="setSystemProperty(#name, #value)">Given the system property <code concordion:set="#name">concordion.extensions</code> is set to <code concordion:set="#value">org.concordion.ext.StoryboardExtension</code></p>
         <p concordion:execute="render()">When a test is run with this fixture</p>
-        <p>Then the extension will place the image '<span concordion:assertTrue="hasImage(#TEXT)">complete.png</span>' in the base folder '<span concordion:echo="getBaseFolder()"></span>'</p>
+        <p>Then the extension will place the image '<span concordion:assertTrue="hasImage(#TEXT)">email.png</span>' in the base folder '<span concordion:echo="getBaseFolder()"></span>'</p>
         
         <h3>Stock Images</h3>
   		<p><span cx:embed="getImages()"></span></p>
