@@ -50,7 +50,7 @@ public class StoryCardNotification extends AcceptanceTest {
 	    
     	card.setDescription(card.getDescription() + ": click image to see example");
     	
-	    //TODO Not sure what going on with this html but it doesn't like this script definition in short form
+	    //Not sure what going on with this html but it doesn't like this script definition in short form
     	card.setData(prettyFormat(result.getXOMDocument().toXML().replace("storyboard.js\" />", "storyboard.js\"></script>"), 4));
     	card.setFileExtension("html");
     	card.setCardImage(StockCardImage.HTML);    	

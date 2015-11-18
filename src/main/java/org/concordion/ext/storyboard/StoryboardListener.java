@@ -40,7 +40,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	private boolean lastScreenShotWasThrowable = false;
 	private Resource resource;
 	private Target target;
-	public String whoami;
+
 	/**
 	 * Add screenshot
 	 */
@@ -166,7 +166,6 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	@Override
 	public void beforeProcessingSpecification(final SpecificationProcessingEvent event) {
-		if (whoami != "dummy") System.out.println("beforeProcessingSpecification: " + whoami + ", " + getExampleTitle());
 		resource = event.getResource();
 	}
 
@@ -178,7 +177,6 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	@Override
 	public void beforeExample(ExampleEvent event) {
 		this.currentExample  = event;
-		if (whoami != "dummy") System.out.println("beforeExample: " + whoami + ", " + getExampleTitle());
 		
 		if (!addAutoAddSectionForExample && !addCardsToExample) return;
 		
@@ -186,8 +184,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		Element element = event.getElement();		
 		
 		if (addCardsToExample) {
-			SectionContainer container = new SectionContainer();
-			container.setTitle("Storyboard");
+			ExampleContainer container = new ExampleContainer(); 
 			container.setExampleElement(element);
 			
 			addContainer(container);
@@ -201,8 +198,6 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	@Override
 	public void afterExample(ExampleEvent event) {
-		if (whoami != "dummy") System.out.println("afterExample: " + whoami + ", " + getExampleTitle());
-		
 		if (addAutoAddSectionForExample || addCardsToExample) {
 			if (takeScreenshotOnCompletion) {
 				if (!lastScreenShotWasThrowable && screenshotTaker != null) {
@@ -228,12 +223,6 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	
 	@Override
 	public void afterProcessingSpecification(final SpecificationProcessingEvent event) {
-		if (whoami != "dummy") System.out.println("afterProcessingSpecification: " + whoami + ", " + getExampleTitle());
-		for (StoryboardItem item : storyboard.getItems()) {
-			if (whoami != "dummy") System.out.println("\t" + item.getClass().getName());
-		}
-		
-		
 		if (storyboard.getItems().isEmpty()) {
 			return;
 		}

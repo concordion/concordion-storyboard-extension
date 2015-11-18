@@ -50,8 +50,6 @@ public class DummyStoryboardFactory implements ConcordionExtensionFactory {
     	storyboard.setAddCardsToExample(addCardsToExample);
     	storyboard.setAutoAddSectionForExample(autoAddSectionForExample);
     	
-    	storyboard.setwho("dummy");
-    	
         return storyboard;
     }
     

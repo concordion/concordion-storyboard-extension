@@ -9,15 +9,11 @@
   <p>Behaviour:</p>
   <ul>
   	<li>A section container may be inserted by calling the <code>addSectionBreak() or addCard(SectionBreak card)</code> methods</li>
-  	<li>A section container may be automatically added for when using the Example Command by calling the <code>setAutoAddSectionForExample()</code> method</li>
   	<li>If a card with a failure or warning status is added to the section then the section title will be given that same status</li>
   	<li>If the section is not given a title it will not be collapsible</li>
   	<li>Clicking on the section title will show or hide the rest of the cards in the section</li>
   </ul>
 
-  <dl><dt><b>Since:</b></dt>
-  <dd>Concordion 2.0.0</dd></dl>
-  
   <ul>
   	<li>A section container may be added to the current example by calling the <code>setAddCardsToExample(true)</code> method on the extension</li>
   </ul>
@@ -39,12 +35,12 @@
     
     <pre concordion:set="#snippet">
 &lt;div class="testinput" concordion:example="example1"&gt;
-	&lt;h3&gt;Example 1&lt;/h3&gt;
-    Add cards titled &lt;span concordion:assertTrue="addCard(#TEXT)"&gt;Card 1&lt;/span&gt;
-    and &lt;span concordion:assertTrue="addCard(#TEXT)"&gt;Card 2&lt;/span&gt;
+    &lt;h3&gt;Example 1&lt;/h3&gt;
+    &lt;span concordion:assertTrue="addCard(#TEXT)"&gt;Card 1&lt;/span&gt;
+    &lt;span concordion:assertTrue="addCard(#TEXT)"&gt;Card 2&lt;/span&gt;
 &lt;/div&gt;
 &lt;div class="testinput" concordion:example="example2"&gt;
-    Add a card titled &lt;span concordion:assertTrue="addCard(#TEXT)"&gt;Card 3&lt;/span&gt;
+    &lt;span concordion:assertTrue="addCard(#TEXT)"&gt;Card 3&lt;/span&gt;
 &lt;/div&gt;
 	</pre>
 
@@ -76,36 +72,6 @@
 
 	<p concordion:execute="#fragment=render(#snippet)">
 	  When this snippet is run with this fixture, <span concordion:assertTrue="sectionAddedExpanded(#fragment)">this results the section title getting a failure status and left expanded</span>.
-	</p>
-  </div>  
-
-  <div concordion:example="example5">
-    <h3>Example 5: Add Section with Card To Example</h3>
-    <pre concordion:set="#snippet">
-&lt;div class="testinput" concordion:example="example1"&gt;
-	&lt;h3&gt;Example 1&lt;/h3&gt;
-	Add a success card titled &lt;span concordion:assertTrue="addCard(#TEXT)"&gt;Card 1&lt;/span&gt;
-&lt;/div&gt;
-	</pre>
-
-	<p concordion:execute="#fragment=renderAddToExample(#snippet)">
-	  When this snippet is run with this fixture, this results in <span concordion:assertTrue="sectionAddedCollapsed(#fragment)">a new section being added to the 
-	  Example and the section is collapsed</span>.
-	</p>
-  </div>  
-
-  <div concordion:example="example6">
-	<h3>Example 6: Add Section with Failure Card To Example</h3>
-    <pre concordion:set="#snippet">
-&lt;div class="testinput" concordion:example="example1"&gt;
-	&lt;h3&gt;Example 1&lt;/h3&gt;
-    Add a failure card titled &lt;span concordion:assertTrue="addFailureCard(#TEXT)"&gt;Failure&lt;/span&gt;
-&lt;/div&gt;
-	</pre>
-
-	<p concordion:execute="#fragment=renderAddToExample(#snippet)">
-	  When this snippet is run with this fixture, this results in a section being added to the
-	  <span concordion:assertTrue="sectionAddedExpanded(#fragment)">Example and the section is expanded and the section title has a failure status</span>.
 	</p>
   </div>  
 

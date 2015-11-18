@@ -19,8 +19,7 @@ public class StoryGroupExampleContainer extends AcceptanceTest {
     private int example = 0;
     
     @Extension
-    public StoryboardExtension storyboard = new StoryboardExtension().setScreenshotTaker(null)
-    .setAddCardOnFailure(false).setwho("StoryCardSectionBreakTest");
+    public StoryboardExtension storyboard = new StoryboardExtension().setScreenshotTaker(null).setAddCardOnFailure(false);
     
     @Before 
     public void installExtension() {
@@ -38,7 +37,7 @@ public class StoryGroupExampleContainer extends AcceptanceTest {
     	card.setTitle(title);
     	card.setDescription("Click image to see example");
     	
-	    //TODO Not sure what going on with this html but it doesn't like this script definition in short form
+	    //Not sure what going on with this html but it doesn't like this script definition in short form
     	card.setData(prettyFormat(result.getXOMDocument().toXML().replace("storyboard.js\" />", "storyboard.js\"></script>"), 4));
     	card.setFileExtension("html");
     	card.setCardImage(StockCardImage.HTML);    	

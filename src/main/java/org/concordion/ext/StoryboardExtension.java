@@ -293,9 +293,4 @@ public class StoryboardExtension implements ConcordionExtension {
 	public String getExampleTitle() {
 		return extension.getExampleTitle();
 	}
-
-	public StoryboardExtension setwho(String string) {
-		extension.whoami = string;
-		return this;
-	}
 }

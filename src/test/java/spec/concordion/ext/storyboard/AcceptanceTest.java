@@ -26,9 +26,9 @@ public abstract class AcceptanceTest {
 		streamer = new FileOutputStreamer();
 	}
 	
-    protected TestRig getTestRig() {
+    protected TestRig getTestRig() throws InstantiationException, IllegalAccessException {
     	 return new TestRig()
-	        .withFixture(this)
+	        .withFixture(this.getClass().newInstance())
 	        .withResource(new Resource("/org/concordion/ext/storyboard/storyboard.css"), "")
 	        .withResource(new Resource("/org/concordion/ext/storyboard/storyboard.js"), "")
 	        .withResource(new Resource("/org/concordion/ext/storyboard/email.png"), "")
