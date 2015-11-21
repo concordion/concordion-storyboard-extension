@@ -290,8 +290,6 @@ public class StoryboardExtension implements ConcordionExtension {
 	
 	/**
 	 * Allow custom containers to be passed into storyboard
-	 * 
-	 * @param card
 	 */
 	public void addContainer(final Container container) {
 		extension.addContainer(container);
