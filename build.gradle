@@ -1,8 +1,11 @@
 apply from: 'https://raw.githubusercontent.com/concordion/concordion-extension-build/master/extension-build.gradle'
 
-//TODO: Remove me once new concordion snapshot published
+//TODO: Remove me once new concordion 2 release published
 repositories {
-    mavenLocal()
+	maven {
+          url "https://oss.jfrog.org/artifactory/libs-snapshot"
+	} 
+    //mavenLocal()
 }
     
 description = 'An extension to Concordion that capture screenshots, etc in storyboard format while the specification is being executed so that we can see exactly what the test has done against the system under test'
@@ -36,7 +39,7 @@ githubPages {
 dependencies {
 	testCompile "org.concordion:concordion-embed-extension:1.1.2"
 
-	//TODO: Remove me once new concordion snapshot published
+	//TODO: Remove me once new concordion 2 release published
 	compile 'org.concordion:concordion:2.0.0-SNAPSHOT'
 	testCompile 'org.concordion:concordion:2.0.0-SNAPSHOT:tests'
 }
