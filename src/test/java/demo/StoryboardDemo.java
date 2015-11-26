@@ -8,11 +8,13 @@ import org.concordion.ext.storyboard.StockCardImage;
 import org.concordion.integration.junit4.ConcordionRunner;
 import org.junit.runner.RunWith;
 
+import test.concordion.ext.storyboard.DummyScreenshotTaker;
+
 @RunWith(ConcordionRunner.class)
 public class StoryboardDemo {
 
 	@Extension
-	public final StoryboardExtension storyboard = new StoryboardExtension().setScreenshotTaker(null)
+	public final StoryboardExtension storyboard = new StoryboardExtension().setScreenshotTaker(new DummyScreenshotTaker())
 		.setAppendMode(AppendMode.ItemsToExample);
 
 	public boolean addCard(final String description) {
@@ -20,11 +22,13 @@ public class StoryboardDemo {
 		
 		if (title.isEmpty()) title = "Demo";
 		
+		//storyboard.addScreenshot("Try this", "hey");
+		
 		storyboard.addSectionBreak(title);
-		//storyboard.addNotification("Example", description, null, StockCardImage.TEXT, CardResult.SUCCESS);
-		storyboard.addSectionBreak("Inner");
+		storyboard.addNotification("Example", description, null, StockCardImage.TEXT, CardResult.SUCCESS);
+//		storyboard.addSectionBreak("Inner");
 		storyboard.addNotification("Example", description, null, StockCardImage.TEXT, CardResult.FAILURE);
-		storyboard.addSectionBreak("");
+//		storyboard.addSectionBreak("");
 		storyboard.addSectionBreak("");
 		
 		return true;

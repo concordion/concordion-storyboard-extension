@@ -34,8 +34,8 @@
     box-shadow: 0 1px 4px rgba(0 ,0, 0, 0.4);
     display: inline-block;
     height: 186px;
-    margin-top: 12px;
-    margin-bottom: 20px;
+    margin-top: 8px;
+    margin-bottom: 8px;
     margin-right: 12px;
     overflow: hidden;
     padding: 10px 10px 12px;
@@ -103,6 +103,8 @@
 .storycard .alien-lfl-href-buttonLink {
     display: none;
 }
+
+
 
 /* SectionContainer */
 .toggle-box-container {
@@ -172,16 +174,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-/* TODO Keep or not??????????????????????????*/
 /* Expanding Example */
 .toggle-separator {
     height: 1px;
@@ -221,7 +213,7 @@
 .toggle-example + label {
 	cursor: pointer;
 	display: block;
-	padding-bottom: 0;
+	padding-bottom: 4px;
 	padding-top: 5px;
 	line-height: 22px;
 	font-weight: 500;

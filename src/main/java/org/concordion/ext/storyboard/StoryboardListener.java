@@ -184,22 +184,8 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		switch (appendMode) {
 		case ItemsToExample:
 		case ExampleToNewStoryboardSection:
-			if (takeScreenshotOnCompletion) {
-				if (!lastScreenShotWasThrowable && screenshotTaker != null) {
-					ScreenshotCard card = new ScreenshotCard();
-					card.setTitle("Example Completed");
-					card.setDescription("");
-					
-					if (event.getResultSummary().hasExceptions() || event.getResultSummary().getFailureCount() > 0) {
-						card.setResult(CardResult.FAILURE);
-					} else {
-						card.setResult(CardResult.SUCCESS);
-					}
-					
-					addCard(card);
-				}
-			}
-			
+			boolean hasFailure = (event.getResultSummary().hasExceptions() || event.getResultSummary().getFailureCount() > 0);
+			takeFinalScreenshot("Example Completed", hasFailure ? CardResult.FAILURE : CardResult.SUCCESS);
 			storyboard.resetContainers();
 			break;
 		default:
@@ -215,12 +201,8 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 			return;
 		}
 		
-		if (!lastScreenShotWasThrowable && takeScreenshotOnCompletion && screenshotTaker != null) {
-			ScreenshotCard card = new ScreenshotCard();
-			card.setTitle("Test Completed");
-			card.setDescription("");
-			card.setResult(CardResult.SUCCESS);
-			addCard(card);
+		if (appendMode == AppendMode.ItemsToStoryboard) { 
+			takeFinalScreenshot("Test Completed", CardResult.SUCCESS);
 		}
 
 		storyboard.addToSpecification(event, failureDetected);
@@ -229,6 +211,18 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		target = null;
 	}
 	
+	private void takeFinalScreenshot(String title, CardResult result) {
+		if (!takeScreenshotOnCompletion) return;
+		if (screenshotTaker == null) return;
+		if (lastScreenShotWasThrowable) return;  
+		
+		ScreenshotCard card = new ScreenshotCard();
+		card.setTitle(title);
+		card.setDescription("");
+		card.setResult(result);
+		addCard(card);
+	}
+
 	public void setScreenshotTaker(final ScreenshotTaker screenshotTaker) {
 		this.screenshotTaker = screenshotTaker;
 	}

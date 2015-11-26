@@ -271,7 +271,8 @@ class Storyboard {
 			popupImg.setId("StoryCardScreenshotPopup");
 			popupImg.addStyleClass("screenshot");
 			
-			div.appendChild(popupImg);
+			//div.appendChild(popupImg);
+			body.appendChild(popupImg);
 			
 			// If footer exists ensure it is the last element on the page
 			if (footerDiv != null) {
