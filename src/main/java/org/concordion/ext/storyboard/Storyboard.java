@@ -157,7 +157,7 @@ class Storyboard {
 				addItemsToList(container.getItems(), container.getContentElement(), container.getResult() == CardResult.FAILURE);
 				
 				if (!hasChildren(container.getContentElement())) {
-					container.getParentElement().removeChild(container.getElement());
+					container.removeFromParent();
 				}
 			} else {
 				Card card = (Card)item;

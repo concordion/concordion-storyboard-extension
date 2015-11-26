@@ -36,10 +36,10 @@ public abstract class Container extends StoryboardItem {
 	
 	public abstract void writeTo(Element parent);
 
-	public abstract Element getElement();
-	
 	public abstract Element getContentElement();
 
 	public abstract Element getParentElement();
+
+	public abstract void removeFromParent();
 
 }

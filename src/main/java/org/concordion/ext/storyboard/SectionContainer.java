@@ -48,11 +48,6 @@ public class SectionContainer extends Container {
 	}
 	
 	@Override
-	public Element getElement() {
-		return container;
-	}
-
-	@Override
 	public Element getContentElement() {
 		return content;
 	}
@@ -60,5 +55,10 @@ public class SectionContainer extends Container {
 	@Override
 	public Element getParentElement() {
 		return parent;
+	}
+
+	@Override
+	public void removeFromParent() {
+		getParentElement().removeChild(container);
 	}
 }
