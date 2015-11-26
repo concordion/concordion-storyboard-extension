@@ -184,8 +184,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		switch (appendMode) {
 		case ItemsToExample:
 		case ExampleToNewStoryboardSection:
-			boolean hasFailure = (event.getResultSummary().hasExceptions() || event.getResultSummary().getFailureCount() > 0);
-			takeFinalScreenshot("Example Completed", hasFailure ? CardResult.FAILURE : CardResult.SUCCESS);
+			takeFinalScreenshot("Example Completed");
 			storyboard.resetContainers();
 			break;
 		default:
@@ -202,7 +201,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		}
 		
 		if (appendMode == AppendMode.ItemsToStoryboard) { 
-			takeFinalScreenshot("Test Completed", CardResult.SUCCESS);
+			takeFinalScreenshot("Test Completed");
 		}
 
 		storyboard.addToSpecification(event, failureDetected);
@@ -211,7 +210,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		target = null;
 	}
 	
-	private void takeFinalScreenshot(String title, CardResult result) {
+	private void takeFinalScreenshot(String title) {
 		if (!takeScreenshotOnCompletion) return;
 		if (screenshotTaker == null) return;
 		if (lastScreenShotWasThrowable) return;  
@@ -219,7 +218,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		ScreenshotCard card = new ScreenshotCard();
 		card.setTitle(title);
 		card.setDescription("");
-		card.setResult(result);
+		card.setResult(CardResult.SUCCESS);
 		addCard(card);
 	}
 
