@@ -11,6 +11,7 @@ import org.concordion.api.ResultSummary;
 import org.concordion.api.extension.ConcordionExtension;
 import org.concordion.internal.ClassNameBasedSpecificationLocator;
 import org.concordion.internal.ConcordionBuilder;
+import org.concordion.internal.FixtureInstance;
 import org.concordion.internal.SimpleEvaluatorFactory;
 import org.concordion.internal.UnableToBuildConcordionException;
 import org.concordion.internal.extension.FixtureExtensionLoader;
@@ -25,7 +26,7 @@ public class TestRig {
     private ConcordionExtension extension; 
 
     public TestRig withFixture(Object fixture) {
-        this.fixture = new Fixture(fixture);
+        this.fixture = new FixtureInstance(fixture);
         return this;
     }
 
@@ -54,7 +55,7 @@ public class TestRig {
     public ProcessingResult process(Resource resource) {
         EventRecorder eventRecorder = new EventRecorder();
         if (fixture == null) {
-            fixture = new Fixture(new DummyFixture());
+            fixture = new FixtureInstance(new DummyFixture());
             withResource(new Resource("/spec/concordion/Dummy.html"), "<html/>");
         } else {
             withResource(new ClassNameBasedSpecificationLocator("html").locateSpecification(fixture), "<html/>");
@@ -81,11 +82,11 @@ public class TestRig {
         try {
 
             ResultSummary resultSummary = null;
-            concordion.override(resource, fixture);
-            List<String> examples = concordion.getExampleNames();
+            concordion.override(resource);
+            List<String> examples = concordion.getExampleNames(fixture);
             if (!examples.isEmpty()) {
                 for (String example : examples) {
-                    resultSummary = concordion.processExample(example);
+                    resultSummary = concordion.processExample(fixture, example);
                 }
             }
             concordion.finish();
