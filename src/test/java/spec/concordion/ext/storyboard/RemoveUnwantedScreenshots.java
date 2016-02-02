@@ -136,6 +136,10 @@ public class RemoveUnwantedScreenshots extends AcceptanceTest {
 		    }
 		});
 		
+		if (files == null) {
+			files = new File[0];
+		}
+		
 		return files;
     }
 }
