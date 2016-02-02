@@ -64,10 +64,12 @@
 
 .storycard .scimgcontainer .sizewidth {
     width: 100%;
+    height: auto;
 }
 
 .storycard .scimgcontainer .sizeheight {
     height: 100%;
+    width: auto;
 }
 
 .storycard p {

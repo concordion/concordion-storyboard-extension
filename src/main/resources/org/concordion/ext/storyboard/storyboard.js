@@ -1,37 +1,52 @@
 function showScreenPopup(src) {
 	var img = document.getElementById('StoryCardScreenshotPopup');
 	img.src = src.src
-
-	var width = document.body.clientWidth * .60;
-	if (width < 500) width = 550;
-	if (width > 1000) width = 900;
-	img.style.width = width + "px";
-	img.style.height = 'auto';
-	
-	var srcRect = src.getBoundingClientRect();
-	var imgRect = img.getBoundingClientRect();
 	
 	var scrollTop = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
-	var scrollHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
 	var scrollLeft = Math.max(document.body.scrollLeft, document.documentElement.scrollLeft);
+	var viewportWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+	var viewportHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+	var scrollbarWidth = viewportWidth - document.body.offsetWidth;
 	
-	 var posTop = srcRect.top - imgRect.height + scrollTop + 10;
-     
-	if (posTop < scrollTop) {
-		posTop = scrollTop + srcRect.top + srcRect.height;
+	var srcRect = getSourceImageContainer(src).getBoundingClientRect();
+	var imgRect = img.getBoundingClientRect();
+	var naturalWidth = (img.naturalWidth || 0);
+	var naturalHeight = (img.naturalHeight || 0);
 
-		if (posTop > scrollTop + (scrollHeight / 3)) {
-	    	posTop = scrollTop;
-			img.style.height = srcRect.top + "px";
-			img.style.width = 'auto';
-			imgRect = img.getBoundingClientRect();
-		}		
+	var above = srcRect.top > (viewportHeight - srcRect.top - srcRect.height);
+	var posTop = 0;
+	var posLeft = 0;
+	
+	if (above) {
+		var height = Math.min(naturalHeight, srcRect.top - 10)
+		posTop = scrollTop + srcRect.top - height;
+		
+		img.style.height = height + "px";
+		img.style.width = 'auto';
+		
+		if (img.width > Math.min(naturalWidth, viewportWidth)) {
+			img.style.height = 'auto';
+			img.style.width = Math.min(naturalWidth, viewportWidth) + "px";
+			
+			posTop = scrollTop + srcRect.top - img.height;
+		}
+	} else {
+		var height = Math.min(naturalHeight, viewportHeight - srcRect.top - srcRect.height - 10)
+		posTop = scrollTop + srcRect.top + srcRect.height;
+		
+		img.style.height = height + "px";
+		img.style.width = 'auto';
+		
+		if (img.width > Math.min(naturalWidth, viewportWidth)) {
+			img.style.height = 'auto';
+			img.style.width = Math.min(naturalWidth, viewportWidth) + "px";
+		}
 	}
 
-	var posLeft = srcRect.left + scrollLeft + 10;
+	var posLeft = srcRect.left + scrollLeft + 1;
 	   
-	if (posLeft + imgRect.width > scrollLeft + document.body.clientWidth) {
-		posLeft = scrollLeft + document.body.clientWidth - imgRect.width;
+	if (posLeft + img.width > scrollLeft + viewportWidth - scrollbarWidth) {
+		posLeft = scrollLeft + viewportWidth - img.width - scrollbarWidth;
 	}
 	if (posLeft < scrollLeft) {
 		posLeft = scrollLeft;
@@ -40,6 +55,29 @@ function showScreenPopup(src) {
 	img.style.left = posLeft + "px";
 	img.style.top = posTop + "px";
 	img.style.visibility = 'visible';	
+}
+
+function getSourceImageContainer(src) {
+	var node=src;
+	
+	while (node.offsetParent) {
+		node=node.offsetParent;
+
+		if (node.className.indexOf("scimgcontainer") >= 0) {
+			return node;
+		}
+		/*
+		var classList = node.classList || node.className;
+		
+		for (i = 0; i < classList.length; i++) { 
+			if (classList[i] === "scimgcontainer") {
+				return node;
+			}
+		}
+		*/
+	}
+	
+	return node;
 }
 
 function hideScreenPopup() {
