@@ -62,14 +62,14 @@
     border: none;
 }
 
-.storycard .scimgcontainer .sizewidth {
+.storycard .scimgcontainer .sizelandscape {
     width: 100%;
     height: auto;
 }
 
-.storycard .scimgcontainer .sizeheight {
-    height: 100%;
-    width: auto;
+.storycard .scimgcontainer .sizeportrait {
+    width: 70%;
+    height: auto;
 }
 
 .storycard p {

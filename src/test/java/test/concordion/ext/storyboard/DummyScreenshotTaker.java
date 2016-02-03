@@ -1,5 +1,6 @@
 package test.concordion.ext.storyboard;
 
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,9 +30,9 @@ public final class DummyScreenshotTaker implements ScreenshotTaker {
     }
     
     @Override
-    public int writeScreenshotTo(OutputStream outputStream) throws IOException {
+    public Dimension writeScreenshotTo(OutputStream outputStream) throws IOException {
         ImageIO.write(IMAGE, getFileExtension(), outputStream);
-        return IMAGE.getWidth();
+        return new Dimension(IMAGE.getWidth(), IMAGE.getHeight());
     }
 
     @Override

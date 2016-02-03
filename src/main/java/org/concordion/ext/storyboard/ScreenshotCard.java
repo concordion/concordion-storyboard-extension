@@ -1,5 +1,6 @@
 package org.concordion.ext.storyboard;
 
+import java.awt.Dimension;
 import java.io.File;
 import java.io.OutputStream;
 import java.nio.file.Path;
@@ -14,9 +15,8 @@ import org.concordion.internal.ConcordionBuilder;
  * Card that takes and presents screenshots of the system under test.
  */
 public class ScreenshotCard extends Card {
-	private static final int MAX_WIDTH = 700;
 	private String imageName = "";
-	private int imageWidth = MAX_WIDTH;
+	private Dimension imageSize;
 	private ScreenshotTaker screenshotTaker = null;
 	private boolean deleteIfSuccessful = false;
 	private String imagePath;
@@ -46,7 +46,7 @@ public class ScreenshotCard extends Card {
 		try {
 			// As don't have access to the concordion spec, store the results for later
 			OutputStream outputStream = getTarget().getOutputStream(imageResource);
-			this.imageWidth = screenshotTaker.writeScreenshotTo(outputStream);
+			this.imageSize = screenshotTaker.writeScreenshotTo(outputStream);
 			outputStream.close();
 		} catch (Exception e) {
 			// Do nothing, unable to take screenshot
@@ -88,9 +88,15 @@ public class ScreenshotCard extends Card {
 		// Add image to card
 		Element img = new Element("img");
 		img.setId(this.getDescription());
-		img.addStyleClass("sizewidth");
+		
+		if (imageSize.width * 1.15 > imageSize.height) {
+			img.addStyleClass("sizelandscape");
+		} else { 
+			img.addStyleClass("sizeportrait");
+		}
+		
 		img.addAttribute("src", this.imageName);
-		img.addAttribute("width", Integer.toString(this.imageWidth));
+		img.addAttribute("width", Integer.toString(this.imageSize.width));
 		anchorImg.appendChild(img);
 
 		img.addAttribute("onMouseOver", "showScreenPopup(this);this.style.cursor='pointer'");
