@@ -60,10 +60,10 @@ public class ProcessingResult {
 
     public String getElementXML(String className) {
         Element[] childDivs = getRootElement().getDescendantElements("div");
-        
+
         for (Element div : childDivs) {
             if (className.equals(div.getAttributeValue("class"))) {
-            	return div.toXML();
+                return div.toXML();
             }
         }
         return "";
@@ -157,17 +157,17 @@ public class ProcessingResult {
         }
         return false;
     }
-
+    
     public String getLinkedCSS(String baseOutputDir, String css) throws IOException {
-    	 for (Element style : getHeadElement().getChildElements("link")) {
-             if ("stylesheet".equals(style.getAttributeValue("rel")) && css.endsWith(style.getAttributeValue("href"))) {
-                 String path = Paths.get(baseOutputDir, style.getAttributeValue("href")).toString();
-                 return readFile(path);
-             }
-         }
-    	 return "";
+    	for (Element style : getHeadElement().getChildElements("link")) {
+    		if ("stylesheet".equals(style.getAttributeValue("rel")) && css.endsWith(style.getAttributeValue("href"))) {
+    			String path = Paths.get(baseOutputDir, style.getAttributeValue("href")).toString();
+    			return readFile(path);
+    		}
+    	}
+    	return "";
     }
-
+    
     public boolean hasJavaScriptDeclaration(String cssFilename) {
         Element head = getHeadElement();
         for (Element script : head.getChildElements("script")) {

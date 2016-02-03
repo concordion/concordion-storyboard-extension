@@ -1,5 +1,7 @@
 package test.concordion;
 
+//TODO Delete this file once next Concordion snapshot is published
+
 import java.io.IOException;
 import java.util.List;
 
@@ -9,12 +11,11 @@ import org.concordion.api.Fixture;
 import org.concordion.api.Resource;
 import org.concordion.api.ResultSummary;
 import org.concordion.api.extension.ConcordionExtension;
-import org.concordion.internal.ClassNameBasedSpecificationLocator;
-import org.concordion.internal.ConcordionBuilder;
-import org.concordion.internal.FixtureInstance;
-import org.concordion.internal.SimpleEvaluatorFactory;
-import org.concordion.internal.UnableToBuildConcordionException;
+import org.concordion.internal.*;
 import org.concordion.internal.extension.FixtureExtensionLoader;
+
+import spec.concordion.DummyFixture;
+
 
 public class TestRig {
 
@@ -31,34 +32,28 @@ public class TestRig {
     }
 
     public ProcessingResult processFragment(String fragment) {
-        return process(wrapFragment(fragment));
+        return processFragment(fragment, "/testrig");
     }
-     
+
     public ProcessingResult processFragment(String fragment, String fixtureName) {
-        return process(fixtureName, wrapFragment(fragment));
+        return process(wrapFragment(fragment), new Resource(fixtureName));
     }
-    
+
     public ProcessingResult processFragment(String resourceLocation, String head, String fragment) {
         return process(resourceLocation, wrapFragment(head, fragment));
     }
 
-    public ProcessingResult process(String html) {
-        return process("/testrig", html);
-    }
-    
-    public ProcessingResult process(String resourceLocation, String html) {
-        Resource resource = new Resource(resourceLocation);
-        withResource(resource, html);
-        return process(resource);
-    }
-    
     public ProcessingResult process(Resource resource) {
         EventRecorder eventRecorder = new EventRecorder();
+        
+        //TODO: This is the offending line that breaks my tests!
+        //stubTarget = new StubTarget();
+        
         if (fixture == null) {
             fixture = new FixtureInstance(new DummyFixture());
             withResource(new Resource("/spec/concordion/Dummy.html"), "<html/>");
         } else {
-            withResource(new ClassNameBasedSpecificationLocator("html").locateSpecification(fixture), "<html/>");
+            withResource(new ClassNameBasedSpecificationLocator("html").locateSpecification(fixture.getFixtureObject()), "<html/>");
         }
         ConcordionBuilder concordionBuilder = new ConcordionBuilder()
             .withAssertEqualsListener(eventRecorder)
@@ -96,6 +91,20 @@ public class TestRig {
         } catch (IOException e) {
             throw new RuntimeException("Test rig failed to process specification", e);
         } 
+    }
+
+    public ProcessingResult process(String html) {
+        return process("/testrig", html);
+    }
+    
+    public ProcessingResult process(String resourceLocation, String html) {
+        Resource resource = new Resource(resourceLocation);
+        return process(html, resource);
+    }
+
+    private ProcessingResult process(String html, Resource resource) {
+        withResource(resource, html);
+        return process(resource);
     }
 
     private String wrapFragment(String fragment) {
