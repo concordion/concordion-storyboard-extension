@@ -13,6 +13,8 @@ import org.concordion.api.ResultSummary;
 import org.concordion.api.listener.AssertFailureEvent;
 import org.concordion.internal.XMLParser;
 
+//TODO Delete this file once next Concordion snapshot is published
+
 public class ProcessingResult {
 
     private final ResultSummary resultSummary;
