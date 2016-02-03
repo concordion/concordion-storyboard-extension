@@ -3,9 +3,6 @@ package org.concordion.ext.storyboard;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.OutputStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 import org.concordion.api.Element;
 import org.concordion.api.Resource;
 import org.concordion.ext.ScreenshotTaker;
@@ -66,9 +63,7 @@ public class ScreenshotCard extends Card {
 	
 	@Override 
 	protected void cleanupData() {
-		Path path = Paths.get(ConcordionBuilder.getBaseOutputDir().getAbsolutePath(), imagePath);
-		
-		File file = path.toFile();
+		File file = combine(ConcordionBuilder.getBaseOutputDir().getAbsolutePath(), imagePath);
 		if (file.exists()) {
 			file.delete();
 			
@@ -77,6 +72,14 @@ public class ScreenshotCard extends Card {
 			}
 		}
 	};
+	
+	private File combine(String path1, String path2)
+	{
+	    File file1 = new File(path1);
+	    File file2 = new File(file1, path2);
+	    
+	    return file2;
+	}
 	
 	@Override
 	protected void addHTMLToContainer(final Element container) {
