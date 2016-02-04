@@ -1,19 +1,18 @@
 package test.concordion;
 
+//TODO Delete this file once next Concordion snapshot is published
+
 import nu.xom.Document;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Paths;
 
 import org.concordion.api.Element;
 import org.concordion.api.ResultSummary;
 import org.concordion.api.listener.AssertFailureEvent;
 import org.concordion.internal.XMLParser;
-
-//TODO Delete this file once next Concordion snapshot is published
 
 public class ProcessingResult {
 
@@ -153,8 +152,7 @@ public class ProcessingResult {
     public boolean hasLinkedCSS(String baseOutputDir, String css) {
         for (Element style : getHeadElement().getChildElements("link")) {
             if ("stylesheet".equals(style.getAttributeValue("rel")) && css.endsWith(style.getAttributeValue("href"))) {
-            	String path = Paths.get(baseOutputDir, style.getAttributeValue("href")).toString();
-                return new File(path).exists();
+            	return combine(baseOutputDir, style.getAttributeValue("href")).exists();
             }
         }
         return false;
@@ -163,8 +161,7 @@ public class ProcessingResult {
     public String getLinkedCSS(String baseOutputDir, String css) throws IOException {
     	for (Element style : getHeadElement().getChildElements("link")) {
     		if ("stylesheet".equals(style.getAttributeValue("rel")) && css.endsWith(style.getAttributeValue("href"))) {
-    			String path = Paths.get(baseOutputDir, style.getAttributeValue("href")).toString();
-    			return readFile(path);
+    			return readFile(combine(baseOutputDir, style.getAttributeValue("href")).getPath());
     		}
     	}
     	return "";
@@ -196,8 +193,7 @@ public class ProcessingResult {
     public boolean hasLinkedJavaScript(String baseOutputDir, String javaScript) {
         for (Element style : getHeadElement().getChildElements("script")) {
             if ("text/javascript".equals(style.getAttributeValue("type")) && javaScript.equals(style.getAttributeValue("src"))) {
-            	String path = Paths.get(baseOutputDir, style.getAttributeValue("src")).toString();
-                return new File(path).exists();
+            	return combine(baseOutputDir, style.getAttributeValue("src")).exists();
             }
         }
         return false;
@@ -206,8 +202,7 @@ public class ProcessingResult {
     public String getLinkedJavaScript(String baseOutputDir, String javaScript) throws IOException {
     	for (Element style : getHeadElement().getChildElements("script")) {
             if ("text/javascript".equals(style.getAttributeValue("type")) && javaScript.equals(style.getAttributeValue("src"))) {
-            	String path = Paths.get(baseOutputDir, style.getAttributeValue("src")).toString();
-                return readFile(path);
+            	return readFile(combine(baseOutputDir, style.getAttributeValue("src")).getPath());
             }
     	}
     	return "";
@@ -228,5 +223,13 @@ public class ProcessingResult {
         } finally {
             br.close();
         }
-    }   
+    }
+    
+    private File combine(String path1, String path2)
+	{
+	    File file1 = new File(path1);
+	    File file2 = new File(file1, path2);
+	    
+	    return file2;
+	}
 }
