@@ -222,6 +222,10 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		addCard(card);
 	}
 
+	public boolean hasScreenshotTaker() {
+		return screenshotTaker != null;
+	}
+	
 	public void setScreenshotTaker(final ScreenshotTaker screenshotTaker) {
 		this.screenshotTaker = screenshotTaker;
 	}

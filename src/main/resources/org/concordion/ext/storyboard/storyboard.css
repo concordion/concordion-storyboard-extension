@@ -72,6 +72,11 @@
     height: auto;
 }
 
+.storycard .scimgcontainer .sizeheight {
+    width: auto;
+    height: 100%;
+}
+
 .storycard p {
     margin: 0;
     text-align: left;

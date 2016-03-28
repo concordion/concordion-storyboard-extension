@@ -1,6 +1,5 @@
 package org.concordion.ext;
 
-import java.awt.Robot;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,6 +12,7 @@ import org.concordion.ext.storyboard.CardResult;
 import org.concordion.ext.storyboard.Container;
 import org.concordion.ext.storyboard.CustomCardImage;
 import org.concordion.ext.storyboard.NotificationCard;
+import org.concordion.ext.storyboard.RobotScreenshotTaker;
 import org.concordion.ext.storyboard.ScreenshotCard;
 import org.concordion.ext.storyboard.SectionContainer;
 import org.concordion.ext.storyboard.StockCardImage;
@@ -128,12 +128,22 @@ public class StoryboardExtension implements ConcordionExtension {
 	}
 	
 	/**
-	 * Set a screenshot taker. If not set, the extension will default to using {@link Robot} which will take a shot of the full visible screen.
+	 * Check to see if a screenshot taker has been set
+	 */
+	public boolean hasScreenshotTaker() {
+		return extension.hasScreenshotTaker();
+	}
+	
+	/**
+	 * Set a screenshot taker. If not set then the storyboard extension cannot take screenshots.
 	 * 
-	 * For a non gui application this won't be the most appropriate behaviour and you will want to set the screenshot taker to null.
-	 * See the demo application for an example of a custom SeleniumScreenshotTaker.
+	 * For a non gui application this is the most appropriate behaviour and you will not want to change this.  For GUI applications you can either:
+	 * <ul>
+	 * <li>Use {@link RobotScreenshotTaker} which will take a shot of the full visible screen</li>
+	 * <li>See the demo application for an example implementation of a custom <a href="https://github.com/concordion/concordion-storyboard-extension-demo/blob/master/src/test/java/org/concordion/ext/driver/web/SeleniumScreenshotTaker.java">SeleniumScreenshotTaker</a>
+	 * </ul>
 	 * 
-	 * @param screenshotTaker
+	 * @param screenshotTaker Takes screenshots of the system under test
 	 */
 	public StoryboardExtension setScreenshotTaker(final ScreenshotTaker screenshotTaker) {
 		extension.setScreenshotTaker(screenshotTaker);
