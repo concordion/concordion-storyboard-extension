@@ -1,5 +1,8 @@
 package spec.concordion.ext.storyboard;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.concordion.api.extension.Extension;
 import org.concordion.ext.StoryboardExtension;
 import org.concordion.ext.storyboard.CardResult;
@@ -60,6 +63,10 @@ public class StoryCardScreenshot extends AcceptanceTest {
     	return result;
     }
     
+    public void allowRepeatedFailures() {
+    	DummyStoryboardFactory.setSupressRepeatingFailures(false);
+    }
+    
     public void addScreenshot() {
     	DummyStoryboardFactory.getStoryboard().addScreenshot("Screenshot Example", "This is a screenshot");
     }
@@ -70,6 +77,17 @@ public class StoryCardScreenshot extends AcceptanceTest {
     
     public boolean failureCardAdded(String fragment) {
     	return fragment.contains("Test Failed");
+    }
+    
+    public int failureCardCount(String fragment) {
+    	Pattern p = Pattern.compile(Pattern.quote("Test Failed"));
+    	Matcher m = p.matcher(fragment);
+    	
+    	int count = 0;
+    	while (m.find()) {
+    		count ++;
+    	}
+    	return count;
     }
     
     public boolean exceptionCardAdded(String fragment) {

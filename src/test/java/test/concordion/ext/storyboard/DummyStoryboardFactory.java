@@ -12,12 +12,14 @@ public class DummyStoryboardFactory implements ConcordionExtensionFactory {
     private static boolean addCardOnFailure = true;
     private static boolean takeScreenshotOnTestCompletion = true;
     private static AppendMode appendMode = AppendMode.ItemsToStoryboard;
+    private static boolean supressRepeatingFailures = true;
     
     public static void prepareWithScreenShot() {
     	addCardOnFailure = true;
         takeScreenshotOnTestCompletion = true;
     	screenshotTaker = new DummyScreenshotTaker();
     	appendMode = AppendMode.ItemsToStoryboard;
+    	supressRepeatingFailures = true;
     }
     
     public static void prepareWithoutScreenShot() {
@@ -25,6 +27,7 @@ public class DummyStoryboardFactory implements ConcordionExtensionFactory {
         takeScreenshotOnTestCompletion = true;
     	screenshotTaker = null;
     	appendMode = AppendMode.ItemsToStoryboard;
+    	supressRepeatingFailures = true;
 	}
     
     public static void setAddCardOnFailure(final boolean value) {
@@ -39,6 +42,10 @@ public class DummyStoryboardFactory implements ConcordionExtensionFactory {
     	appendMode = value;
     }
     
+    public static void setSupressRepeatingFailures(boolean value) {
+    	supressRepeatingFailures = value;
+    }
+    
     @Override
     public ConcordionExtension createExtension() {    	
     	storyboard = new StoryboardExtension();
@@ -47,6 +54,9 @@ public class DummyStoryboardFactory implements ConcordionExtensionFactory {
     	storyboard.setTakeScreenshotOnCompletion(takeScreenshotOnTestCompletion);
     	storyboard.setAppendMode(appendMode);
     	
+    	if (!supressRepeatingFailures) {
+    		storyboard.setSupressRepeatingFailures(false);
+    	}
         return storyboard;
     }
     

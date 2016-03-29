@@ -1,5 +1,8 @@
 package spec.concordion.ext.storyboard;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.concordion.api.extension.Extension;
 import org.concordion.ext.StoryboardExtension;
 import org.concordion.ext.storyboard.CardResult;
@@ -59,6 +62,21 @@ public class StoryCardNotification extends AcceptanceTest {
     	DummyStoryboardFactory.getStoryboard().addNotification("Notification Example", "Example 1", data, "html", StockCardImage.XML_RESPONSE, CardResult.SUCCESS);
     }
         
+    public void allowRepeatedFailures() {
+    	DummyStoryboardFactory.setSupressRepeatingFailures(false);
+    }
+    
+    public int failureCardCount(String fragment) {
+    	Pattern p = Pattern.compile(Pattern.quote("Test Failed"));
+    	Matcher m = p.matcher(fragment);
+    	
+    	int count = 0;
+    	while (m.find()) {
+    		count ++;
+    	}
+    	return count;
+    }
+    
     public boolean notificationCardAdded(String fragment) {
     	return fragment.contains("Notification Example");    	
     }

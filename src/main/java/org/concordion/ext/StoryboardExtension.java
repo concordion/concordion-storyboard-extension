@@ -128,6 +128,16 @@ public class StoryboardExtension implements ConcordionExtension {
 	}
 	
 	/**
+	 * if {@link #setAddCardOnFailure(boolean)} is true then will optionally ignore second or subsequent failure.
+	 * 
+	 * @param value <code>true</code> to not add card on second (or more) failure (default behaviour), <code>false</code> to add a card for every failure.
+	 */
+	public StoryboardExtension setSupressRepeatingFailures(final boolean value) {
+		extension.setSupressRepeatingFailures(value);
+		return this;
+	}
+	
+	/**
 	 * Check to see if a screenshot taker has been set
 	 */
 	public boolean hasScreenshotTaker() {

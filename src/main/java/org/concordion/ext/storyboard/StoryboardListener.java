@@ -29,6 +29,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	private ExampleEvent currentExample = null;
 	private boolean addCardOnThrowable = true;
 	private boolean addCardOnFailure = true;
+	private boolean supressRepeatingFailures = true;
 	private boolean failureDetected = false;
 	private boolean takeScreenshotOnCompletion = true;
 	private ScreenshotTaker screenshotTaker = null;
@@ -76,9 +77,11 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	@Override
 	public void failureReported(final AssertFailureEvent event) {
-		failureDetected = true;
-		
 		if (addCardOnFailure) {
+			if (supressRepeatingFailures && failureDetected) {
+				return;
+			}
+			
 			String title = "Test Failed";
 
 			StringBuilder sb = new StringBuilder().append("See specification for further information");
@@ -108,6 +111,8 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 				lastScreenShotWasThrowable = true;
 			}
 		}
+		
+		failureDetected = true;
 	}
 
 	@Override
@@ -236,6 +241,10 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	public void setAddCardOnFailure(final boolean value) {
 		this.addCardOnFailure = value;
+	}
+
+	public void setSupressRepeatingFailures(boolean value) {
+		this.supressRepeatingFailures = value;
 	}
 	
 	public Resource getResource() {
