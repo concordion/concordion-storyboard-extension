@@ -11,6 +11,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.concordion.api.Resource;
+import org.concordion.ext.storyboard.StockCardImage;
 import org.concordion.integration.junit4.ConcordionRunner;
 import org.junit.runner.RunWith;
 
@@ -27,20 +28,17 @@ public abstract class AcceptanceTest {
 	}
 	
     protected TestRig getTestRig() throws InstantiationException, IllegalAccessException {
-    	 return new TestRig()
+    	TestRig testrig = new TestRig()
 	        .withFixture(this.getClass().newInstance())
-	        .withResource(new Resource("/org/concordion/ext/storyboard/storyboard.css"), "")
+    	    .withResource(new Resource("/org/concordion/ext/storyboard/storyboard.css"), "")
 	        .withResource(new Resource("/org/concordion/ext/storyboard/storyboard.js"), "")
-	        .withResource(new Resource("/org/concordion/ext/storyboard/email.png"), "")
-	        .withResource(new Resource("/org/concordion/ext/storyboard/html.png"), "")
-	        .withResource(new Resource("/org/concordion/ext/storyboard/text.png"), "")
-	        .withResource(new Resource("/org/concordion/ext/storyboard/xmlrequest.png"), "")
-	        .withResource(new Resource("/org/concordion/ext/storyboard/xmlresponse.png"), "")
-	        .withResource(new Resource("/org/concordion/ext/storyboard/expand.png"), "")
-	        .withResource(new Resource("/org/concordion/ext/storyboard/collapse.png"), "")
-	        .withResource(new Resource("/org/concordion/ext/storyboard/complete.png"), "")
-	        .withResource(new Resource("/org/concordion/ext/storyboard/error.png"), "")
 	        .withOutputStreamer(streamer);
+    	    
+    	for (StockCardImage stockImage : StockCardImage.values()) {
+    		testrig.withResource(new Resource("/org/concordion/ext/storyboard" + stockImage.toString()), "");
+    	}
+    	
+    	return testrig;
     }
     
     protected FileOutputStreamer getStreamer() {

@@ -6,12 +6,19 @@ import org.concordion.api.Resource;
  * A list of the stock images that can be assigned to a card
  */
 public enum StockCardImage implements CardImage {
-	EMAIL("/email.png"),	
+	CSV("/csv.png"),
+	EMAIL("/email.png"),
+	ERROR("/error.png"),
 	HTML("/html.png"),
-	TEXT("/text.png"),
+	JSON("/json.png"),
+	TEXT("/txt.png"),
+	XML("/xml.png"),
 	XML_REQUEST("/xmlrequest.png"),
 	XML_RESPONSE("/xmlresponse.png"),
-	ERROR("/error.png");
+	
+	HTML_OLD("/html-old.png"),
+	XML_REQUEST_OLD("/xmlrequest-old.png"),
+	XML_RESPONSE_OLD("/xmlresponse-old.png");
 
 	private final String key;
 

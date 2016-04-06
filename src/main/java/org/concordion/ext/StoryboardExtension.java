@@ -46,12 +46,10 @@ public class StoryboardExtension implements ConcordionExtension {
 
 		concordionExtender.withLinkedCSS(path + "/storyboard.css", new Resource("/storyboard.css"));
 		concordionExtender.withLinkedJavaScript(path + "/storyboard.js", new Resource("/storyboard.js"));
-		concordionExtender.withResource(path + StockCardImage.EMAIL, StockCardImage.EMAIL.getResource());
-		concordionExtender.withResource(path + StockCardImage.HTML, StockCardImage.HTML.getResource());
-		concordionExtender.withResource(path + StockCardImage.TEXT, StockCardImage.TEXT.getResource());		
-		concordionExtender.withResource(path + StockCardImage.XML_REQUEST, StockCardImage.XML_REQUEST.getResource());
-		concordionExtender.withResource(path + StockCardImage.XML_RESPONSE, StockCardImage.XML_RESPONSE.getResource());
-		concordionExtender.withResource(path + StockCardImage.ERROR, StockCardImage.ERROR.getResource());
+		
+		for (StockCardImage stockImage : StockCardImage.values()) {
+			concordionExtender.withResource(path + stockImage.toString(), stockImage.getResource());
+		}
 
 		for (CustomCardImage image : customImages.values()) {
 			concordionExtender.withResource(image.getSourcePath() + image.getFilename(), image.getResource());
