@@ -43,13 +43,13 @@ li {
   margin-bottom: 6px; 
 }
 
-.example {
+.example, [concordion\:example] {
   padding: 6px 16px 6px 16px;
   border: 1px solid #C3D9FF;
   margin: 6px 0px 28px 0px;
   background-color: #F5F9FD;
 }
-.example h3 {
+.example h3, [concordion\:example] h3 {
   margin-top: 8px;
   margin-bottom: 8px;
   font-size: 12pt;
@@ -163,7 +163,7 @@ ins {
 }
 </style><meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <link href="../../../../concordion.css" rel="stylesheet" type="text/css" />
-<link type="text/css" rel="stylesheet" href="../../../../storyboard.css" /><script type="text/javascript" src="../../../../storyboard.js"></script><link type="text/css" rel="stylesheet" href="../../../../storyboard.css" /><script type="text/javascript" src="../../../../storyboard.js"></script></head><body><span class="breadcrumbs"><a href="../../Concordion.html">Concordion</a> &gt; <a href="Storyboard.html">Storyboard Extension</a> &gt;</span>
+<link type="text/css" rel="stylesheet" href="../../../../storyboard.css" /><script type="text/javascript" src="../../../../storyboard.js"></script><link type="text/css" rel="stylesheet" href="../../../../storyboard.css" /><script type="text/javascript" src="../../../../storyboard.js"></script></head><body><span class="breadcrumbs"><a href="Storyboard.html">Storyboard Extension</a> &gt;</span>
 
   <h1>Storyboard CSS Styles</h1>
 
@@ -184,19 +184,21 @@ ins {
 	height: auto;
 	border:solid 1px black;
 	z-index:3000;
+	border: none;
+	box-shadow: 0 1px 4px rgba(0 ,0, 0, 0.4);
 }
 
 .storyboard {
-		padding: 20px;
-	  border: 1px solid #ADADAD;
-		margin-bottom: 30px;
-	  margin-top: 30px;
-		background-color: #fdfdfd;
-	  background-color: #f1f1f1;
+	padding: 20px;
+	border: 1px solid #ADADAD;
+	margin-bottom: 30px;
+	margin-top: 30px;
+	background-color: #fdfdfd;
+	background-color: #f1f1f1;
 }
 
 .storyboard &gt; * {
-  margin-top: 0;
+	margin-top: 0;
 }
 
 .storyboard ul {
@@ -206,12 +208,12 @@ ins {
 }
 
 .storycard {
-		background-color: #fff;
+	background-color: #fff;
     box-shadow: 0 1px 4px rgba(0 ,0, 0, 0.4);
     display: inline-block;
     height: 186px;
-    margin-top: 12px;
-    margin-bottom: 20px;
+    margin-top: 8px;
+    margin-bottom: 8px;
     margin-right: 12px;
     overflow: hidden;
     padding: 10px 10px 12px;
@@ -238,11 +240,18 @@ ins {
     border: none;
 }
 
-.storycard .scimgcontainer .sizewidth {
+.storycard .scimgcontainer .sizelandscape {
     width: 100%;
+    height: auto;
+}
+
+.storycard .scimgcontainer .sizeportrait {
+    width: 70%;
+    height: auto;
 }
 
 .storycard .scimgcontainer .sizeheight {
+    width: auto;
     height: 100%;
 }
 
@@ -280,21 +289,25 @@ ins {
     display: none;
 }
 
-/* Expanding div support */
+
+
+/* SectionContainer */
 .toggle-box-container {
 	margin-top: -1px;
 	border: 1px solid #ADADAD;
 	background-color: #fff;
-	padding-left: 20px;
-  padding-right: 20px;
+	padding-left: 16px;
+	padding-right: 16px;
 }
 
 .toggle-box-content {
 	margin-bottom: 4px;
 }
 
-.toggle-box-spacer {
-	height: 8px;
+.toggle-box-content ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
 }
 
 .toggle-box {
@@ -306,49 +319,127 @@ ins {
 }
 
 .toggle-box + label {
-  cursor: pointer;
-  display: block;
-  padding-bottom: 12px;
-	padding-top: 12px;
+	cursor: pointer;
+	display: block;
+	padding-bottom: 8px;
+	padding-top: 8px;
 	line-height: 22px;
 	font-weight: 500;
-	padding-left: 20px;
-  padding-right: 20px;
-	margin-left: -20px;
-  margin-right: -20px;
+	padding-left: 16px;
+	padding-right: 16px;
+	margin-left: -16px;
+	margin-right: -16px;
 }
 
 .toggle-box + label + div {
-  display: none;
+	display: none;
 }
 
 .toggle-box:checked + label + div {
-  display: block;
+	display: block;
 }
 
 .toggle-box + label:before {
-  background-color: #319DD8;
-  border-radius: 20px;
-  width: 20px;
+	background-color: #319DD8;
+	border-radius: 20px;
+	width: 20px;
 	height: 20px;
-  line-height: 18px;
-  color: white;
-  content: "+";
-  display: block;
-  float: left;
-  margin-right: 10px;
-  text-align: center;
+	line-height: 18px;
+	color: white;
+	content: "+";
+	display: block;
+	float: left;
+	margin-right: 10px;
+	text-align: center;
 }
 
 .toggle-box:checked + label:before {
-  content: "\2212";
+	content: "\2212";
 }
 
-.screenshot {
-	border: none;
-	box-shadow: 0 1px 4px rgba(0 ,0, 0, 0.4);
+
+
+/* Expanding Example */
+.toggle-separator {
+    height: 1px;
+    background: #c3d9ff;
+	padding: 0;
+	border: 0;
+	margin: 5px -16px 0 -16px;
 }
+.toggle-example-container ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.toggle-example-container {
+	margin-top: 0;
+	padding: 0;
+	margin-bottom: 0;
+}
+
+.toggle-example-container  + .toggle-example:checked{
+	border-bottom: 1px solid #ADADAD;
+}
+
+.toggle-example-content {
+	margin-bottom: 4px;
+}
+
+.toggle-example {
+  display: none;
+}
+
+.toggle-example:hover{
+	background-color: #f1f1f1;
+}
+
+.toggle-example + label {
+	cursor: pointer;
+	display: block;
+	padding-bottom: 4px;
+	padding-top: 5px;
+	line-height: 22px;
+	font-weight: 500;
+	padding-left: 16px;
+	padding-right: 16px;
+	margin-left: -16px;
+	margin-right: -16px;
+}
+
+.toggle-example + label + div {
+	display: none;
+}
+
+.toggle-example:checked + label + div {
+	display: block;
+}
+
+.toggle-example + label:before {
+	content: "";
+	position: relative;
+	top: 20px;
+	margin-right: 10px;
+	padding-top: 10px;	
+	/* CSS Triangle: The four borders of a square element meet at 45� angles so by only colouring one of the borders you end up with a triangle */
+	width: 0;
+	height: 0;
+	border: 6px solid transparent;
+	border-top-color: #000;
+}
+
+.toggle-example:checked + label:before {
+	position: relative;
+	top: -12px;
+	/* CSS Triangle: The four borders of a square element meet at 45� angles so by only colouring one of the borders you end up with a triangle */
+	height: 0;
+	width: 0;
+	border: 6px solid transparent;
+	border-bottom-color: #000;
+}
+
 </span></pre></p>
   </div>
-<div class="footer">Results generated by <a href="http://www.concordion.org" style="font-weight: bold; text-decoration: none; color: #89C;">Concordion</a><div class="testTime">in 88 ms on 03-Oct-2015 at 16:47:11 NZDT</div></div></body>
+<div class="footer">Results generated by <a href="http://www.concordion.org" style="font-weight: bold; text-decoration: none; color: #89C;">Concordion</a><div class="testTime">in 13 ms on 06-Apr-2016 at 23:57:22 NZST</div></div></body>
 </html>
