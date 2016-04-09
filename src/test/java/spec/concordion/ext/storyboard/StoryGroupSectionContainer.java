@@ -2,7 +2,7 @@ package spec.concordion.ext.storyboard;
 
 import org.concordion.api.extension.Extension;
 import org.concordion.ext.StoryboardExtension;
-import org.concordion.ext.StoryboardExtension.AppendMode;
+import org.concordion.ext.StoryboardExtension.AppendTo;
 import org.concordion.ext.storyboard.CardResult;
 import org.concordion.ext.storyboard.NotificationCard;
 import org.concordion.ext.storyboard.StockCardImage;
@@ -20,7 +20,7 @@ public class StoryGroupSectionContainer extends AcceptanceTest {
     private int example = 0;
     
     @Extension
-    public StoryboardExtension storyboard = new StoryboardExtension().setAddCardOnThrowable(false).setAddCardOnFailure(false).setAppendMode(AppendMode.ItemsToStoryboard);
+    public StoryboardExtension storyboard = new StoryboardExtension().setAddCardOnThrowable(false).setAddCardOnFailure(false).setAppendMode(AppendTo.STORYBOARD);
     
     @Before 
     public void installExtension() {
@@ -29,21 +29,21 @@ public class StoryGroupSectionContainer extends AcceptanceTest {
     }
     
     public String renderAutoAddSection(String fragment) throws Exception {
-    	DummyStoryboardFactory.setAppendMode(AppendMode.ExampleToNewStoryboardSection);
+    	DummyStoryboardFactory.setAppendMode(AppendTo.NEW_STORYBOARD_SECTION_PER_EXAMPLE);
     	ProcessingResult result = renderTest(fragment);
     	
     	return result.getElementXML("storyboard");
     }
     
     public String renderAddToExample(String fragment) throws Exception {
-    	DummyStoryboardFactory.setAppendMode(AppendMode.ItemsToExample);
+    	DummyStoryboardFactory.setAppendMode(AppendTo.EXAMPLE);
     	ProcessingResult result = renderTest(fragment);
     	
     	return result.getElementXML("testinput");
     }
     
     public String render(String fragment) throws Exception {
-    	DummyStoryboardFactory.setAppendMode(AppendMode.ItemsToStoryboard);
+    	DummyStoryboardFactory.setAppendMode(AppendTo.STORYBOARD);
     	
     	return renderTest(fragment).getElementXML("storyboard");
     }

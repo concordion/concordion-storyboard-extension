@@ -2,7 +2,7 @@ package spec.concordion.ext.storyboard;
 
 import org.concordion.api.extension.Extension;
 import org.concordion.ext.StoryboardExtension;
-import org.concordion.ext.StoryboardExtension.AppendMode;
+import org.concordion.ext.StoryboardExtension.AppendTo;
 import org.concordion.ext.storyboard.CardResult;
 import org.concordion.ext.storyboard.NotificationCard;
 import org.concordion.ext.storyboard.StockCardImage;
@@ -20,13 +20,13 @@ public class StoryGroupExampleContainer extends AcceptanceTest {
     private int example = 0;
     
     @Extension
-    public StoryboardExtension storyboard = new StoryboardExtension().setAddCardOnFailure(false).setAppendMode(AppendMode.ItemsToStoryboard);
+    public StoryboardExtension storyboard = new StoryboardExtension().setAddCardOnFailure(false).setAppendMode(AppendTo.STORYBOARD);
     
     @Before 
     public void installExtension() {
         System.setProperty("concordion.extensions", DummyStoryboardFactory.class.getName());
         DummyStoryboardFactory.prepareWithoutScreenShot();
-        DummyStoryboardFactory.setAppendMode(AppendMode.ItemsToExample);
+        DummyStoryboardFactory.setAppendMode(AppendTo.EXAMPLE);
     }
     
     public String render(String fragment) throws Exception {

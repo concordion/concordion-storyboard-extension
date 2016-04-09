@@ -17,7 +17,7 @@ import org.concordion.api.listener.SpecificationProcessingListener;
 import org.concordion.api.listener.ThrowableCaughtEvent;
 import org.concordion.api.listener.ThrowableCaughtListener;
 import org.concordion.ext.ScreenshotTaker;
-import org.concordion.ext.StoryboardExtension.AppendMode;
+import org.concordion.ext.StoryboardExtension.AppendTo;
 
 /**
  * Listens to Concordion events and/or method calls and then adds the required cards to the story board. 
@@ -36,7 +36,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	private boolean lastScreenShotWasThrowable = false;
 	private Resource resource;
 	private Target target;
-	private AppendMode appendMode = AppendMode.ItemsToExample;
+	private AppendTo appendMode = AppendTo.EXAMPLE;
 	
 	/**
 	 * Add screenshot
@@ -164,7 +164,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		
 		// Automatically add section breaks for each example
 		switch (appendMode) {
-		case ItemsToExample:
+		case EXAMPLE:
 			ExampleContainer c = new ExampleContainer();
 			c.setTitle(storyboard.getTitle());
 			c.setExampleElement(event.getElement());			
@@ -172,7 +172,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 			addContainer(c);
 			break;
 			
-		case ExampleToNewStoryboardSection:
+		case NEW_STORYBOARD_SECTION_PER_EXAMPLE:
 			SectionContainer sc = new SectionContainer();
 			sc.setTitle(getExampleTitle(event.getElement()));
 			
@@ -186,10 +186,11 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	@Override
 	public void afterExample(ExampleEvent event) {
+		takeFinalScreenshot("Example Completed");
+		
 		switch (appendMode) {
-		case ItemsToExample:
-		case ExampleToNewStoryboardSection:
-			takeFinalScreenshot("Example Completed");
+		case EXAMPLE:
+		case NEW_STORYBOARD_SECTION_PER_EXAMPLE:
 			storyboard.resetContainers();
 			break;
 		default:
@@ -302,7 +303,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		storyboard.setTitle(title);		
 	}
 
-	public void setAppendMode(AppendMode appendMode) {
+	public void setAppendMode(AppendTo appendMode) {
 		this.appendMode = appendMode;		
 	}
 }

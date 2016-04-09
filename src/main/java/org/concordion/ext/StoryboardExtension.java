@@ -95,7 +95,7 @@ public class StoryboardExtension implements ConcordionExtension {
 	 * 
 	 * @param appendMode
 	 */
-	public StoryboardExtension setAppendMode(AppendMode appendMode) {
+	public StoryboardExtension setAppendMode(AppendTo appendMode) {
 		extension.setAppendMode(appendMode);
 		return this;
 	}
@@ -331,28 +331,20 @@ public class StoryboardExtension implements ConcordionExtension {
 	}
 	
 	public enum AppendTo {
-		Storyboard,
-		
-		Eample,
-		
-		SectionContainer
-	}
-	
-	public enum AppendMode {
 		/**
 		 * Cards and Containers are added to the Storyboard (original behaviour)
 		 */
-		ItemsToStoryboard,
+		STORYBOARD,
 		
 		/**
 		 * Cards and Containers are added to the Example if using the Example Command, otherwise added to the Storyboard (default behaviour)
 		 */
-		ItemsToExample,
+		EXAMPLE,
 		
 		/**
 		 *  If using the Example Command then any cards added during exection of the example will be added to a new Section Container on the Storyboard,
 		 *  otherwise cards and containers are added to the Storyboard
 		 */
-		ExampleToNewStoryboardSection
+		NEW_STORYBOARD_SECTION_PER_EXAMPLE
 	}
 }

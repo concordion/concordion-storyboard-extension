@@ -4,21 +4,21 @@ import org.concordion.api.extension.ConcordionExtension;
 import org.concordion.api.extension.ConcordionExtensionFactory;
 import org.concordion.ext.ScreenshotTaker;
 import org.concordion.ext.StoryboardExtension;
-import org.concordion.ext.StoryboardExtension.AppendMode;
+import org.concordion.ext.StoryboardExtension.AppendTo;
 
 public class DummyStoryboardFactory implements ConcordionExtensionFactory {
     private static StoryboardExtension storyboard = null;
     private static ScreenshotTaker screenshotTaker = null;
     private static boolean addCardOnFailure = true;
     private static boolean takeScreenshotOnTestCompletion = true;
-    private static AppendMode appendMode = AppendMode.ItemsToStoryboard;
+    private static AppendTo appendMode = AppendTo.STORYBOARD;
     private static boolean supressRepeatingFailures = true;
     
     public static void prepareWithScreenShot() {
     	addCardOnFailure = true;
         takeScreenshotOnTestCompletion = true;
     	screenshotTaker = new DummyScreenshotTaker();
-    	appendMode = AppendMode.ItemsToStoryboard;
+    	appendMode = AppendTo.STORYBOARD;
     	supressRepeatingFailures = true;
     }
     
@@ -26,7 +26,7 @@ public class DummyStoryboardFactory implements ConcordionExtensionFactory {
     	addCardOnFailure = true;
         takeScreenshotOnTestCompletion = true;
     	screenshotTaker = null;
-    	appendMode = AppendMode.ItemsToStoryboard;
+    	appendMode = AppendTo.STORYBOARD;
     	supressRepeatingFailures = true;
 	}
     
@@ -38,7 +38,7 @@ public class DummyStoryboardFactory implements ConcordionExtensionFactory {
 		takeScreenshotOnTestCompletion = value;
 	}
     
-    public static void setAppendMode(AppendMode value) {
+    public static void setAppendMode(AppendTo value) {
     	appendMode = value;
     }
     
