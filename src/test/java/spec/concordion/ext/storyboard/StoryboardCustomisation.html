@@ -36,10 +36,11 @@
 	<li><code>removeScreenshotTaker()</code>:Removes the screenshot taker so no further screenshots will be taken
 		<ul>
   			<li>If you are mixing GUI and non GUI actions in your storyboard you may want to remove the screenshot taker to prevent further screenshots being 
-  			    taken for the current example to keep the cards in a logical order.  The need for this is dependent on the setting of <code>setTakeScreenshotOnCompletion()</code></li>
+  			    taken for the current example to keep the cards in a logical order.  The need for this is dependent on the setting of <code>setTakeScreenshotOnExampleCompletion()</code></li>
 	 	</ul>
 	</li>
-  	<li><code>setTakeScreenshotOnCompletion()</code>:  When the test completes and the ScreenshotTaker is not null the storyboard will take a screenshot of the current screen
+  	<li><code>setTakeScreenshotOnExampleCompletion()</code>:  When an example completes a screenshot of the current page will be automatically added to the storyboard - as long as 
+	 the screenshot taker has been set. If not using the example command then final screenshots must be added manually.
   		<ul>
   			<li>Defaults to true</li>
 	 	</ul>
