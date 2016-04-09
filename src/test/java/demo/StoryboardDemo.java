@@ -1,5 +1,6 @@
 package demo;
 
+import org.concordion.api.Scope;
 import org.concordion.api.extension.Extension;
 import org.concordion.ext.StoryboardExtension;
 import org.concordion.ext.StoryboardExtension.AppendMode;
@@ -14,8 +15,9 @@ import test.concordion.ext.storyboard.DummyScreenshotTaker;
 public class StoryboardDemo {
 
 	@Extension
-	public final StoryboardExtension storyboard = new StoryboardExtension().setScreenshotTaker(new DummyScreenshotTaker())
-		.setAppendMode(AppendMode.ItemsToExample);
+	public final StoryboardExtension storyboard = new StoryboardExtension()
+						.setScreenshotTaker(new DummyScreenshotTaker(), Scope.SPECIFICATION)
+						.setAppendMode(AppendMode.ItemsToExample);
 
 	public boolean addCard(final String description) {
 		String title = storyboard.getCurrentExampleTitle();

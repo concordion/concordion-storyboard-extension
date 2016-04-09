@@ -1,5 +1,6 @@
 package test.concordion.ext.storyboard;
 
+import org.concordion.api.Scope;
 import org.concordion.api.extension.ConcordionExtension;
 import org.concordion.api.extension.ConcordionExtensionFactory;
 import org.concordion.ext.ScreenshotTaker;
@@ -49,7 +50,7 @@ public class DummyStoryboardFactory implements ConcordionExtensionFactory {
     @Override
     public ConcordionExtension createExtension() {    	
     	storyboard = new StoryboardExtension();
-    	storyboard.setScreenshotTaker(screenshotTaker);
+    	storyboard.setScreenshotTaker(screenshotTaker, Scope.EXAMPLE);
     	storyboard.setAddCardOnFailure(addCardOnFailure);
     	storyboard.setTakeScreenshotOnCompletion(takeScreenshotOnTestCompletion);
     	storyboard.setAppendMode(appendMode);

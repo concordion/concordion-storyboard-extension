@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.concordion.api.Resource;
+import org.concordion.api.Scope;
 import org.concordion.api.extension.ConcordionExtender;
 import org.concordion.api.extension.ConcordionExtension;
 import org.concordion.ext.storyboard.Card;
@@ -152,12 +153,21 @@ public class StoryboardExtension implements ConcordionExtension {
 	 * </ul>
 	 * 
 	 * @param screenshotTaker Takes screenshots of the system under test
+	 * @param lifecycle How long the screenshot taker is valid for
 	 */
-	public StoryboardExtension setScreenshotTaker(final ScreenshotTaker screenshotTaker) {
-		extension.setScreenshotTaker(screenshotTaker);
+	public StoryboardExtension setScreenshotTaker(final ScreenshotTaker screenshotTaker, Scope lifecycle) {
+		extension.setScreenshotTaker(screenshotTaker, lifecycle);
 		return this;
 	}
 
+	/**
+	 * Removes the screenshot taker so no further screenshots will be taken.
+	 */
+	public StoryboardExtension removeScreenshotTaker() {
+		extension.setScreenshotTaker(null, Scope.EXAMPLE);
+		return this;
+	}
+	
 	/**
 	 * When the test, or example completes the storyboard will add a screenshot of the current screen.
 	 * 

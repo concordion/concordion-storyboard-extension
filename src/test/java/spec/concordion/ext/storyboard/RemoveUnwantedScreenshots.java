@@ -27,7 +27,7 @@ public class RemoveUnwantedScreenshots extends AcceptanceTest {
     TestRig rig = null;
     
     @Extension
-    public StoryboardExtension storyboard = new StoryboardExtension().setScreenshotTaker(null).setAddCardOnFailure(false);
+    public StoryboardExtension storyboard = new StoryboardExtension().setAddCardOnFailure(false);
     
     @Before 
     public void installExtension() {

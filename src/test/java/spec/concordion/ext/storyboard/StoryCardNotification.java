@@ -22,7 +22,7 @@ public class StoryCardNotification extends AcceptanceTest {
     private int example = 0;
     
     @Extension
-    public StoryboardExtension storyboard = new StoryboardExtension().setScreenshotTaker(null).setAddCardOnFailure(false);
+    public StoryboardExtension storyboard = new StoryboardExtension().setAddCardOnFailure(false);
     
     @Before 
     public void installExtension() {
