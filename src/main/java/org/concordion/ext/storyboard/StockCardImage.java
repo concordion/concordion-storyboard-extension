@@ -14,12 +14,8 @@ public enum StockCardImage implements CardImage {
 	TEXT("/txt.png"),
 	XML("/xml.png"),
 	XML_REQUEST("/xmlrequest.png"),
-	XML_RESPONSE("/xmlresponse.png"),
+	XML_RESPONSE("/xmlresponse.png");
 	
-	HTML_OLD("/html-old.png"),
-	XML_REQUEST_OLD("/xmlrequest-old.png"),
-	XML_RESPONSE_OLD("/xmlresponse-old.png");
-
 	private final String key;
 
 	private StockCardImage(final String key) {
