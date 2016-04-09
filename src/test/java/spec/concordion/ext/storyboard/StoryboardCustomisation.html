@@ -23,21 +23,14 @@
   			<li>Defaults to true</li>
 	 	</ul>
 	</li>
-  	<li><code>setScreenshotTaker(screenshotTaker, lifeCycle)</code>: Set a custom screenshot taker
+  	<li><code>setScreenshotTaker()</code>: Set a custom screenshot taker
   		<ul>
   			<li>By default this is not set to avoid capturing screen shots when not appropriate</li>
   			<li>The project includes <code>RobotScreenshotTaker</code>code which will capture the full visible screen<br/>
   			    As an alternative, custom screenshots can be captured using the `ScreenshotTaker` interface. For example, when using frameworks
   			    such as Selenium, a custom screenshot taker can capture an image of the entire web page, even if the test is running in the
-  			    background.  See the demo application for an example of a custom <code>SeleniumScreenshotTaker</code>.</li>
-			<li>The lifecycle option allows you to specify how long the screenshotTaker should be kept, options are:
-				<ul>
-				<li>EXAMPLE - a single example</li>
-				<li>SPECIFICATION - the entire specification</li>
-				</ul>
-				If your specification is mixing GUI and non GUI examples then you will need to set the lifecycle to EXAMPLE to avoid adding screenshots 
-				to the storyboard at inappropriate times. 
-			</li>
+  			    background.  See the demo application for an example of a custom <code>SeleniumScreenshotTaker</code>.
+  			</li>
 	 	</ul>
 	</li>
 	<li><code>removeScreenshotTaker()</code>:Removes the screenshot taker so no further screenshots will be taken

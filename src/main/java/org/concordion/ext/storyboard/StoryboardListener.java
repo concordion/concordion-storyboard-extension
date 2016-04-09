@@ -2,7 +2,6 @@ package org.concordion.ext.storyboard;
 
 import org.concordion.api.Element;
 import org.concordion.api.Resource;
-import org.concordion.api.Scope;
 import org.concordion.api.Target;
 import org.concordion.api.listener.AssertEqualsListener;
 import org.concordion.api.listener.AssertFailureEvent;
@@ -34,7 +33,6 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	private boolean failureDetected = false;
 	private boolean takeScreenshotOnCompletion = true;
 	private ScreenshotTaker screenshotTaker = null;
-	private Scope screenshotTakerLifecycle = Scope.SPECIFICATION;
 	private boolean lastScreenShotWasThrowable = false;
 	private Resource resource;
 	private Target target;
@@ -199,10 +197,6 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		}
 		
 		this.currentExample = null;
-		
-		if (this.screenshotTakerLifecycle == Scope.EXAMPLE) {
-			this.screenshotTaker = null;
-		}
 	}
 	
 	@Override
@@ -219,10 +213,6 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 		resource = null;
 		target = null;
-		
-		if (this.screenshotTakerLifecycle == Scope.SPECIFICATION) {
-			this.screenshotTaker = null;
-		}
 	}
 	
 	private void takeFinalScreenshot(String title) {
@@ -241,9 +231,8 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		return screenshotTaker != null;
 	}
 	
-	public void setScreenshotTaker(final ScreenshotTaker screenshotTaker, Scope lifecycle) {
+	public void setScreenshotTaker(final ScreenshotTaker screenshotTaker) {
 		this.screenshotTaker = screenshotTaker;
-		this.screenshotTakerLifecycle = lifecycle;
 	}
 
 	public void setAddCardOnThrowable(final boolean value) {
