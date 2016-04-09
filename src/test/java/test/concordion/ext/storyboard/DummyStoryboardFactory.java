@@ -51,7 +51,7 @@ public class DummyStoryboardFactory implements ConcordionExtensionFactory {
     	storyboard = new StoryboardExtension();
     	storyboard.setScreenshotTaker(screenshotTaker);
     	storyboard.setAddCardOnFailure(addCardOnFailure);
-    	storyboard.setTakeScreenshotOnCompletion(takeScreenshotOnTestCompletion);
+    	storyboard.setTakeScreenshotOnExampleCompletion(takeScreenshotOnTestCompletion);
     	storyboard.setAppendMode(appendMode);
     	
     	if (!supressRepeatingFailures) {

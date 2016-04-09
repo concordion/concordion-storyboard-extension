@@ -126,9 +126,10 @@ public class StoryboardExtension implements ConcordionExtension {
 	}
 	
 	/**
-	 * if {@link #setAddCardOnFailure(boolean)} is true then will optionally ignore second or subsequent failure.
+	 * if {@link #setAddCardOnFailure(boolean)} is true then will optionally ignore second or subsequent failure.  If using the Example command then
+	 * each example will be treated separately. 
 	 * 
-	 * @param value <code>true</code> to not add card on second (or more) failure (default behaviour), <code>false</code> to add a card for every failure.
+	 * @param value <code>true</code> to not add card on second, or subsequent, failure (default behaviour), <code>false</code> to add a card for every failure.
 	 */
 	public StoryboardExtension setSupressRepeatingFailures(final boolean value) {
 		extension.setSupressRepeatingFailures(value);
@@ -167,16 +168,16 @@ public class StoryboardExtension implements ConcordionExtension {
 	}
 	
 	/**
-	 * When the test, or example completes the storyboard will add a screenshot of the current screen.
+	 * When an example completes a screenshot of the current page will be automatically added to the storyboard - as long as 
+	 * the screenshot taker has been set.
 	 * 
-	 * This assumes that the ScreenshotTaker is not null, and in the case of the example command: automatically 
-	 * adding section breaks has not been turned off.
+	 * <p>If not using the example command then final screenshots must be added manually.</p>
 	 * 
 	 * @param value
 	 * 			<code>true</code> to take screenshot (default), <code>false</code> to not take screenshot
 	 */
-	public StoryboardExtension setTakeScreenshotOnCompletion(final boolean value) {
-		extension.setTakeScreenshotOnCompletion(value);
+	public StoryboardExtension setTakeScreenshotOnExampleCompletion(final boolean value) {
+		extension.setTakeScreenshotOnExampleCompletion(value);
 		return this;
 	}
 

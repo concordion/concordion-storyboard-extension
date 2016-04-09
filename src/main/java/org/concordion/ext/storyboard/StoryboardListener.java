@@ -31,7 +31,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	private boolean addCardOnFailure = true;
 	private boolean supressRepeatingFailures = true;
 	private boolean failureDetected = false;
-	private boolean takeScreenshotOnCompletion = true;
+	private boolean takeScreenshotOnExampleCompletion = true;
 	private ScreenshotTaker screenshotTaker = null;
 	private boolean lastScreenShotWasThrowable = false;
 	private Resource resource;
@@ -204,10 +204,6 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		if (storyboard.getItems().isEmpty()) {
 			return;
 		}
-		
-		if (appendMode == AppendMode.ItemsToStoryboard) { 
-			takeFinalScreenshot("Test Completed");
-		}
 
 		storyboard.addToSpecification(event, failureDetected);
 
@@ -216,7 +212,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	}
 	
 	private void takeFinalScreenshot(String title) {
-		if (!takeScreenshotOnCompletion) return;
+		if (!takeScreenshotOnExampleCompletion) return;
 		if (screenshotTaker == null) return;
 		if (lastScreenShotWasThrowable) return;  
 		
@@ -255,8 +251,8 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		return target;
 	}
 
-	public void setTakeScreenshotOnCompletion(boolean value) {
-		this.takeScreenshotOnCompletion = value;
+	public void setTakeScreenshotOnExampleCompletion(boolean value) {
+		this.takeScreenshotOnExampleCompletion = value;
 	}
 
 	public void markPriorScreenshotsForRemoval() {
