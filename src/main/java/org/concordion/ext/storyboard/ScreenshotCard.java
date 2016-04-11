@@ -3,6 +3,10 @@ package org.concordion.ext.storyboard;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.Date;
+
 import org.concordion.api.Element;
 import org.concordion.api.Resource;
 import org.concordion.ext.ScreenshotTaker;
@@ -83,9 +87,11 @@ public class ScreenshotCard extends Card {
 	
 	@Override
 	protected void addHTMLToContainer(final Element container) {
+		String href = this.imageName + "?version=" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+				
 		// Add link to image
 		Element anchorImg = new Element("a");
-		anchorImg.addAttribute("href", this.imageName);
+		anchorImg.addAttribute("href", href);
 		container.appendChild(anchorImg);
 
 		// Add image to card
@@ -98,7 +104,7 @@ public class ScreenshotCard extends Card {
 			img.addStyleClass("sizeportrait");
 		}
 		
-		img.addAttribute("src", this.imageName);
+		img.addAttribute("src", href);
 		img.addAttribute("width", Integer.toString(this.imageSize.width));
 		anchorImg.appendChild(img);
 

@@ -14,16 +14,28 @@ import org.concordion.ext.ScreenshotTaker;
  * Returns the contents of a static file, so that screenshots of my system don't inadvertently make it onto the net :-)
  */
 public final class DummyScreenshotTaker implements ScreenshotTaker {
-    private static final String IMAGE_PATH = "image/details.jpg";
-    static final BufferedImage IMAGE;
-
-    static {
+    private static final String IMAGE_PATH = "image/details#.jpg";
+    private int index = 1;
+    
+    public DummyScreenshotTaker() {
+    }
+    public DummyScreenshotTaker(int startIndex) {
+    	index = startIndex;
+    }
+    
+    private BufferedImage getImage() {
+    	
         try {
-            InputStream imageStream = DummyStoryboardFactory.class.getClassLoader().getResourceAsStream(IMAGE_PATH);
+            InputStream imageStream = DummyStoryboardFactory.class.getClassLoader().getResourceAsStream(IMAGE_PATH.replace("#", String.valueOf(index)));
             if (imageStream == null) {
                 throw new RuntimeException(String.format("Unable to find IMAGE '%s' on classpath", IMAGE_PATH));
             }
-            IMAGE = ImageIO.read(imageStream);
+            
+            index ++;
+            if (index > 2) {
+            	index = 1;
+            }
+            return ImageIO.read(imageStream);
         } catch (IOException e) {
             throw new RuntimeException("Unable to create DummyScreenshotFactory", e);
         }
@@ -31,8 +43,10 @@ public final class DummyScreenshotTaker implements ScreenshotTaker {
     
     @Override
     public Dimension writeScreenshotTo(OutputStream outputStream) throws IOException {
-        ImageIO.write(IMAGE, getFileExtension(), outputStream);
-        return new Dimension(IMAGE.getWidth(), IMAGE.getHeight());
+    	BufferedImage image = getImage();
+    	
+        ImageIO.write(image, getFileExtension(), outputStream);
+        return new Dimension(image.getWidth(), image.getHeight());
     }
 
     @Override

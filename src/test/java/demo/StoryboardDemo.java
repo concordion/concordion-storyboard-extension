@@ -15,7 +15,7 @@ public class StoryboardDemo {
 
 	@Extension
 	public final StoryboardExtension storyboard = new StoryboardExtension()
-						.setScreenshotTaker(new DummyScreenshotTaker())
+						.setScreenshotTaker(new DummyScreenshotTaker(1))
 						.setAppendMode(AppendTo.EXAMPLE);
 
 	public boolean addCard(final String description) {
@@ -26,10 +26,8 @@ public class StoryboardDemo {
 		//storyboard.addScreenshot("Try this", "hey");
 		
 		storyboard.addSectionBreak(title);
-		storyboard.addNotification("Example", description, null, StockCardImage.TEXT, CardResult.SUCCESS);
-//		storyboard.addSectionBreak("Inner");
-		storyboard.addNotification("Example", description, null, StockCardImage.TEXT, CardResult.FAILURE);
-//		storyboard.addSectionBreak("");
+		storyboard.addNotification("n1", "description", StockCardImage.EMAIL, CardResult.SUCCESS);
+		storyboard.addScreenshot("s2", "description");
 		storyboard.addSectionBreak("");
 		
 		return true;
