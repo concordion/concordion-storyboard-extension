@@ -51,12 +51,20 @@ public class StoryCardFileNaming extends AcceptanceTest {
         ArrayList<ImageResult> list = new ArrayList<ImageResult>();
         int pos = 0;
         while ((pos=fragment.indexOf(TEXT_BEFORE_IMAGE_NAME, pos)) != -1) {
-            ImageResult result = new ImageResult();
             pos = pos + TEXT_BEFORE_IMAGE_NAME.length();
-            result.imageName = fragment.substring(pos, fragment.indexOf("\"", pos));
+            String imageName = fragment.substring(pos, fragment.indexOf("\"", pos));
             pos++;
-            File file = new File(new File(getBaseOutputDir(), folder), result.imageName);
+            
+            int index = imageName.indexOf("?");
+            if (index > 0) {
+            	imageName = imageName.substring(0, index);
+            }
+            		
+            File file = new File(new File(getBaseOutputDir(), folder), imageName);
             System.out.println("looking for " + file.toString());
+            
+            ImageResult result = new ImageResult();
+            result.imageName = imageName;
             result.storedOnDisk = file.exists();
             list.add(result);
         }
