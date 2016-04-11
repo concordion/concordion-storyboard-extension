@@ -4,7 +4,6 @@ import java.awt.Dimension;
 import java.io.File;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.Date;
 
 import org.concordion.api.Element;
