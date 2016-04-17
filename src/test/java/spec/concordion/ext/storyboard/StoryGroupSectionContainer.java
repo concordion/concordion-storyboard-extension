@@ -78,12 +78,12 @@ public class StoryGroupSectionContainer extends AcceptanceTest {
     	return true;
     }
     
-    public void addSectionBreak(String title) {    	
-    	DummyStoryboardFactory.getStoryboard().addSectionBreak(title);
+    public void addSectionContainer(String title) {    	
+    	DummyStoryboardFactory.getStoryboard().addSectionContainer(title);
     }
     
-    public void closeSectionBreak() {
-    	DummyStoryboardFactory.getStoryboard().addSectionBreak(null);
+    public void closeContainer() {
+    	DummyStoryboardFactory.getStoryboard().closeContainer();
     }
     
         

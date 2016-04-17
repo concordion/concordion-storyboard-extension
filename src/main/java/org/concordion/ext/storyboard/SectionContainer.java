@@ -3,9 +3,10 @@ package org.concordion.ext.storyboard;
 import org.concordion.api.Element;
 
 /**
- * Card that marks the start of a collapsible section in the storyboard. This section will contain card - it will not be a card.
+ * Container that presents cards within a collapsible section in the storyboard. 
  * 
- * You wouldn't normally add this card directly but would call storyboard.addSectionBreak("section title");		
+ * You wouldn't normally add this card directly but would call storyboard.addSectionContainer("section title");
+ * To stop added cards to the container, complete the container using storyboard.completeContainer();		
  */
 public class SectionContainer extends Container {
 

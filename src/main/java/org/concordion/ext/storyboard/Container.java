@@ -5,7 +5,7 @@ import java.util.List;
 import org.concordion.api.Element;
 
 /**
- * Base class for all items that can contain cards
+ * Base class for all containers that can be added to the storyboard.
  */
 public abstract class Container extends StoryboardItem {
 	List<StoryboardItem> items = new ArrayList<StoryboardItem>();

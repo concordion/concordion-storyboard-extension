@@ -32,6 +32,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	private boolean supressRepeatingFailures = true;
 	private boolean failureDetected = false;
 	private boolean takeScreenshotOnExampleCompletion = true;
+	private boolean skipFinalScreenshotForCurrentExample = false;
 	private ScreenshotTaker screenshotTaker = null;
 	private boolean lastScreenShotWasThrowable = false;
 	private Resource resource;
@@ -40,6 +41,8 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	
 	/**
 	 * Add screenshot
+	 * 
+	 * @param card The screenshot card
 	 */
 	public void addCard(final ScreenshotCard card) {
 		card.setScreenshotTaker(screenshotTaker);
@@ -49,6 +52,8 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	/**
 	 * Add custom card and/or set common details for all cards
+	 * 
+	 * @param card The card
 	 */
 	public void addCard(final Card card) {
 		if (getResource() == null || getTarget() == null) {
@@ -186,7 +191,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	@Override
 	public void afterExample(ExampleEvent event) {
-		takeFinalScreenshot("Example Completed");
+		takeFinalScreenshotForExample("Example Completed");
 		
 		switch (appendMode) {
 		case EXAMPLE:
@@ -198,6 +203,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		}
 		
 		this.currentExample = null;
+		this.skipFinalScreenshotForCurrentExample = false;
 	}
 	
 	@Override
@@ -212,11 +218,12 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		target = null;
 	}
 	
-	private void takeFinalScreenshot(String title) {
+	private void takeFinalScreenshotForExample(String title) {
 		if (!takeScreenshotOnExampleCompletion) return;
+		if (skipFinalScreenshotForCurrentExample) return;
 		if (screenshotTaker == null) return;
-		if (lastScreenShotWasThrowable) return;  
-		
+		if (lastScreenShotWasThrowable) return;
+				
 		ScreenshotCard card = new ScreenshotCard();
 		card.setTitle(title);
 		card.setDescription("");
@@ -254,6 +261,10 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	public void setTakeScreenshotOnExampleCompletion(boolean value) {
 		this.takeScreenshotOnExampleCompletion = value;
+	}
+	
+	public void setSkipFinalScreenshotForCurrentExample() {
+		this.skipFinalScreenshotForCurrentExample = true;
 	}
 
 	public void markPriorScreenshotsForRemoval() {

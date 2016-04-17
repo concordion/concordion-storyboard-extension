@@ -87,14 +87,14 @@ public class RemoveUnwantedScreenshots extends AcceptanceTest {
     public void addScreenshotsInSectionBreak() {
     	StoryboardExtension dummyboard = DummyStoryboardFactory.getStoryboard();
     	    	
-    	dummyboard.addSectionBreak("Example 1");
+    	dummyboard.addSectionContainer("Example 1");
     	dummyboard.addScreenshot("Screen 1", "Screenshot 1");
     	dummyboard.addScreenshot("Screen 2", "Screenshot 2");
     	dummyboard.markPriorScreenshotsForRemoval();
     	dummyboard.addScreenshot("Screen 3", "Screenshot 3");
-    	dummyboard.completeContainer();
+    	dummyboard.closeContainer();
     	
-    	dummyboard.addSectionBreak("Example 2");
+    	dummyboard.addSectionContainer("Example 2");
     	dummyboard.addScreenshot("Screen 1", "Screenshot 1");
     	dummyboard.addScreenshot("Screen 2", "Screenshot 2");
     	dummyboard.markPriorScreenshotsForRemoval();
@@ -103,7 +103,7 @@ public class RemoveUnwantedScreenshots extends AcceptanceTest {
     	card.setDescription("Screenshot 3");
     	card.setResult(CardResult.FAILURE);
     	dummyboard.addCard(card);
-    	dummyboard.completeContainer();
+    	dummyboard.closeContainer();
     } 
     
     public int getCountScreenShots(String fragment) {

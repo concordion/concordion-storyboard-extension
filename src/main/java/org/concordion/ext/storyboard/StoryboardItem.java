@@ -4,7 +4,7 @@ import org.concordion.api.Resource;
 import org.concordion.api.Target;
 
 /**
- * Base class for all cards that can be added to the storyboard
+ * Base class for all cards and containers that can be added to the storyboard
  */
 public abstract class StoryboardItem {
 	private String title = "";

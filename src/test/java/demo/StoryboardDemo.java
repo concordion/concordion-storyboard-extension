@@ -25,10 +25,10 @@ public class StoryboardDemo {
 		
 		//storyboard.addScreenshot("Try this", "hey");
 		
-		storyboard.addSectionBreak(title);
+		storyboard.addSectionContainer(title);
 		storyboard.addNotification("n1", "description", StockCardImage.EMAIL, CardResult.SUCCESS);
 		storyboard.addScreenshot("s2", "description");
-		storyboard.addSectionBreak("");
+		storyboard.addSectionContainer("");
 		
 		return true;
 	}

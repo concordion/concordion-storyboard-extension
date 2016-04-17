@@ -58,6 +58,9 @@ public class StoryboardExtension implements ConcordionExtension {
 
 	/**
 	 * Add custom card image that will be shared by all tests, must be called before test starts otherwise this will do nothing
+	 * 
+	 * @param sourcePath Location of image
+	 * @param filename Filename of image
 	 */
 	public void addCardImage(final String sourcePath, final String filename) {
 		customImages.put(CustomCardImage.getKeyFromFileName(filename), new CustomCardImage(sourcePath, filename));
@@ -66,8 +69,8 @@ public class StoryboardExtension implements ConcordionExtension {
 	/**
 	 * Get a previously added custom card image
 	 * 
-	 * @param filename
-	 * @return
+	 * @param filename Original filename of image
+	 * @return CustomCardImage object
 	 */
 	public CustomCardImage getCardImage(final String filename) {
 		return customImages.get(filename);
@@ -76,8 +79,10 @@ public class StoryboardExtension implements ConcordionExtension {
 	/**
 	 * Set the title to display on the Storyboard and/or ExampleContainer
 	 * 
-	 * Is a very small attempt at multi-language support.
-	 * @param title
+	 * <p>This is a token effort at multi-language support.</p>
+	 * 
+	 * @param title The title
+	 * @return A self reference
 	 */
 	public StoryboardExtension setTitle(String title) {
 		extension.setTitle(title);
@@ -93,7 +98,8 @@ public class StoryboardExtension implements ConcordionExtension {
 	 *   <li>If item is added within currently executing Example Command append to new section container in Storyboard, otherwise append to Storyboard</li>
 	 * </ul> 
 	 * 
-	 * @param appendMode
+	 * @param appendMode The card append mode
+	 * @return A self reference
 	 */
 	public StoryboardExtension setAppendMode(AppendTo appendMode) {
 		extension.setAppendMode(appendMode);
@@ -105,8 +111,8 @@ public class StoryboardExtension implements ConcordionExtension {
 	 * Sets whether a card will be added to the storyboard when an uncaught exception occurs in the test. Defaults to <b><code>true</code></b>. 
 	 * If screenshotTaker is set then it will take a {@link ScreenshotCard}, else it will add a {@link NotificationCard}
 	 * 
-	 * @param value
-	 *            <code>true</code> to add a card when an uncaught exception occurs in the test, <code>false</code> to not add a card.
+	 * @param value <code>true</code> to add a card when an uncaught exception occurs in the test, <code>false</code> to not add a card.
+	 * @return A self reference
 	 */
 	public StoryboardExtension setAddCardOnThrowable(final boolean value) {
 		extension.setAddCardOnThrowable(value);
@@ -117,8 +123,8 @@ public class StoryboardExtension implements ConcordionExtension {
 	 * Sets whether a card will be added to the storyboard when a failure occurs in the test. Defaults to <b><code>true</code></b>. 
 	 * If screenshotTaker is set then it will take a {@link ScreenshotCard}, else it will add a {@link NotificationCard}
 	 * 
-	 * @param value
-	 *            <code>true</code> to add a card when a failure occurs in the test, <code>false</code> to not add a card.
+	 * @param value <code>true</code> to add a card when a failure occurs in the test, <code>false</code> to not add a card.
+	 * @return A self reference
 	 */
 	public StoryboardExtension setAddCardOnFailure(final boolean value) {
 		extension.setAddCardOnFailure(value);
@@ -130,6 +136,7 @@ public class StoryboardExtension implements ConcordionExtension {
 	 * each example will be treated separately. 
 	 * 
 	 * @param value <code>true</code> to not add card on second, or subsequent, failure (default behaviour), <code>false</code> to add a card for every failure.
+	 * @return A self reference
 	 */
 	public StoryboardExtension setSupressRepeatingFailures(final boolean value) {
 		extension.setSupressRepeatingFailures(value);
@@ -138,6 +145,8 @@ public class StoryboardExtension implements ConcordionExtension {
 	
 	/**
 	 * Check to see if a screenshot taker has been set
+	 * 
+	 * @return True if screenshot taker exists
 	 */
 	public boolean hasScreenshotTaker() {
 		return extension.hasScreenshotTaker();
@@ -153,6 +162,7 @@ public class StoryboardExtension implements ConcordionExtension {
 	 * </ul>
 	 * 
 	 * @param screenshotTaker Takes screenshots of the system under test
+	 * @return A self reference
 	 */
 	public StoryboardExtension setScreenshotTaker(final ScreenshotTaker screenshotTaker) {
 		extension.setScreenshotTaker(screenshotTaker);
@@ -161,6 +171,8 @@ public class StoryboardExtension implements ConcordionExtension {
 
 	/**
 	 * Removes the screenshot taker so no further screenshots will be taken.
+	 * 
+	 * @return A self reference
 	 */
 	public StoryboardExtension removeScreenshotTaker() {
 		extension.setScreenshotTaker(null);
@@ -175,29 +187,44 @@ public class StoryboardExtension implements ConcordionExtension {
 	 * 
 	 * @param value
 	 * 			<code>true</code> to take screenshot (default), <code>false</code> to not take screenshot
+	 * @return A self reference
 	 */
 	public StoryboardExtension setTakeScreenshotOnExampleCompletion(final boolean value) {
 		extension.setTakeScreenshotOnExampleCompletion(value);
 		return this;
 	}
-
+	
 	/**
-	 * Set to false to stop screenshot cards being added, this is useful in situations where might be looping and refreshing screen constantly and don't want to
-	 * show many screenshots of same screen in storyboard
+	 * If configured to take final screenshot for example (see {@link #setTakeScreenshotOnExampleCompletion(boolean)}), this
+	 * will override that behvaiour for the current example only.
 	 * 
-	 * @param accept
+	 * @return A self reference
 	 */
-	public void setAcceptsScreenshots(final boolean accept) {
+	public StoryboardExtension setSkipFinalScreenshotForCurrentExample() {
+		extension.setSkipFinalScreenshotForCurrentExample();
+		return this;
+	}
+	
+	/**
+	 * Set to false to stop screenshot cards being added, this is useful in situations where might be looping and refreshing screen
+	 * constantly and don't want to show too many screenshots of same screen in storyboard.
+	 * 
+	 * @param accept Accept screenshot setting
+	 * @return A self reference
+	 */
+	public StoryboardExtension setAcceptsScreenshots(final boolean accept) {
 		this.acceptsScreenShots = accept;
+		return this;
 	}
 	
 	/**
 	 * Adds screenshot card to story board
 	 * 
-	 * @param title
-	 * @param description
+	 * @param title Card title
+	 * @param description Card description
+	 * @return A self reference
 	 */
-	public void addScreenshot(final String title, final String description) {
+	public StoryboardExtension addScreenshot(final String title, final String description) {
 		if (acceptsScreenShots) {
 			ScreenshotCard card = new ScreenshotCard();
 			card.setTitle(title);
@@ -206,66 +233,58 @@ public class StoryboardExtension implements ConcordionExtension {
 
 			extension.addCard(card);
 		}
+		return this;
 	}
 
 	/**
 	 * Marks any screenshot cards added before this point to be deleted if tests completes successfully.
 	 * If added within a section break then it will only apply to the screenshots in the section break.
+	 * 
+	 * @return A self reference
 	 */
-	public void markPriorScreenshotsForRemoval() {
+	public StoryboardExtension markPriorScreenshotsForRemoval() {
 		extension.markPriorScreenshotsForRemoval();
+		return this;
 	}
 
 	/**
 	 * 
-	 * @param title
-	 *            short description
-	 * @param description
-	 *            card summary
-	 * @param image
-	 * 			StockCardImage or custom CardImage to display 
-	 * @param result
-	 * 			Success/failure status 
+	 * @param title short description
+	 * @param description card summary
+	 * @param image StockCardImage or custom CardImage to display 
+	 * @param result Success/failure status
+	 * @return A self reference 
 	 */
-	public void addNotification(final String title, final String description, final CardImage image, final CardResult result) {
-		addNotification(title, description, null, null, image, result);
+	public StoryboardExtension addNotification(final String title, final String description, final CardImage image, final CardResult result) {
+		return addNotification(title, description, null, null, image, result);
 	}
 	
 	/**
 	 * Adds data/information card to story board
 	 * 
-	 * @param title
-	 *            short description
-	 * @param description
-	 *            card summary
-	 * @param data
-	 *            any data that may want to present to user when they click on it, can be empty, xml, json, etc
-	 * @param image
-	 * 			StockCardImage or custom CardImage to display 
-	 * @param result
-	 * 			Success/failure status
+	 * @param title short description
+	 * @param description card summary
+	 * @param data any data that may want to present to user when they click on it, can be empty, xml, json, etc
+	 * @param image StockCardImage or custom CardImage to display 
+	 * @param result Success/failure status
+	 * @return A self reference
 	 */
-	public void addNotification(final String title, final String description, final String data, final CardImage image, final CardResult result) {
-		addNotification(title, description, data, "", image, result);
+	public StoryboardExtension addNotification(final String title, final String description, final String data, final CardImage image, final CardResult result) {
+		return addNotification(title, description, data, "", image, result);
 	}
 
 	/**
 	 * Adds data/information card to story board
 	 * 
-	 * @param title
-	 *            short description
-	 * @param description
-	 *            card summary
-	 * @param data
-	 *            any data that may want to present to user when they click on it, can be empty, xml, json, etc
-	 * @param fileExtension
-	 *            file extension of file to write data to, defaults to txt
-	 * @param image
-	 * 			StockCardImage or custom CardImage to display 
-	 * @param result
-	 * 			Success/failure status
+	 * @param title short description
+	 * @param description card summary
+	 * @param data any data that may want to present to user when they click on it, can be empty, xml, json, etc
+	 * @param fileExtension file extension of file to write data to, defaults to txt
+	 * @param image StockCardImage or custom CardImage to display 
+	 * @param result Success/failure status
+	 * @return A self reference
 	 */
-	public void addNotification(final String title, final String description, final String data, final String fileExtension, final CardImage image,
+	public StoryboardExtension addNotification(final String title, final String description, final String data, final String fileExtension, final CardImage image,
 			final CardResult result) {
 		NotificationCard card = new NotificationCard();
 		card.setTitle(title);
@@ -276,6 +295,7 @@ public class StoryboardExtension implements ConcordionExtension {
 		card.setResult(result);
 
 		extension.addCard(card);
+		return this;
 	}
 
 	/**
@@ -284,8 +304,9 @@ public class StoryboardExtension implements ConcordionExtension {
 	 * @param title 
 	 * 		Title of the section break, pass in null or empty string to close
 	 * 	 	the section break and add subsequent cards to the storyboard
+	 * @return A self reference
 	 */
-	public void addSectionBreak(String title) {
+	public StoryboardExtension addSectionContainer(String title) {
 		SectionContainer container = null;
 		
 		if (title != null && !title.isEmpty()) {
@@ -294,32 +315,50 @@ public class StoryboardExtension implements ConcordionExtension {
 		}
 		
 		extension.addContainer(container);
+		return this;
 	}
 	
 	/**
 	 * Mark current container as completed, any cards added past this point will go to the parent container.
+	 * 
+	 * @return A self reference
 	 */
-	public void completeContainer() {
+	public StoryboardExtension closeContainer() {
 		extension.addContainer(null);
+		return this;
 	}
 	
 	/**
-	 * Allow custom cards to be passed into storyboard
+	 * Add custom cards to the storyboard
 	 * 
-	 * @param card
+	 * @param card Custom card
+	 * @return A self reference
 	 */
-	public void addCard(final Card card) {
+	public StoryboardExtension addCard(final Card card) {
 		extension.addCard(card);
+		return this;
 	}
-	public void addCard(final ScreenshotCard card) {
+	
+	/**
+	 * Add screenshot card to the storyboard
+	 * 
+	 * @param card Custom card
+	 * @return A self reference
+	 */
+	public StoryboardExtension addCard(final ScreenshotCard card) {
 		extension.addCard(card);
+		return this;
 	}
 	
 	/**
 	 * Allow custom containers to be passed into storyboard
+	 * 
+	 * @param container Custom container
+	 * @return A self reference
 	 */
-	public void addContainer(final Container container) {
+	public StoryboardExtension addContainer(final Container container) {
 		extension.addContainer(container);
+		return this;
 	}
 
 	/**

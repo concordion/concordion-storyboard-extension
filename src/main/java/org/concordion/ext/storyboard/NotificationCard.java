@@ -6,7 +6,7 @@ import org.concordion.api.Element;
 import org.concordion.api.Resource;
 
 /**
- * Generic card that can optionally provide data to the user.  This data can be text, xml, or html.
+ * Generic card that can optionally provide data to the user.  This data can be text based data such as: xml, json, html, etc.
  */
 public class NotificationCard extends Card {
 	private String dataFileName = "";

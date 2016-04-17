@@ -8,7 +8,7 @@
   <p>Sometimes your test might perform a large number of steps and the storyboard becomes unweildy. Adding cards to a collapsible sections will allow you to group the steps your test has taken into different sections on the storyboard.</p>
   <p>Behaviour:</p>
   <ul>
-  	<li>A section container may be inserted by calling the <code>addSectionBreak() or addCard(SectionBreak card)</code> methods</li>
+  	<li>A section container may be inserted by calling the <code>addSectionContainer() or addCard(SectionBreak card)</code> methods</li>
   	<li>If a card with a failure or warning status is added to the section then the section title will be given that same status</li>
   	<li>If the section is not given a title it will not be collapsible</li>
   	<li>Clicking on the section title will show or hide the rest of the cards in the section</li>
@@ -21,7 +21,7 @@
   <div concordion:example="example1">
     <h3>Example 1: Add Section Container</h3>
     <pre concordion:set="#snippet">
-&lt;span concordion:execute="addSectionBreak(#TEXT)"&gt;Example 1&lt;/span&gt;
+&lt;span concordion:execute="addSectionContainer(#TEXT)"&gt;Example 1&lt;/span&gt;
 &lt;span concordion:assertTrue="addCard(#TEXT)"&gt;Card 1&lt;/span&gt;
 	</pre>
 
@@ -52,9 +52,9 @@
   <div concordion:example="example3">
 	<h3>Example 3: Stop Section Container</h3>
     <pre concordion:set="#snippet">
-&lt;span concordion:execute="addSectionBreak(#TEXT)"&gt;Example 1&lt;/span&gt;
+&lt;span concordion:execute="addSectionContainer(#TEXT)"&gt;Example 1&lt;/span&gt;
 &lt;span concordion:assertTrue="addCard(#TEXT)"&gt;Card 1&lt;/span&gt;
-&lt;span concordion:execute="closeSectionBreak()"&gt;Example 1&lt;/span&gt;
+&lt;span concordion:execute="closeContainer()"&gt;Example 1&lt;/span&gt;
 &lt;span concordion:assertTrue="addCard(#TEXT)"&gt;Card 1&lt;/span&gt;
 	</pre>
 
@@ -66,7 +66,7 @@
   <div concordion:example="example4">
 	<h3>Example 4: Add Failure Card to Section</h3>
     <pre concordion:set="#snippet">
-&lt;span concordion:execute="addSectionBreak(#TEXT)"&gt;Example 1&lt;/span&gt;
+&lt;span concordion:execute="addSectionContainer(#TEXT)"&gt;Example 1&lt;/span&gt;
 &lt;span concordion:assertTrue="addFailureCard(#TEXT)"&gt;Card 1&lt;/span&gt;
 	</pre>
 

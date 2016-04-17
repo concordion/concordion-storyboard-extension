@@ -56,7 +56,7 @@ public abstract class Card extends StoryboardItem {
 	 * Override this method to update whether the card should be added to the storyboard or not.
 	 * 
 	 * @param hasFailure True if the test failed, or if within a section break, the section was marked as failure
-	 * @return
+	 * @return True to append card to storyboard, false to ignore card
 	 */
 	protected boolean shouldAppend(boolean hasFailure) {
 		return true;
