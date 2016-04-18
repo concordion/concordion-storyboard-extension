@@ -36,6 +36,7 @@ public class ScreenshotCard extends Card {
 	@Override
 	protected void captureData() {
 		if (screenshotTaker == null) {
+			imageSize = new Dimension(0, 0);
 			return;
 		}
 
@@ -86,7 +87,11 @@ public class ScreenshotCard extends Card {
 	
 	@Override
 	protected void addHTMLToContainer(final Element container) {
-		String href = this.imageName + "?version=" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+		String href = "";
+		
+		if (!imageName.isEmpty()) {
+			href = this.imageName + "?version=" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+		}
 				
 		// Add link to image
 		Element anchorImg = new Element("a");
