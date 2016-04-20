@@ -5,6 +5,7 @@ import org.concordion.ext.StoryboardExtension;
 import org.concordion.ext.StoryboardExtension.AppendTo;
 import org.concordion.ext.storyboard.CardResult;
 import org.concordion.ext.storyboard.NotificationCard;
+import org.concordion.ext.storyboard.SectionContainer;
 import org.concordion.ext.storyboard.StockCardImage;
 import org.concordion.integration.junit4.ConcordionRunner;
 import org.junit.Before;
@@ -82,6 +83,13 @@ public class StoryGroupSectionContainer extends AcceptanceTest {
     	DummyStoryboardFactory.getStoryboard().addSectionContainer(title);
     }
     
+    public void addSectionContainerToContainer(String title) {    
+    	SectionContainer container = new SectionContainer();
+    	container.setTitle(title);
+    	
+    	DummyStoryboardFactory.getStoryboard().addContainerToContainer(container);
+    }
+    
     public void closeContainer() {
     	DummyStoryboardFactory.getStoryboard().closeContainer();
     }
@@ -100,7 +108,10 @@ public class StoryGroupSectionContainer extends AcceptanceTest {
     	int pos = 0;
     	
     	while ((pos = fragment.indexOf("<div class=\"toggle-box-container\">", pos + 1)) > 0) {
-    		found ++;
+    		// Check not embedded container, only counting top level containers
+    		if (fragment.substring(pos - 5, pos).indexOf("</ul>") < 0) {
+    			found ++;
+    		}
     	}
     	
     	return found;

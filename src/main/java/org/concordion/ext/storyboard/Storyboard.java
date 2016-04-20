@@ -26,6 +26,10 @@ class Storyboard {
 		return containers.size() - 1;
 	}
 	
+	/**
+	 * Add card to the currently open container or storyboard
+	 * @param container Container to add
+	 */
 	public void addItem(Card card) {
 		card.setStoryboardListener(listener);
 		
@@ -40,25 +44,36 @@ class Storyboard {
 		card.captureData();
 	}
 	
+	/**
+	 * Add container to the currently open container or storyboard
+	 * @param container Container to add
+	 */
 	public void addItem(Container container) {
-		
 		if (container == null) {
-			if (!containers.isEmpty()) {
-				containers.remove(getCurrentContainerIndex());
-			}
+			return;
+		}
+		
+		container.setStoryboardListener(listener);
+		
+		if (containers.isEmpty()) {
+			items.add(container);
 		} else {
-			container.setStoryboardListener(listener);
+			Container current = containers.get(getCurrentContainerIndex());
 			
-			if (containers.isEmpty()) {
-				items.add(container);
-			} else {
-				Container current = containers.get(getCurrentContainerIndex());
-				
-				container.setContainer(current);
-				current.addItem(container);
-			}
-			
-			containers.add(container);
+			container.setContainer(current);
+			current.addItem(container);
+		}
+		
+		containers.add(container);
+	}
+	
+	public boolean hasCurrentContainer() {
+		return getCurrentContainerIndex() >= 0;
+	}
+	
+	public void closeContainer() {
+		if (!containers.isEmpty()) {
+			containers.remove(getCurrentContainerIndex());
 		}
 	}
 
