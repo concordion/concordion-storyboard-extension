@@ -75,6 +75,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		}
 		
 		if (storyboard.hasCurrentContainer()) {
+			takeFinalScreenshotForExample("Example Completed");
 			storyboard.closeContainer();
 		}
 		
