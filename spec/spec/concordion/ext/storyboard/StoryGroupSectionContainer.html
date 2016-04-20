@@ -171,14 +171,13 @@ ins {
   <p>Sometimes your test might perform a large number of steps and the storyboard becomes unweildy. Adding cards to a collapsible sections will allow you to group the steps your test has taken into different sections on the storyboard.</p>
   <p>Behaviour:</p>
   <ul>
-  	<li>A section container may be inserted by calling the <code>addSectionContainer() or addCard(SectionBreak card)</code> methods</li>
+  	<li>A section container may be inserted by calling the <code>addSectionContainer() or addContainer(SectionContainer container)</code> methods</li>
   	<li>If a card with a failure or warning status is added to the section then the section title will be given that same status</li>
   	<li>If the section is not given a title it will not be collapsible</li>
   	<li>Clicking on the section title will show or hide the rest of the cards in the section</li>
-  </ul>
-
-  <ul>
-  	<li>A section container may be added to the current example by calling the <code>setAddCardsToExample(true)</code> method on the extension</li>
+    <li>A section container may be added to the current example by calling the <code>setAppendMode(AppendTo.NEW_STORYBOARD_SECTION_PER_EXAMPLE)</code> method on the extension</li>
+    <li>A section container may be closed manually using <code>closeContainer()</code> or automatically by appending another container</li>
+    <li>A section container may be added to another container using <code>addContainerToContainer()</code></li>
   </ul>
 
   <div concordion:example="example1" id="example1">
@@ -208,12 +207,13 @@ ins {
 	</pre>
 
 	<p concordion:execute="#fragment=renderAutoAddSection(#snippet)">
-	  When this snippet is run with this fixture, this results <span concordion:assertEquals="getSectionCount(#fragment)" class="success">2</span> sections being added to the Storyboard.
+	  When this snippet is run with this fixture and the append mode is set to AppendTo.NEW_STORYBOARD_SECTION_PER_EXAMPLE, 
+	  this results <span concordion:assertEquals="getSectionCount(#fragment)" class="success">2</span> sections being added to the Storyboard.
 	</p>
   </div>  
 
   <div concordion:example="example3" id="example3">
-	<h3>Example 3: Stop Section Container</h3>
+	<h3>Example 3: Manually Close Container</h3>
     <pre concordion:set="#snippet">
 &lt;span concordion:execute="addSectionContainer(#TEXT)"&gt;Example 1&lt;/span&gt;
 &lt;span concordion:assertTrue="addCard(#TEXT)"&gt;Card 1&lt;/span&gt;
@@ -227,7 +227,35 @@ ins {
   </div>  
 
   <div concordion:example="example4" id="example4">
-	<h3>Example 4: Add Failure Card to Section</h3>
+	<h3>Example 4: Automatically Close Container</h3>
+    <pre concordion:set="#snippet">
+&lt;span concordion:execute="addSectionContainer(#TEXT)"&gt;Example 1&lt;/span&gt;
+&lt;span concordion:assertTrue="addCard(#TEXT)"&gt;Card 1&lt;/span&gt;
+&lt;span concordion:execute="addSectionContainer(#TEXT)"&gt;Example 1&lt;/span&gt;
+&lt;span concordion:assertTrue="addCard(#TEXT)"&gt;Card 1&lt;/span&gt;
+	</pre>
+
+	<p concordion:execute="#fragment=render(#snippet)">
+	  When this snippet is run with this fixture, this results in <span concordion:assertEquals="getSectionCount(#fragment)" class="success">2</span> sections being added to the storyboard.
+	</p>
+  </div>  
+ 
+   <div concordion:example="example5" id="example5">
+	<h3>Example 5: Add Container To Container</h3>
+    <pre concordion:set="#snippet">
+&lt;span concordion:execute="addSectionContainer(#TEXT)"&gt;Example 1&lt;/span&gt;
+&lt;span concordion:assertTrue="addCard(#TEXT)"&gt;Card 1&lt;/span&gt;
+&lt;span concordion:execute="addSectionContainerToContainer(#TEXT)"&gt;Embedded Example&lt;/span&gt;
+&lt;span concordion:assertTrue="addCard(#TEXT)"&gt;Card 1&lt;/span&gt;
+	</pre>
+
+	<p concordion:execute="#fragment=render(#snippet)">
+	  When this snippet is run with this fixture, this results in <span concordion:assertEquals="getSectionCount(#fragment)" class="success">1</span> section being added to the storyboard.
+	</p>
+  </div>  
+  
+  <div concordion:example="example6" id="example6">
+	<h3>Example 6: Add Failure Card to Section</h3>
     <pre concordion:set="#snippet">
 &lt;span concordion:execute="addSectionContainer(#TEXT)"&gt;Example 1&lt;/span&gt;
 &lt;span concordion:assertTrue="addFailureCard(#TEXT)"&gt;Card 1&lt;/span&gt;
@@ -238,5 +266,5 @@ ins {
 	</p>
   </div>  
 
-<div class="storyboard"><h3 id="StoryboardHeader">Storyboard</h3><ul><li class="storycard"><div class="scimgcontainer"><a href="StoryGroupSectionContainer0.html"><img id="Click image to see example" class="sizeheight" src="../../../../html.png" /></a></div><p class="scsummary scsuccess">Example 1: Add Section Container</p><p class="scdescription" title="Click image to see example">Click image to see example</p></li><li class="storycard"><div class="scimgcontainer"><a href="StoryGroupSectionContainer1.html"><img id="Click image to see example" class="sizeheight" src="../../../../html.png" /></a></div><p class="scsummary scsuccess">Example 2: Automatically Add Section Container For Each Example</p><p class="scdescription" title="Click image to see example">Click image to see example</p></li><li class="storycard"><div class="scimgcontainer"><a href="StoryGroupSectionContainer2.html"><img id="Click image to see example" class="sizeheight" src="../../../../html.png" /></a></div><p class="scsummary scsuccess">Example 3: Stop Section Container</p><p class="scdescription" title="Click image to see example">Click image to see example</p></li><li class="storycard"><div class="scimgcontainer"><a href="StoryGroupSectionContainer3.html"><img id="Click image to see example" class="sizeheight" src="../../../../html.png" /></a></div><p class="scsummary scsuccess">Example 4: Add Failure Card to Section</p><p class="scdescription" title="Click image to see example">Click image to see example</p></li></ul></div><img id="StoryCardScreenshotPopup" class="screenshot" /><div class="footer">Results generated by <a href="http://www.concordion.org" style="font-weight: bold; text-decoration: none; color: #89C;">Concordion</a><div class="testTime">in 184 ms on 18-Apr-2016 at 21:30:26 NZST</div></div></body>
+<div class="storyboard"><h3 id="StoryboardHeader">Storyboard</h3><ul><li class="storycard"><div class="scimgcontainer"><a href="StoryGroupSectionContainer0.html"><img id="Click image to see example" class="sizeheight" src="../../../../html.png" /></a></div><p class="scsummary scsuccess">Example 1: Add Section Container</p><p class="scdescription" title="Click image to see example">Click image to see example</p></li><li class="storycard"><div class="scimgcontainer"><a href="StoryGroupSectionContainer1.html"><img id="Click image to see example" class="sizeheight" src="../../../../html.png" /></a></div><p class="scsummary scsuccess">Example 2: Automatically Add Section Container For Each Example</p><p class="scdescription" title="Click image to see example">Click image to see example</p></li><li class="storycard"><div class="scimgcontainer"><a href="StoryGroupSectionContainer2.html"><img id="Click image to see example" class="sizeheight" src="../../../../html.png" /></a></div><p class="scsummary scsuccess">Example 3: Manually Close Container</p><p class="scdescription" title="Click image to see example">Click image to see example</p></li><li class="storycard"><div class="scimgcontainer"><a href="StoryGroupSectionContainer3.html"><img id="Click image to see example" class="sizeheight" src="../../../../html.png" /></a></div><p class="scsummary scsuccess">Example 4: Automatically Close Container</p><p class="scdescription" title="Click image to see example">Click image to see example</p></li><li class="storycard"><div class="scimgcontainer"><a href="StoryGroupSectionContainer4.html"><img id="Click image to see example" class="sizeheight" src="../../../../html.png" /></a></div><p class="scsummary scsuccess">Example 5: Add Container To Container</p><p class="scdescription" title="Click image to see example">Click image to see example</p></li><li class="storycard"><div class="scimgcontainer"><a href="StoryGroupSectionContainer5.html"><img id="Click image to see example" class="sizeheight" src="../../../../html.png" /></a></div><p class="scsummary scsuccess">Example 6: Add Failure Card to Section</p><p class="scdescription" title="Click image to see example">Click image to see example</p></li></ul></div><img id="StoryCardScreenshotPopup" class="screenshot" /><div class="footer">Results generated by <a href="http://www.concordion.org" style="font-weight: bold; text-decoration: none; color: #89C;">Concordion</a><div class="testTime">in 244 ms on 21-Apr-2016 at 09:42:16 NZST</div></div></body>
 </html>
