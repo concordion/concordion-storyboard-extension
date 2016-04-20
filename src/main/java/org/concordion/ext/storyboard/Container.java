@@ -34,6 +34,12 @@ public abstract class Container extends StoryboardItem {
 		return index += String.valueOf(items.indexOf(item));
 	}
 	
+	/**
+	 * Should autoclose when a new container is about to be added
+	 * @return
+	 */
+	public abstract boolean isAutoClose();
+	
 	public abstract void writeTo(Element parent);
 
 	public abstract Element getContentElement();

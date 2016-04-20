@@ -75,22 +75,10 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		}
 		
 		if (storyboard.hasCurrentContainer()) {
-			takeFinalScreenshotForExample("Example Completed");
-			storyboard.closeContainer();
-		}
-		
-		storyboard.addItem(container);
-	}
-
-	/**
-	 * Add container to storyboard, or current container if one is open.
-	 * 
-	 * @param container if null this is regarded as stating all future cards should be added to the 
-	 * storyboard/parent container
-	 */
-	public void addContainerToContainer(Container container) {
-		if (getResource() == null || getTarget() == null) {
-			return;
+			if (storyboard.getCurrentContainer().isAutoClose()) {
+				takeFinalScreenshotForExample("Example Completed");
+				storyboard.closeContainer();
+			}
 		}
 		
 		storyboard.addItem(container);

@@ -13,6 +13,13 @@ public class SectionContainer extends Container {
 	private Element parent;
 	private Element container;
 	private Element content;
+	private boolean autoClose = true;
+	
+	public SectionContainer() { }
+	
+	public SectionContainer(String title) {
+		setTitle(title);
+	}
 		
 	@Override
 	public void writeTo(Element parent) {
@@ -62,4 +69,21 @@ public class SectionContainer extends Container {
 	public void removeFromParent() {
 		getParentElement().removeChild(container);
 	}
+	
+	/**
+	 * Should this container close automatically when another container is added?
+	 * 
+	 * @param value True to close container automatically, false to leave container open
+	 * @return A self reference
+	 */
+	public SectionContainer setAutoClose(boolean value) {
+		this.autoClose = value;
+		return this;
+	}
+	
+	@Override
+	public boolean isAutoClose() {
+		return autoClose;
+	}
 }
+ 

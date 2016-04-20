@@ -365,22 +365,6 @@ public class StoryboardExtension implements ConcordionExtension {
 		
 		return this;
 	}
-	
-	/**
-	 * Allow custom containers to be added the storyboard or current container if one is open.
-	 * 
-	 * @param container Custom container
-	 * @return A self reference
-	 */
-	public StoryboardExtension addContainerToContainer(final Container container) {
-		if (container == null) {
-			extension.closeContainer();
-		} else {
-			extension.addContainerToContainer(container);
-		}
-		
-		return this;
-	}
 
 	/**
 	 * Get the title of the current example

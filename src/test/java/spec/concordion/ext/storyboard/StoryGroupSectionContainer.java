@@ -84,10 +84,9 @@ public class StoryGroupSectionContainer extends AcceptanceTest {
     }
     
     public void addSectionContainerToContainer(String title) {    
-    	SectionContainer container = new SectionContainer();
-    	container.setTitle(title);
-    	
-    	DummyStoryboardFactory.getStoryboard().addContainerToContainer(container);
+    	SectionContainer container = new SectionContainer(title).setAutoClose(false);
+    	    	
+    	DummyStoryboardFactory.getStoryboard().addContainer(container);
     }
     
     public void closeContainer() {

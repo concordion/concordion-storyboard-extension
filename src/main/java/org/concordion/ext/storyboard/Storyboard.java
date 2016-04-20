@@ -58,7 +58,7 @@ class Storyboard {
 		if (containers.isEmpty()) {
 			items.add(container);
 		} else {
-			Container current = containers.get(getCurrentContainerIndex());
+			Container current = getCurrentContainer();
 			
 			container.setContainer(current);
 			current.addItem(container);
@@ -70,6 +70,10 @@ class Storyboard {
 	public boolean hasCurrentContainer() {
 		return getCurrentContainerIndex() >= 0;
 	}
+
+	public Container getCurrentContainer() {
+		return containers.get(getCurrentContainerIndex());
+	}	
 	
 	public void closeContainer() {
 		if (!containers.isEmpty()) {
@@ -299,5 +303,5 @@ class Storyboard {
 		}
 
 		return body;
-	}	
+	}
 }

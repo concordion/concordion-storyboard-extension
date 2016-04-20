@@ -78,4 +78,9 @@ public class ExampleContainer extends Container {
 		getParentElement().removeChild(hr);
 		getParentElement().removeChild(container);
 	}
+
+	@Override
+	public boolean isAutoClose() {
+		return false;
+	}
 }
