@@ -27,7 +27,6 @@ import org.concordion.ext.storyboard.StoryboardListener;
 public class StoryboardExtension implements ConcordionExtension {
 
 	private final StoryboardListener extension = new StoryboardListener();
-	private boolean acceptsScreenShots = true;
 	private final Map<String, CustomCardImage> customImages = new HashMap<String, CustomCardImage>();
 
 	@Override
@@ -206,14 +205,17 @@ public class StoryboardExtension implements ConcordionExtension {
 	}
 	
 	/**
-	 * Set to false to stop screenshot cards being added, this is useful in situations where might be looping and refreshing screen
-	 * constantly and don't want to show too many screenshots of same screen in storyboard.
+	 * Prevent cards and containers from being added to the the storyboard. This is useful in situations where might be repeating an action 
+	 * several times and only want to record the first pass through, or performing cleanup steps and don't want the actions recorded. 
 	 * 
-	 * @param accept Accept screenshot setting
+	 * <p>Setting this to false will disable prevent cards and containers being added until either it is set to true, or the current example
+	 * or specification completes.</p>
+	 * 
+	 * @param accept True to allow cards to be added, false to prevent them from being added
 	 * @return A self reference
 	 */
-	public StoryboardExtension setAcceptsScreenshots(final boolean accept) {
-		this.acceptsScreenShots = accept;
+	public StoryboardExtension setAcceptCards(final boolean accept) {
+		extension.setAcceptCards(accept);
 		return this;
 	}
 	
@@ -225,14 +227,13 @@ public class StoryboardExtension implements ConcordionExtension {
 	 * @return A self reference
 	 */
 	public StoryboardExtension addScreenshot(final String title, final String description) {
-		if (acceptsScreenShots) {
-			ScreenshotCard card = new ScreenshotCard();
-			card.setTitle(title);
-			card.setDescription(description);
-			card.setResult(CardResult.SUCCESS);
+		ScreenshotCard card = new ScreenshotCard();
+		card.setTitle(title);
+		card.setDescription(description);
+		card.setResult(CardResult.SUCCESS);
 
-			extension.addCard(card);
-		}
+		extension.addCard(card);
+
 		return this;
 	}
 
@@ -286,6 +287,7 @@ public class StoryboardExtension implements ConcordionExtension {
 	 */
 	public StoryboardExtension addNotification(final String title, final String description, final String data, final String fileExtension, final CardImage image,
 			final CardResult result) {
+		
 		NotificationCard card = new NotificationCard();
 		card.setTitle(title);
 		card.setDescription(description);
@@ -295,6 +297,7 @@ public class StoryboardExtension implements ConcordionExtension {
 		card.setResult(result);
 
 		extension.addCard(card);
+		
 		return this;
 	}
 
@@ -335,6 +338,7 @@ public class StoryboardExtension implements ConcordionExtension {
 	 */
 	public StoryboardExtension addCard(final Card card) {
 		extension.addCard(card);
+		
 		return this;
 	}
 	
@@ -346,6 +350,7 @@ public class StoryboardExtension implements ConcordionExtension {
 	 */
 	public StoryboardExtension addCard(final ScreenshotCard card) {
 		extension.addCard(card);
+		
 		return this;
 	}
 	

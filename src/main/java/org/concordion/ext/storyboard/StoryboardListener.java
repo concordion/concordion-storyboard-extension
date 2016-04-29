@@ -38,6 +38,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	private Resource resource;
 	private Target target;
 	private AppendTo appendMode = AppendTo.EXAMPLE;
+	private boolean acceptCards = true;
 	
 	/**
 	 * Add screenshot
@@ -56,7 +57,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	 * @param card The card
 	 */
 	public void addCard(final Card card) {
-		if (getResource() == null || getTarget() == null) {
+		if (getResource() == null || getTarget() == null || !acceptCards) {
 			return;
 		}
 
@@ -70,7 +71,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	 * storyboard/parent container
 	 */
 	public void addContainer(final Container container) {
-		if (getResource() == null || getTarget() == null) {
+		if (getResource() == null || getTarget() == null || !acceptCards) {
 			return;
 		}
 		
@@ -215,6 +216,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 			break;
 		}
 		
+		this.acceptCards = true;
 		this.currentExample = null;
 		this.skipFinalScreenshotForCurrentExample = false;
 	}
@@ -329,5 +331,9 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	public void setAppendMode(AppendTo appendMode) {
 		this.appendMode = appendMode;		
+	}
+
+	public void setAcceptCards(boolean accept) {
+		this.acceptCards  = accept;
 	}
 }

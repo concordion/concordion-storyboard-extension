@@ -47,8 +47,10 @@
 	</li>
 	<li><code>setSkipFinalScreenshotForCurrentExample()</code>:  If configured to take final screenshot for example, this will override that behvaiour for the current example only.
   	</li>
-	<li><code>setAcceptsScreenshots()</code>: Set to false to stop screenshot cards being added, this is useful in situations where might be looping and refreshing screen constantly and you don't want to show many screenshots of same screen in storyboard
-  		<ul>
+	<li><code>setAcceptCards()</code>: Prevent cards and containers from being added to the the storyboard. This is useful in situations where might be repeating an action 
+	  several times and only want to record the first pass through, or performing cleanup steps and don't want the actions recorded.
+	 	<ul>
+	 		<li>Setting this to false will disable prevent cards and containers being added until either it is set to true, or the current example or specification completes</li>
   			<li>Defaults to true</li>
 	 	</ul>
 	 </li>
