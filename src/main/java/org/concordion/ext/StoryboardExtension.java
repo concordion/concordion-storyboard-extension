@@ -205,6 +205,19 @@ public class StoryboardExtension implements ConcordionExtension {
 	}
 	
 	/**
+	 * Set to false to stop screenshot cards being added, this is useful in situations where might be looping and refreshing screen
+	 * constantly and don't want to show too many screenshots of same screen in storyboard.
+	 * 
+	 * @deprecated Has been replaced by {@link #setAcceptCards(boolean)} and will be removed in the next version.
+	 * @param accept Accept screenshot setting
+	 * @return A self reference
+	 */
+	@Deprecated
+	public StoryboardExtension setAcceptsScreenshots(final boolean accept) {
+		return setAcceptCards(accept);
+	}
+	
+	/**
 	 * Prevent cards and containers from being added to the the storyboard. This is useful in situations where might be repeating an action 
 	 * several times and only want to record the first pass through, or performing cleanup steps and don't want the actions recorded. 
 	 * 
