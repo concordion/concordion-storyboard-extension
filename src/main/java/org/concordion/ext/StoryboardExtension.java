@@ -183,6 +183,7 @@ public class StoryboardExtension implements ConcordionExtension {
 	 * the screenshot taker has been set.
 	 * 
 	 * <p>If not using the example command then final screenshots must be added manually.</p>
+	 * <p>This setting is also obeyed by containers that are configured to auto close such as the section container.</p>
 	 * 
 	 * @param value
 	 * 			<code>true</code> to take screenshot (default), <code>false</code> to not take screenshot
@@ -196,6 +197,8 @@ public class StoryboardExtension implements ConcordionExtension {
 	/**
 	 * If configured to take final screenshot for example (see {@link #setTakeScreenshotOnExampleCompletion(boolean)}), this
 	 * will override that behvaiour for the current example only.
+	 * 
+	 * <p>This setting is also obeyed by containers that are configured to auto close such as the section container.</p>
 	 * 
 	 * @return A self reference
 	 */
@@ -349,6 +352,9 @@ public class StoryboardExtension implements ConcordionExtension {
 	/**
 	 * Mark current container as completed, any cards added past this point will go to the parent container/storyboard.
 	 * 
+	 * <p>Unlike containers that are auto closed automatically (such as the section container when auto close is on) a final screenshot 
+	 * will NOT be taken.</p>
+	 * 
 	 * @return A self reference
 	 */
 	public StoryboardExtension closeContainer() {
@@ -383,7 +389,7 @@ public class StoryboardExtension implements ConcordionExtension {
 	/**
 	 * Allow custom containers to be added the storyboard. If there is already a container open 
 	 * that is configured to be auto closed, it will be closed before adding the new section container.
-	 * <p>See also {@link #insertContainer(String)}.</p>
+	 * <p>See also {@link #insertContainer(Container)}.</p>
 	 * 
 	 * @param container Custom container
 	 * @return A self reference
@@ -397,7 +403,7 @@ public class StoryboardExtension implements ConcordionExtension {
 	/**
 	 * Allow custom containers to be added the storyboard. If there is already a container open 
 	 * then append the new container to it ignoring any "auto close" setting.
-	 * <p>See also {@link #addContainer(String)}.</p>
+	 * <p>See also {@link #addContainer(Container)}.</p>
 	 * 
 	 * @param container Custom container
 	 * @return A self reference

@@ -35,8 +35,8 @@ public abstract class Container extends StoryboardItem {
 	}
 	
 	/**
-	 * Should autoclose when a new container is about to be added
-	 * @return
+	 * Should auto close when a new container is about to be added
+	 * @return Is auto close on or not
 	 */
 	public abstract boolean isAutoClose();
 	

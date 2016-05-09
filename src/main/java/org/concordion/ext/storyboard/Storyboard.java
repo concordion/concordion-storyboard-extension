@@ -11,7 +11,7 @@ class Storyboard {
 	private StoryboardListener listener;
 	private Element storyboard = null;
 	private List<StoryboardItem> items = new ArrayList<StoryboardItem>();
-	private List<Container> containers = new ArrayList<Container>();
+	private List<Container> openContainers = new ArrayList<Container>();
 	private String title = "Storyboard";
 		
 	Storyboard(StoryboardListener listener) {
@@ -23,7 +23,7 @@ class Storyboard {
 	}
 	
 	private int getCurrentContainerIndex() {
-		return containers.size() - 1;
+		return openContainers.size() - 1;
 	}
 	
 	/**
@@ -33,10 +33,10 @@ class Storyboard {
 	public void addItem(Card card) {
 		card.setStoryboardListener(listener);
 		
-		if (containers.isEmpty()) {
+		if (openContainers.isEmpty()) {
 			items.add(card);
 		} else {
-			Container container = containers.get(getCurrentContainerIndex());
+			Container container = openContainers.get(getCurrentContainerIndex());
 			card.setContainer(container);
 			container.addItem(card);
 		}		
@@ -55,34 +55,36 @@ class Storyboard {
 		
 		container.setStoryboardListener(listener);
 		
-		if (containers.isEmpty()) {
+		if (openContainers.isEmpty()) {
+			// Append container to storyboard 
 			items.add(container);
 		} else {
+			// Append container to current container
 			Container current = getCurrentContainer();
 			
 			container.setContainer(current);
 			current.addItem(container);
 		}
 		
-		containers.add(container);
+		openContainers.add(container);
 	}
 	
 	public boolean hasCurrentContainer() {
-		return getCurrentContainerIndex() >= 0;
+		return !openContainers.isEmpty();
 	}
 
 	public Container getCurrentContainer() {
-		return containers.get(getCurrentContainerIndex());
+		return openContainers.get(getCurrentContainerIndex());
 	}	
 	
 	public void closeContainer() {
-		if (!containers.isEmpty()) {
-			containers.remove(getCurrentContainerIndex());
+		if (hasCurrentContainer()) {
+			openContainers.remove(getCurrentContainerIndex());
 		}
 	}
 
 	public void resetContainers() {
-		containers.clear();
+		openContainers.clear();
 	}
 	
 	public List<StoryboardItem> getItems() {
@@ -97,10 +99,10 @@ class Storyboard {
 		List<StoryboardItem> items;	
 		ListIterator<StoryboardItem> iter;
 	
-		if (containers.isEmpty()) {
+		if (openContainers.isEmpty()) {
 			items = this.items;
 		} else {
-			items = containers.get(getCurrentContainerIndex()).getItems();
+			items = openContainers.get(getCurrentContainerIndex()).getItems();
 		}
 		
 		iter = items.listIterator(items.size());
