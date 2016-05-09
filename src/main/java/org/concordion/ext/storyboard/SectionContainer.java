@@ -44,6 +44,7 @@ public class SectionContainer extends Container {
 		label.addStyleClass("toggle-box");
 		label.addStyleClass(getResult().getKey());
 		label.appendText(getTitle());
+		label.appendNonBreakingSpaceIfBlank();
 		
 		this.content = new Element("div");
 		this.content.addStyleClass("toggle-box-content");

@@ -4,6 +4,7 @@ import org.concordion.api.extension.Extension;
 import org.concordion.ext.StoryboardExtension;
 import org.concordion.ext.StoryboardExtension.AppendTo;
 import org.concordion.ext.storyboard.CardResult;
+import org.concordion.ext.storyboard.SectionContainer;
 import org.concordion.ext.storyboard.StockCardImage;
 import org.concordion.integration.junit4.ConcordionRunner;
 import org.junit.runner.RunWith;
@@ -26,9 +27,18 @@ public class StoryboardDemo {
 		//storyboard.addScreenshot("Try this", "hey");
 		
 		storyboard.addSectionContainer(title);
+		
+		storyboard.insertContainer(new SectionContainer(""));
+		storyboard.addNotification("n1", "empty", StockCardImage.EMAIL, CardResult.SUCCESS);
+		storyboard.closeContainer();
+		
+		storyboard.insertSectionContainer(null);
+		storyboard.addNotification("n1", "null", StockCardImage.EMAIL, CardResult.SUCCESS);
+		storyboard.closeContainer();
+		
 		storyboard.addNotification("n1", "description", StockCardImage.EMAIL, CardResult.SUCCESS);
 		storyboard.addScreenshot("s2", "description");
-		storyboard.addSectionContainer("");
+//		storyboard.addSectionContainer("");
 		
 		return true;
 	}

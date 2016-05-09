@@ -317,18 +317,31 @@ public class StoryboardExtension implements ConcordionExtension {
 	/**
 	 * Adds a section container to the storyboard. If there is already a section container open 
 	 * it will be closed before adding the new section container.
+	 * <p>See also {@link #insertSectionContainer(String)}.</p>
 	 *
 	 * @param title Title of the section break
 	 * @return A self reference
 	 */
 	public StoryboardExtension addSectionContainer(String title) {
-		if (title == null || title.isEmpty()) {
-			extension.closeContainer();
-		} else {
-			SectionContainer container = new SectionContainer();
-			container.setTitle(title);
-			extension.addContainer(container);
-		}
+		SectionContainer container = new SectionContainer();
+		container.setTitle(title);
+		extension.addContainer(container);
+		
+		return this;
+	}
+		
+	/**
+	 * Adds a section container to the storyboard. If there is already a section container open 
+	 * then append the new container to it ignoring any "auto close" setting.  
+	 * <p>See also {@link #addSectionContainer(String)}.</p> 
+	 *
+	 * @param title Title of the section break
+	 * @return A self reference
+	 */
+	public StoryboardExtension insertSectionContainer(String title) {
+		SectionContainer container = new SectionContainer();
+		container.setTitle(title);
+		extension.insertContainer(container);
 		
 		return this;
 	}
@@ -368,22 +381,33 @@ public class StoryboardExtension implements ConcordionExtension {
 	}
 	
 	/**
-	 * Allow custom containers to be added the storyboard. If there is already a section container open 
-	 * it will be closed before adding the new section container.
+	 * Allow custom containers to be added the storyboard. If there is already a container open 
+	 * that is configured to be auto closed, it will be closed before adding the new section container.
+	 * <p>See also {@link #insertContainer(String)}.</p>
 	 * 
 	 * @param container Custom container
 	 * @return A self reference
 	 */
 	public StoryboardExtension addContainer(final Container container) {
-		if (container == null) {
-			extension.closeContainer();
-		} else {
-			extension.addContainer(container);
-		}
+		extension.addContainer(container);
 		
 		return this;
 	}
 
+	/**
+	 * Allow custom containers to be added the storyboard. If there is already a container open 
+	 * then append the new container to it ignoring any "auto close" setting.
+	 * <p>See also {@link #addContainer(String)}.</p>
+	 * 
+	 * @param container Custom container
+	 * @return A self reference
+	 */
+	public StoryboardExtension insertContainer(final Container container) {
+		extension.insertContainer(container);
+		
+		return this;
+	}
+	
 	/**
 	 * Get the title of the current example
 	 * @return Title if executing an example, otherwise an empty string

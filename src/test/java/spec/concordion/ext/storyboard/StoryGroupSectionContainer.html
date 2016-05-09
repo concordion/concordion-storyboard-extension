@@ -8,15 +8,14 @@
   <p>Sometimes your test might perform a large number of steps and the storyboard becomes unwieldy. Adding cards to a collapsible sections will allow you to group the steps your test has taken into different sections on the storyboard.</p>
   <p>Behaviour:</p>
   <ul>
-  	<li>A section container may be inserted by calling the <code>addSectionContainer() or addContainer(SectionContainer container)</code> methods</li>
-  	<li>If a card with a failure or warning status is added to the section then the section title will be given that same status</li>
-  	<li>If the section is not given a title it will not be collapsible</li>
-  	<li>Clicking on the section title will show or hide the rest of the cards in the section</li>
-    <li>A section container may be automatically added to the storyboard for each example by calling the <code>setAppendMode(AppendTo.NEW_STORYBOARD_SECTION_PER_EXAMPLE)</code> method on the extension</li>
+  	<li>A section container may be added by calling the <code>addSectionContainer() or addContainer(new SectionContainer(title))</code> methods</li>
     <li>By default a section container will be closed automatically when adding another container or the current example ends</li>
     <li>Automatic closing can be prevented by calling <code>setAutoClose(false)</code> on the container, this will embed subsequently added containers into this container</li>
     <li>A section container may be closed manually using <code>closeContainer()</code></li>
-    <li>A section container may be added to another container using <code>addContainerToContainer()</code></li>
+  	<li>A section container may be added to another container event when auto close is set using <code>insertSectionContainer()</code> or <code>insertContainer(new SectionContainer(title))</code> methods</li>
+	<li>If a card with a failure or warning status is added to the section then the section title will be given that same status</li>
+  	<li>Clicking on the section title will show or hide the rest of the cards in the section</li>
+    <li>A section container may be automatically added to the storyboard for each example by calling the <code>setAppendMode(AppendTo.NEW_STORYBOARD_SECTION_PER_EXAMPLE)</code> method on the extension</li>
   </ul>
 
   <div concordion:example="example1">
