@@ -127,7 +127,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 				sb.append("\n").append("Actual: ").append(event.getActual().toString());
 			}
 						
-			if (screenshotTaker == null) {
+			if (screenshotTaker == null || skipFinalScreenshotForCurrentExample) {
 				NotificationCard card = new NotificationCard();
 				card.setTitle(title);
 				card.setDescription(sb.toString());
@@ -162,7 +162,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 			title = error.getClass().getSimpleName();
 
-			if (screenshotTaker == null) {
+			if (screenshotTaker == null || skipFinalScreenshotForCurrentExample) {
 				NotificationCard card = new NotificationCard();
 				card.setTitle(title);
 				card.setDescription("See specification for further information");
