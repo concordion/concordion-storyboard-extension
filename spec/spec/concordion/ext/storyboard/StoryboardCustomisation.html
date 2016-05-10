@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><html xmlns:c="http://www.concordion.org/2007/concordion"><head><style>* {
+<?xml version="1.0" encoding="UTF-8"?><html xmlns:concordion="http://www.concordion.org/2007/concordion"><head><style>* {
   font-family: Arial;
 }
 body {
@@ -43,13 +43,13 @@ li {
   margin-bottom: 6px; 
 }
 
-.example, [c\:example] {
+.example, [concordion\:example] {
   padding: 6px 16px 6px 16px;
   border: 1px solid #C3D9FF;
   margin: 6px 0px 28px 0px;
   background-color: #F5F9FD;
 }
-.example h3, [c\:example] h3 {
+.example h3, [concordion\:example] h3 {
   margin-top: 8px;
   margin-bottom: 8px;
   font-size: 12pt;
@@ -161,63 +161,88 @@ ins {
 .commentary, .commentary * {
   font-size: 8pt;
 }
-</style><meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<link href="../../../../concordion.css" rel="stylesheet" type="text/css" />
-<link type="text/css" rel="stylesheet" href="../../../../storyboard.css" /><script type="text/javascript" src="../../../../storyboard.js"></script></head><body><span class="breadcrumbs"><a href="Storyboard.html">Storyboard Extension</a> &gt;</span>
-  <h1>Customisation</h1>
-
-  <p>The Storyboard can be customised in several different ways:</p>
+</style><meta http-equiv="content-type" content="text/html; charset=UTF-8" /><link type="text/css" rel="stylesheet" href="../../../../storyboard.css" /><script type="text/javascript" src="../../../../storyboard.js"></script></head><body><span class="breadcrumbs"><a href="Storyboard.html">Storyboard Extension</a> &gt;</span><h1>Customisation</h1>
+<p>The Storyboard has a number of methods built in to customise the storyboard:</p>
+<h2>setTitle()</h2>
+<blockquote>
+  <p>Set a custom title for the storyboard.</p>
+</blockquote>
+<h2>addCardImage()</h2>
+<blockquote>
+  <p>Add custom card image that will be shared by all tests</p>
   <ul>
-  	<li>Create your own cards to capture and display different types of data by inheriting from the Card class</li>
-  	<li>Create your own containers to group cards by inheriting from the Container class</li>
-  	<li><code>addCardImage()</code>: Add custom card image that will be shared by all tests
-  		<ul>
-  			<li>Must be called before test starts otherwise this will do nothing</li>
-			<li>It is possible to override stock card images if you use the same name</li>
-	 	</ul>
-	</li>
-  	<li><code>setAddCardOnThrowable()</code>: Sets whether a card will be added to the storyboard when an uncaught exception occurs in the test
-  		<ul>
-  			<li>Defaults to true</li>
-	 	</ul>
-	</li>
-  	<li><code>setAddCardOnFailure()</code>: Sets whether a card will be added to the storyboard when a failure occurs in the test
-  		<ul>
-  			<li>Defaults to true</li>
-	 	</ul>
-	</li>
-  	<li><code>setScreenshotTaker()</code>: Set a custom screenshot taker
-  		<ul>
-  			<li>By default this is not set to avoid capturing screen shots when not appropriate</li>
-  			<li>The project includes <code>RobotScreenshotTaker</code>code which will capture the full visible screen<br />
-  			    As an alternative, custom screenshots can be captured using the `ScreenshotTaker` interface. For example, when using frameworks
-  			    such as Selenium, a custom screenshot taker can capture an image of the entire web page, even if the test is running in the
-  			    background.  See the demo application for an example of a custom <code>SeleniumScreenshotTaker</code>.
-  			</li>
-	 	</ul>
-	</li>
-	<li><code>removeScreenshotTaker()</code>:Removes the screenshot taker so no further screenshots will be taken
-		<ul>
-  			<li>If you are mixing GUI and non GUI actions in your storyboard you may want to remove the screenshot taker to prevent further screenshots being 
-  			    taken for the current example to keep the cards in a logical order.  The need for this is dependent on the setting of <code>setTakeScreenshotOnExampleCompletion()</code></li>
-	 	</ul>
-	</li>
-  	<li><code>setTakeScreenshotOnExampleCompletion()</code>:  When an example completes a screenshot of the current page will be automatically added to the storyboard - as long as 
-	 the screenshot taker has been set. If not using the example command then final screenshots must be added manually.
-  		<ul>
-  			<li>Defaults to true</li>
-	 	</ul>
-	</li>
-	<li><code>setSkipFinalScreenshotForCurrentExample()</code>:  If configured to take final screenshot for example, this will override that behvaiour for the current example only.
-  	</li>
-	<li><code>setAcceptCards()</code>: Prevent cards and containers from being added to the the storyboard. This is useful in situations where might be repeating an action 
-	  several times and only want to record the first pass through, or performing cleanup steps and don't want the actions recorded.
-	 	<ul>
-	 		<li>Setting this to false will disable prevent cards and containers being added until either it is set to true, or the current example or specification completes</li>
-  			<li>Defaults to true</li>
-	 	</ul>
-	 </li>
-	 <li><code>setTitle()</code>: set a custom title for the storyboard</li>
+    <li>Must be called before test starts otherwise this will do nothing</li>
+    <li>It is possible to override stock card images if you use the same name</li>
   </ul>
-<div class="footer">Results generated by <a href="http://www.concordion.org" style="font-weight: bold; text-decoration: none; color: #89C;">Concordion</a><div class="testTime">in 4 ms on 01-May-2016 at 09:17:29 NZST</div></div></body>
-</html>
+</blockquote>
+<h2>setAppendMode()</h2>
+<blockquote>
+  <p>Set how items are added to the storyboard:</p>
+  <ul>
+    <li>Append to end of Storyboard (original behaviour)</li>
+    <li>If item is added within currently executing Example Command append to example element, otherwise append to Storyboard <strong>(default)</strong></li>
+    <li>If item is added within currently executing Example Command append to new section container in Storyboard, otherwise append to Storyboard</li>
+  </ul>
+</blockquote>
+<h2>setAddCardOnThrowable()</h2>
+<blockquote>
+  <p>Sets whether a card will be added to the storyboard when an uncaught exception occurs in the test. If screenshotTaker is set then it will add a ScreenshotCard, else it will add a NotificationCard.</p>
+  <p><em>Defaults to true</em></p>
+</blockquote>
+<h2>setAddCardOnFailure()</h2>
+<blockquote>
+  <p>Sets whether a card will be added to the storyboard when a failure occurs in the test. If screenshotTaker is set then it will add a ScreenshotCard, else it will add a NotificationCard.</p>
+  <p><em>Defaults to true</em></p>
+</blockquote>
+<h2>setSupressRepeatingFailures()</h2>
+<blockquote>
+  <p>If <code>setAddCardOnFailure(boolean)</code> is true then this will ignore second or subsequent failure. If using the Example command then each example will be treated separately.</p>
+</blockquote>
+<h2>setScreenshotTaker()</h2>
+<blockquote>
+  <p>Set a custom screenshot taker</p>
+  <ul>
+    <li>By default this is not set to avoid capturing screen shots when not appropriate</li>
+    <li>The project includes <code>RobotScreenshotTaker</code> which will capture the full visible screen<br /> As an alternative, custom screenshots can be captured using the <code>ScreenshotTaker</code> interface. For example, when using frameworks such as Selenium, a custom screenshot taker can capture an image of the entire web page, even if the test is running in the background. See the demo application for an example of a custom <code>SeleniumScreenshotTaker</code>.</li>
+  </ul>
+</blockquote>
+<h2>removeScreenshotTaker()</h2>
+<blockquote>
+  <p>Removes the screenshot taker so no further screenshots will be taken</p>
+  <ul>
+    <li>If you are mixing GUI and non GUI actions in your storyboard you may want to remove the screenshot taker to prevent further screenshots being taken for the current example to keep the cards in a logical order. The need for this is dependent on the setting of <code>setTakeScreenshotOnExampleCompletion()</code></li>
+  </ul>
+</blockquote>
+<h2>setTakeScreenshotOnExampleCompletion()</h2>
+<blockquote>
+  <p>A screenshot of the current page will be automatically added to the storyboard (as long as the screenshot taker has been set) when:</p>
+  <ul>
+    <li>an example completes</li>
+    <li>a container is closed (either automatically or by calling closeContainer())</li>
+  </ul>
+  <p>If not using the example command then final screenshots must be added manually.</p>
+  <p>This setting is also obeyed by containers that are configured to auto close such as the section container.</p>
+  <p><em>Defaults to true</em></p>
+</blockquote>
+<h2>skipFinalScreenshot()</h2>
+<blockquote>
+  <p>If configured to take final screenshot for example, this will override that behaviour until:</p>
+  <ul>
+    <li>an example completes</li>
+    <li>a container is closed (either automatically or by calling closeContainer())</li>
+  </ul>
+  <p>This also prevents screenshots being taken if a test fails or an exception is thrown.</p>
+</blockquote>
+<h2>setAcceptCards()</h2>
+<blockquote>
+  <p>Prevent cards and containers from being added to the the storyboard. This is useful in situations where might be repeating an action  several times and only want to record the first pass through, or performing cleanup steps and don't want the actions recorded.</p>
+  <ul>
+    <li>Setting this to false will disable prevent cards and containers being added until either it is set to true, or the current example or specification completes</li>
+  </ul>
+  <p><em>Defaults to true</em></p>
+</blockquote>
+<h1>Advanced Customisation</h1>
+<ul>
+  <li>Create your own cards to capture and display different types of data by inheriting from the Card class</li>
+  <li>Create your own containers to group cards by inheriting from the Container class</li>
+</ul><div class="footer">Results generated by <a href="http://www.concordion.org" style="font-weight: bold; text-decoration: none; color: #89C;">Concordion</a><div class="testTime">in 12 ms on 10-May-2016 at 21:37:16 NZST</div></div></body></html>
