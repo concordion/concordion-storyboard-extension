@@ -33,6 +33,7 @@ public class StoryboardDemo {
 		storyboard.closeContainer();
 		
 		storyboard.insertSectionContainer(null);
+		storyboard.skipFinalScreenshot();
 		storyboard.addNotification("n1", "null", StockCardImage.EMAIL, CardResult.SUCCESS);
 		storyboard.closeContainer();
 		

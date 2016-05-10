@@ -131,7 +131,7 @@ public class StoryboardExtension implements ConcordionExtension {
 	}
 	
 	/**
-	 * if {@link #setAddCardOnFailure(boolean)} is true then will optionally ignore second or subsequent failure.  If using the Example command then
+	 * If {@link #setAddCardOnFailure(boolean)} is true then will optionally ignore second or subsequent failure.  If using the Example command then
 	 * each example will be treated separately. 
 	 * 
 	 * @param value <code>true</code> to not add card on second, or subsequent, failure (default behaviour), <code>false</code> to add a card for every failure.
@@ -179,8 +179,12 @@ public class StoryboardExtension implements ConcordionExtension {
 	}
 	
 	/**
-	 * When an example completes a screenshot of the current page will be automatically added to the storyboard - as long as 
-	 * the screenshot taker has been set.
+	 * A screenshot of the current page will be automatically added to the storyboard (as long as 
+	 * the screenshot taker has been set) when:
+	 * <ul>
+	 * <li>an example completes</li>
+	 * <li>a container is closed (either automatically or by calling closeContainer())</li>
+	 * </ul>
 	 * 
 	 * <p>If not using the example command then final screenshots must be added manually.</p>
 	 * <p>This setting is also obeyed by containers that are configured to auto close such as the section container.</p>
@@ -196,14 +200,19 @@ public class StoryboardExtension implements ConcordionExtension {
 	
 	/**
 	 * If configured to take final screenshot for example (see {@link #setTakeScreenshotOnExampleCompletion(boolean)}), this
-	 * will override that behvaiour for the current example only.
+	 * will override that behaviour until:   
 	 * 
-	 * <p>This setting is also obeyed by containers that are configured to auto close such as the section container.</p>
+	 * <ul>
+	 * <li>an example completes</li>
+	 * <li>a container is closed (either automatically or by calling closeContainer())</li>
+	 * </ul>
+
+	 * <p>This also prevents screenshots being taken if a test fails or an exception is thrown.</p>
 	 * 
 	 * @return A self reference
 	 */
-	public StoryboardExtension setSkipFinalScreenshotForCurrentExample() {
-		extension.setSkipFinalScreenshotForCurrentExample();
+	public StoryboardExtension skipFinalScreenshot() {
+		extension.setSkipFinalScreenshot();
 		return this;
 	}
 	

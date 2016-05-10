@@ -32,7 +32,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	private boolean supressRepeatingFailures = true;
 	private boolean failureDetected = false;
 	private boolean takeScreenshotOnExampleCompletion = true;
-	private boolean skipFinalScreenshotForCurrentExample = false;
+	private boolean skipFinalScreenshot = false;
 	private ScreenshotTaker screenshotTaker = null;
 	private boolean lastScreenShotWasThrowable = false;
 	private Resource resource;
@@ -77,8 +77,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		
 		if (storyboard.hasCurrentContainer()) {
 			if (storyboard.getCurrentContainer().isAutoClose()) {
-				takeFinalScreenshotForExample("Example Completed");
-				storyboard.closeContainer();
+				closeContainer();
 			}
 		}
 		
@@ -100,7 +99,14 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	}
 
 	public void closeContainer() {
+		if (storyboard.hasCurrentContainer()) {
+			takeFinalScreenshotForExample("Completed");
+		}
+
 		storyboard.closeContainer();
+
+		this.acceptCards = true;
+		this.skipFinalScreenshot = false;
 	}
 	
 	@Override
@@ -127,7 +133,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 				sb.append("\n").append("Actual: ").append(event.getActual().toString());
 			}
 						
-			if (screenshotTaker == null || skipFinalScreenshotForCurrentExample) {
+			if (screenshotTaker == null || skipFinalScreenshot) {
 				NotificationCard card = new NotificationCard();
 				card.setTitle(title);
 				card.setDescription(sb.toString());
@@ -162,7 +168,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 			title = error.getClass().getSimpleName();
 
-			if (screenshotTaker == null || skipFinalScreenshotForCurrentExample) {
+			if (screenshotTaker == null || skipFinalScreenshot) {
 				NotificationCard card = new NotificationCard();
 				card.setTitle(title);
 				card.setDescription("See specification for further information");
@@ -230,9 +236,9 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 			break;
 		}
 		
-		this.acceptCards = true;
 		this.currentExample = null;
-		this.skipFinalScreenshotForCurrentExample = false;
+		this.acceptCards = true;
+		this.skipFinalScreenshot = false;
 	}
 	
 	@Override
@@ -249,7 +255,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	
 	private void takeFinalScreenshotForExample(String title) {
 		if (!takeScreenshotOnExampleCompletion) return;
-		if (skipFinalScreenshotForCurrentExample) return;
+		if (skipFinalScreenshot) return;
 		if (screenshotTaker == null) return;
 		if (lastScreenShotWasThrowable) return;
 				
@@ -292,8 +298,8 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		this.takeScreenshotOnExampleCompletion = value;
 	}
 	
-	public void setSkipFinalScreenshotForCurrentExample() {
-		this.skipFinalScreenshotForCurrentExample = true;
+	public void setSkipFinalScreenshot() {
+		this.skipFinalScreenshot = true;
 	}
 
 	public void markPriorScreenshotsForRemoval() {
