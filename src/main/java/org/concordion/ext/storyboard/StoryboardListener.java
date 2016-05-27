@@ -26,19 +26,23 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		SpecificationProcessingListener, ThrowableCaughtListener, ExampleListener {
 
 	private final Storyboard storyboard = new Storyboard(this);
-	private ExampleEvent currentExample = null;
+
+	// Setters
+	private ScreenshotTaker screenshotTaker = null;
 	private boolean addCardOnThrowable = true;
 	private boolean addCardOnFailure = true;
 	private boolean supressRepeatingFailures = true;
-	private boolean failureDetected = false;
 	private boolean takeScreenshotOnExampleCompletion = true;
+	private AppendTo appendMode = AppendTo.EXAMPLE;
 	private boolean skipFinalScreenshot = false;
-	private ScreenshotTaker screenshotTaker = null;
+	private boolean acceptCards = true;
+	
+	// State
+	private ExampleEvent currentExample = null;
+	private boolean failureDetected = false;
 	private boolean lastScreenShotWasThrowable = false;
 	private Resource resource;
 	private Target target;
-	private AppendTo appendMode = AppendTo.EXAMPLE;
-	private boolean acceptCards = true;
 	
 	/**
 	 * Add screenshot
@@ -116,74 +120,76 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	@Override
 	public void failureReported(final AssertFailureEvent event) {
-		if (addCardOnFailure) {
-			if (supressRepeatingFailures && failureDetected) {
-				return;
-			}
-			
-			String title = "Test Failed";
-
-			StringBuilder sb = new StringBuilder().append("See specification for further information");
-			
-			if(event.getExpected() != null) {
-				sb.append("\n").append("Expected: ").append(event.getExpected());
-			}
-			
-			if(event.getActual() != null) {
-				sb.append("\n").append("Actual: ").append(event.getActual().toString());
-			}
-						
-			if (screenshotTaker == null || skipFinalScreenshot) {
-				NotificationCard card = new NotificationCard();
-				card.setTitle(title);
-				card.setDescription(sb.toString());
-				card.setCardImage(StockCardImage.ERROR);
-				card.setResult(CardResult.FAILURE);
-				addCard(card);
-			} else {
-				ScreenshotCard card = new ScreenshotCard();
-				card.setTitle(title);
-				card.setDescription(sb.toString());
-				card.setResult(CardResult.FAILURE);
-				addCard(card);
-
-				lastScreenShotWasThrowable = true;
-			}
+		if (!addCardOnFailure) {
+			return;
+		}
+		
+		if (supressRepeatingFailures && failureDetected) {
+			return;
 		}
 		
 		failureDetected = true;
+		String title = "Test Failed";
+
+		StringBuilder sb = new StringBuilder().append("See specification for further information");
+		
+		if(event.getExpected() != null) {
+			sb.append("\n").append("Expected: ").append(event.getExpected());
+		}
+		
+		if(event.getActual() != null) {
+			sb.append("\n").append("Actual: ").append(event.getActual().toString());
+		}
+					
+		if (screenshotTaker == null || skipFinalScreenshot) {
+			NotificationCard card = new NotificationCard();
+			card.setTitle(title);
+			card.setDescription(sb.toString());
+			card.setCardImage(StockCardImage.ERROR);
+			card.setResult(CardResult.FAILURE);
+			addCard(card);
+		} else {
+			ScreenshotCard card = new ScreenshotCard();
+			card.setTitle(title);
+			card.setDescription(sb.toString());
+			card.setResult(CardResult.FAILURE);
+			addCard(card);
+
+			lastScreenShotWasThrowable = true;
+		}
 	}
 
 	@Override
 	public void throwableCaught(final ThrowableCaughtEvent event) {
+		if (!addCardOnThrowable) {
+			return;
+		}
+
 		failureDetected = true;
-		
-		if (addCardOnThrowable) {
-			String title = "Exception Caught";
+		String title = "Exception Caught";
 
-			Throwable error = event.getThrowable();
-			if (error.getCause() != null) {
-				error = error.getCause();
-			}
+		Throwable error = event.getThrowable();
+		if (error.getCause() != null) {
+			error = error.getCause();
+		}
 
-			title = error.getClass().getSimpleName();
+		title = error.getClass().getSimpleName();
 
-			if (screenshotTaker == null || skipFinalScreenshot) {
-				NotificationCard card = new NotificationCard();
-				card.setTitle(title);
-				card.setDescription("See specification for further information");
-				card.setCardImage(StockCardImage.ERROR);
-				card.setResult(CardResult.FAILURE);
-				addCard(card);
-			} else {
-				ScreenshotCard card = new ScreenshotCard();
-				card.setTitle(title);
-				card.setDescription("See specification for further information");
-				card.setResult(CardResult.FAILURE);
-				addCard(card);
+		if (screenshotTaker == null || skipFinalScreenshot) {
+			NotificationCard card = new NotificationCard();
+			card.setTitle(title);
+			card.setDescription("See specification for further information");
+			card.setCardImage(StockCardImage.ERROR);
+			card.setResult(CardResult.FAILURE);
+			addCard(card);
+		} else {
+			ScreenshotCard card = new ScreenshotCard();
+			card.setTitle(title);
+			card.setDescription("See specification for further information");
+			card.setResult(CardResult.FAILURE);
+			addCard(card);
 
-				lastScreenShotWasThrowable = true;
-			}
+			lastScreenShotWasThrowable = true;
 		}
 	}
 
@@ -236,9 +242,12 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 			break;
 		}
 		
+		// Reset current state as if where starting a new specification
 		this.currentExample = null;
+		this.failureDetected = false;
 		this.acceptCards = true;
 		this.skipFinalScreenshot = false;
+		this.lastScreenShotWasThrowable = false;
 	}
 	
 	@Override
