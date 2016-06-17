@@ -51,6 +51,8 @@ public class ScreenshotCard extends Card {
 			outputStream.close();
 		} catch (Exception e) {
 			// Do nothing, unable to take screenshot
+			imageSize = new Dimension(0, 0);
+			
 			//TODO: What logger should I use here?
 			System.out.println(e.getMessage());
 		}
