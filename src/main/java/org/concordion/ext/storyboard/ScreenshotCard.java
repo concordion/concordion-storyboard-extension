@@ -19,7 +19,7 @@ public class ScreenshotCard extends Card {
 	private Dimension imageSize;
 	private ScreenshotTaker screenshotTaker = null;
 	private boolean deleteIfSuccessful = false;
-	private String imagePath;
+	private String imagePath = null;
 	
 	protected void setScreenshotTaker(final ScreenshotTaker screenshotTaker) {
 		this.screenshotTaker = screenshotTaker;
@@ -35,6 +35,10 @@ public class ScreenshotCard extends Card {
 	
 	@Override
 	protected void captureData() {
+		if (!imageName.isEmpty()) {
+			return;
+		}
+
 		if (screenshotTaker == null) {
 			imageSize = new Dimension(0, 0);
 			return;
@@ -69,6 +73,10 @@ public class ScreenshotCard extends Card {
 	
 	@Override 
 	protected void cleanupData() {
+		if (imagePath == null) {
+			return;
+		}
+
 		File file = combine(ConcordionBuilder.getBaseOutputDir().getAbsolutePath(), imagePath);
 		if (file.exists()) {
 			file.delete();
@@ -116,5 +124,17 @@ public class ScreenshotCard extends Card {
 
 		img.addAttribute("onMouseOver", "showScreenPopup(this);this.style.cursor='pointer'");
 		img.addAttribute("onMouseOut", "hideScreenPopup();this.style.cursor='default'");
+	}
+
+	/**
+	 * Use an existing image rather than have this class attempt to capture a screenshot.
+	 * 
+	 * @param imageName Relative path to the image
+	 * @param imageSize Dimesion of image
+	 */
+	public void setImageName(String imageName, Dimension imageSize) {
+		this.imagePath = null;
+		this.imageName = imageName;
+		this.imageSize = imageSize;
 	}
 }

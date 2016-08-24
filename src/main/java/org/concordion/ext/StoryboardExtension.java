@@ -26,18 +26,18 @@ import org.concordion.ext.storyboard.StoryboardListener;
  */
 public class StoryboardExtension implements ConcordionExtension {
 
-	private final StoryboardListener extension = new StoryboardListener();
+	private final StoryboardListener listener = new StoryboardListener();
 	private final Map<String, CustomCardImage> customImages = new HashMap<String, CustomCardImage>();
 
 	@Override
 	public void addTo(final ConcordionExtender concordionExtender) {
-		concordionExtender.withSpecificationProcessingListener(extension);
-		concordionExtender.withBuildListener(extension);
-		concordionExtender.withExampleListener(extension);
-		concordionExtender.withAssertEqualsListener(extension);
-		concordionExtender.withAssertTrueListener(extension);
-		concordionExtender.withAssertFalseListener(extension);
-		concordionExtender.withThrowableListener(extension);
+		concordionExtender.withSpecificationProcessingListener(listener);
+		concordionExtender.withBuildListener(listener);
+		concordionExtender.withExampleListener(listener);
+		concordionExtender.withAssertEqualsListener(listener);
+		concordionExtender.withAssertTrueListener(listener);
+		concordionExtender.withAssertFalseListener(listener);
+		concordionExtender.withThrowableListener(listener);
 		
 		String path = StoryboardListener.class.getPackage().getName();
 		path = path.replaceAll("\\.", "/");
@@ -53,6 +53,10 @@ public class StoryboardExtension implements ConcordionExtension {
 		for (CustomCardImage image : customImages.values()) {
 			concordionExtender.withResource(image.getSourcePath() + image.getFilename(), image.getResource());
 		}
+	}
+
+	StoryboardListener getListener() {
+		return listener;
 	}
 
 	/**
@@ -84,7 +88,7 @@ public class StoryboardExtension implements ConcordionExtension {
 	 * @return A self reference
 	 */
 	public StoryboardExtension setTitle(String title) {
-		extension.setTitle(title);
+		listener.setTitle(title);
 		return this;
 	}
 
@@ -101,7 +105,7 @@ public class StoryboardExtension implements ConcordionExtension {
 	 * @return A self reference
 	 */
 	public StoryboardExtension setAppendMode(AppendTo appendMode) {
-		extension.setAppendMode(appendMode);
+		listener.setAppendMode(appendMode);
 		return this;
 	}
 
@@ -114,7 +118,7 @@ public class StoryboardExtension implements ConcordionExtension {
 	 * @return A self reference
 	 */
 	public StoryboardExtension setAddCardOnThrowable(final boolean value) {
-		extension.setAddCardOnThrowable(value);
+		listener.setAddCardOnThrowable(value);
 		return this;
 	}
 
@@ -126,7 +130,7 @@ public class StoryboardExtension implements ConcordionExtension {
 	 * @return A self reference
 	 */
 	public StoryboardExtension setAddCardOnFailure(final boolean value) {
-		extension.setAddCardOnFailure(value);
+		listener.setAddCardOnFailure(value);
 		return this;
 	}
 	
@@ -138,7 +142,7 @@ public class StoryboardExtension implements ConcordionExtension {
 	 * @return A self reference
 	 */
 	public StoryboardExtension setSupressRepeatingFailures(final boolean value) {
-		extension.setSupressRepeatingFailures(value);
+		listener.setSupressRepeatingFailures(value);
 		return this;
 	}
 	
@@ -148,7 +152,7 @@ public class StoryboardExtension implements ConcordionExtension {
 	 * @return True if screenshot taker exists
 	 */
 	public boolean hasScreenshotTaker() {
-		return extension.hasScreenshotTaker();
+		return listener.hasScreenshotTaker();
 	}
 	
 	/**
@@ -164,7 +168,7 @@ public class StoryboardExtension implements ConcordionExtension {
 	 * @return A self reference
 	 */
 	public StoryboardExtension setScreenshotTaker(final ScreenshotTaker screenshotTaker) {
-		extension.setScreenshotTaker(screenshotTaker);
+		listener.setScreenshotTaker(screenshotTaker);
 		return this;
 	}
 
@@ -174,7 +178,7 @@ public class StoryboardExtension implements ConcordionExtension {
 	 * @return A self reference
 	 */
 	public StoryboardExtension removeScreenshotTaker() {
-		extension.setScreenshotTaker(null);
+		listener.setScreenshotTaker(null);
 		return this;
 	}
 	
@@ -194,7 +198,7 @@ public class StoryboardExtension implements ConcordionExtension {
 	 * @return A self reference
 	 */
 	public StoryboardExtension setTakeScreenshotOnExampleCompletion(final boolean value) {
-		extension.setTakeScreenshotOnExampleCompletion(value);
+		listener.setTakeScreenshotOnExampleCompletion(value);
 		return this;
 	}
 	
@@ -212,7 +216,7 @@ public class StoryboardExtension implements ConcordionExtension {
 	 * @return A self reference
 	 */
 	public StoryboardExtension skipFinalScreenshot() {
-		extension.setSkipFinalScreenshot();
+		listener.setSkipFinalScreenshot();
 		return this;
 	}
 	
@@ -240,7 +244,7 @@ public class StoryboardExtension implements ConcordionExtension {
 	 * @return A self reference
 	 */
 	public StoryboardExtension setAcceptCards(final boolean accept) {
-		extension.setAcceptCards(accept);
+		listener.setAcceptCards(accept);
 		return this;
 	}
 	
@@ -257,7 +261,7 @@ public class StoryboardExtension implements ConcordionExtension {
 		card.setDescription(description);
 		card.setResult(CardResult.SUCCESS);
 
-		extension.addCard(card);
+		listener.addCard(card);
 
 		return this;
 	}
@@ -269,7 +273,7 @@ public class StoryboardExtension implements ConcordionExtension {
 	 * @return A self reference
 	 */
 	public StoryboardExtension markPriorScreenshotsForRemoval() {
-		extension.markPriorScreenshotsForRemoval();
+		listener.markPriorScreenshotsForRemoval();
 		return this;
 	}
 
@@ -321,7 +325,7 @@ public class StoryboardExtension implements ConcordionExtension {
 		card.setFileExtension(fileExtension);
 		card.setResult(result);
 
-		extension.addCard(card);
+		listener.addCard(card);
 		
 		return this;
 	}
@@ -337,7 +341,7 @@ public class StoryboardExtension implements ConcordionExtension {
 	public StoryboardExtension addSectionContainer(String title) {
 		SectionContainer container = new SectionContainer();
 		container.setTitle(title);
-		extension.addContainer(container);
+		listener.addContainer(container);
 		
 		return this;
 	}
@@ -353,7 +357,7 @@ public class StoryboardExtension implements ConcordionExtension {
 	public StoryboardExtension insertSectionContainer(String title) {
 		SectionContainer container = new SectionContainer();
 		container.setTitle(title);
-		extension.insertContainer(container);
+		listener.insertContainer(container);
 		
 		return this;
 	}
@@ -367,7 +371,7 @@ public class StoryboardExtension implements ConcordionExtension {
 	 * @return A self reference
 	 */
 	public StoryboardExtension closeContainer() {
-		extension.closeContainer();
+		listener.closeContainer();
 		return this;
 	}
 	
@@ -378,7 +382,7 @@ public class StoryboardExtension implements ConcordionExtension {
 	 * @return A self reference
 	 */
 	public StoryboardExtension addCard(final Card card) {
-		extension.addCard(card);
+		listener.addCard(card);
 		
 		return this;
 	}
@@ -390,7 +394,7 @@ public class StoryboardExtension implements ConcordionExtension {
 	 * @return A self reference
 	 */
 	public StoryboardExtension addCard(final ScreenshotCard card) {
-		extension.addCard(card);
+		listener.addCard(card);
 		
 		return this;
 	}
@@ -404,7 +408,7 @@ public class StoryboardExtension implements ConcordionExtension {
 	 * @return A self reference
 	 */
 	public StoryboardExtension addContainer(final Container container) {
-		extension.addContainer(container);
+		listener.addContainer(container);
 		
 		return this;
 	}
@@ -418,7 +422,7 @@ public class StoryboardExtension implements ConcordionExtension {
 	 * @return A self reference
 	 */
 	public StoryboardExtension insertContainer(final Container container) {
-		extension.insertContainer(container);
+		listener.insertContainer(container);
 		
 		return this;
 	}
@@ -428,7 +432,7 @@ public class StoryboardExtension implements ConcordionExtension {
 	 * @return Title if executing an example, otherwise an empty string
 	 */
 	public String getCurrentExampleTitle() {
-		return extension.getCurrentExampleTitle();
+		return listener.getCurrentExampleTitle();
 	}
 	
 	public enum AppendTo {

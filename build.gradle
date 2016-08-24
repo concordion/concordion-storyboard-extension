@@ -1,4 +1,10 @@
 apply from: 'https://raw.githubusercontent.com/concordion/concordion-extension-build/master/extension-build.gradle'
+//apply from: 'extension-build.gradle'
+
+//TODO remove me
+//repositories {
+//	mavenLocal()
+//}
 
 description = 'An extension to Concordion that capture screenshots, etc in storyboard format while the specification is being executed so that we can see exactly what the test has done against the system under test'
 
@@ -29,7 +35,8 @@ githubPages {
 }
 
 dependencies {
-	testCompile "org.concordion:concordion-embed-extension:1.1.2"
+	compile 'org.concordion:concordion-logback-extension:2.0.0-SNAPSHOT:integration'
+	testCompile 'org.concordion:concordion-embed-extension:1.1.2'
 }
 
 sourceSets {

@@ -165,15 +165,16 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 			return;
 		}
 
-		failureDetected = true;
-		String title = "Exception Caught";
+		addThrowable(event.getThrowable());
+	}
 
-		Throwable error = event.getThrowable();
+	public void addThrowable(Throwable error) {
 		if (error.getCause() != null) {
 			error = error.getCause();
 		}
 
-		title = error.getClass().getSimpleName();
+		failureDetected = true;
+		String title = error.getClass().getSimpleName();
 
 		if (screenshotTaker == null || skipFinalScreenshot) {
 			NotificationCard card = new NotificationCard();
