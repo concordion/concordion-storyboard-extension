@@ -42,7 +42,7 @@ public class StoryboardExtension implements ConcordionExtension {
 		String path = StoryboardListener.class.getPackage().getName();
 		path = path.replaceAll("\\.", "/");
 		path = "/" + path;
-
+		
 		concordionExtender.withLinkedCSS(path + "/storyboard.css", new Resource("/storyboard.css"));
 		concordionExtender.withLinkedJavaScript(path + "/storyboard.js", new Resource("/storyboard.js"));
 		
@@ -58,7 +58,7 @@ public class StoryboardExtension implements ConcordionExtension {
 	StoryboardListener getListener() {
 		return listener;
 	}
-
+	
 	/**
 	 * Add custom card image that will be shared by all tests, must be called before test starts otherwise this will do nothing
 	 * 

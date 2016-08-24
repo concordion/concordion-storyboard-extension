@@ -9,7 +9,7 @@ import org.concordion.api.Resource;
  * Generic card that can optionally provide data to the user.  This data can be text based data such as: xml, json, html, etc.
  */
 public class NotificationCard extends Card {
-	private String dataFileName = null;
+	private String dataFileName = "";
 	private CardImage cardImage = StockCardImage.XML_REQUEST;
 	private String data = "";
 	private String fileExtension = "txt";
@@ -37,7 +37,7 @@ public class NotificationCard extends Card {
 
 	@Override
 	protected void captureData() {
-		if (dataFileName != null) {
+		if (!dataFileName.isEmpty()) {
 			return;
 		}
 

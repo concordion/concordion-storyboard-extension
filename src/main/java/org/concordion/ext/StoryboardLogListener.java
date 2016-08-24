@@ -7,6 +7,7 @@ import org.concordion.ext.storyboard.NotificationCard;
 import org.concordion.ext.storyboard.ScreenshotCard;
 import org.concordion.logback.LoggingListener;
 import org.concordion.slf4j.markers.AttachmentMarker;
+import org.concordion.slf4j.markers.FailureReportedMarker;
 import org.concordion.slf4j.markers.ReportLoggerMarkers;
 import org.concordion.slf4j.markers.ScreenshotMarker;
 import org.concordion.slf4j.markers.ThrowableCaughtMarker;
@@ -21,11 +22,13 @@ public class StoryboardLogListener extends LoggingListener {
 
 	public StoryboardLogListener(StoryboardExtension storyboard) {
 		this.storyboard = storyboard;
+		this.storyboard.getListener().setUsingLogListener();
 	}
 
 	@Override
 	protected void append(ILoggingEvent event) {
 		processThrowableMarker(event);
+		processFailureMarker(event);
 		processStoryboardMarker(event);
 	}
 
@@ -35,10 +38,20 @@ public class StoryboardLogListener extends LoggingListener {
 		if (marker != null) {
 			ThrowableCaughtMarker throwableMarker = (ThrowableCaughtMarker) marker;
 			
-			storyboard.getListener().addThrowable(throwableMarker.getThrowable());
+			storyboard.getListener().doThrowableCaught(throwableMarker.getEvent());
 		}
 	}
 
+	private void processFailureMarker(ILoggingEvent event) {
+		Marker marker = findMarker(event.getMarker(), ReportLoggerMarkers.FAILURE_REPORTED_MARKER_NAME);
+		
+		if (marker != null) {
+			FailureReportedMarker failureMarker = (FailureReportedMarker) marker;
+			
+			storyboard.getListener().doFailureReported(failureMarker.getEvent());
+		}
+	}
+	
 	private void processStoryboardMarker(ILoggingEvent event) {
 		Marker marker = findMarker(event.getMarker(), StoryboardMarkerFactory.STORYBOARD_MAKRER_NAME);
 		if (marker == null) {
@@ -78,7 +91,11 @@ public class StoryboardLogListener extends LoggingListener {
 
 	@Override
 	public String[] getFilterMarkers() {
-		return new String[] { StoryboardMarkerFactory.STORYBOARD_MAKRER_NAME, ReportLoggerMarkers.THROWABLE_CAUGHT_MARKER_NAME };
+		return new String[] { 
+			StoryboardMarkerFactory.STORYBOARD_MAKRER_NAME, 
+			ReportLoggerMarkers.THROWABLE_CAUGHT_MARKER_NAME,
+			ReportLoggerMarkers.FAILURE_REPORTED_MARKER_NAME
+		};
 	}
 
 	public String getStreamContent() {

@@ -36,14 +36,17 @@ githubPages {
 
 dependencies {
 	compile 'org.concordion:concordion-logback-extension:2.0.0-SNAPSHOT:integration'
+	testCompile 'org.concordion:concordion-logback-extension:2.0.0-SNAPSHOT'
 	testCompile 'org.concordion:concordion-embed-extension:1.1.2'
 }
 
+/*
 sourceSets {
 	test {
 		resources { srcDirs += 'src/test/java' }
 	}
 }
+*/
 
 test.dependsOn cleanTest
 test {

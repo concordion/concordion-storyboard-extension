@@ -36,6 +36,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	private AppendTo appendMode = AppendTo.EXAMPLE;
 	private boolean skipFinalScreenshot = false;
 	private boolean acceptCards = true;
+	private boolean usingLogListener = false;
 	
 	// State
 	private ExampleEvent currentExample = null;
@@ -109,8 +110,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 		storyboard.closeContainer();
 
-		this.acceptCards = true;
-		this.skipFinalScreenshot = false;
+		resetCurrentState();
 	}
 	
 	@Override
@@ -120,6 +120,12 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	@Override
 	public void failureReported(final AssertFailureEvent event) {
+		if (!usingLogListener) {
+			doFailureReported(event);
+		}
+	}
+	
+	public void doFailureReported(final AssertFailureEvent event) {
 		if (!addCardOnFailure) {
 			return;
 		}
@@ -161,14 +167,18 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	@Override
 	public void throwableCaught(final ThrowableCaughtEvent event) {
+		if (!usingLogListener) {
+			doThrowableCaught(event);
+		}
+	}
+	
+	public void doThrowableCaught(final ThrowableCaughtEvent event) {
 		if (!addCardOnThrowable) {
 			return;
 		}
 
-		addThrowable(event.getThrowable());
-	}
-
-	public void addThrowable(Throwable error) {
+		Throwable error = event.getThrowable();
+		
 		if (error.getCause() != null) {
 			error = error.getCause();
 		}
@@ -243,6 +253,10 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 			break;
 		}
 		
+		resetCurrentState();
+	}
+	
+	private void resetCurrentState() {
 		// Reset current state as if where starting a new specification
 		this.currentExample = null;
 		this.failureDetected = false;
@@ -365,5 +379,9 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	public void setAcceptCards(boolean accept) {
 		this.acceptCards  = accept;
+	}
+
+	public void setUsingLogListener() {
+		this.usingLogListener = true;
 	}
 }
