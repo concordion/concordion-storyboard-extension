@@ -36,16 +36,7 @@ public class StoryboardLogListener extends LoggingListener {
 		Marker marker = findMarker(event.getMarker(), ReportLoggerMarkers.THROWABLE_CAUGHT_MARKER_NAME);
 		
 		if (marker != null) {
-			ThrowableCaughtMarker throwableMarker = (ThrowableCaughtMarker) marker;
-			
-			ScreenshotMarker screenshotMarker = null;
-			Marker dataMarker = findMarker(event.getMarker(), ReportLoggerMarkers.DATA_MARKER_NAME);
-			
-			if (dataMarker != null && dataMarker instanceof ScreenshotMarker) {
-				screenshotMarker = (ScreenshotMarker) dataMarker;
-			}
-
-			storyboard.getListener().doThrowableCaught(throwableMarker.getEvent(), screenshotMarker);
+			storyboard.getListener().doThrowableCaught(((ThrowableCaughtMarker) marker).getEvent(), getScreenshotMarker(event));
 		}
 	}
 
@@ -53,12 +44,10 @@ public class StoryboardLogListener extends LoggingListener {
 		Marker marker = findMarker(event.getMarker(), ReportLoggerMarkers.FAILURE_REPORTED_MARKER_NAME);
 		
 		if (marker != null) {
-			FailureReportedMarker failureMarker = (FailureReportedMarker) marker;
-			
-			storyboard.getListener().doFailureReported(failureMarker.getEvent());
+			storyboard.getListener().doFailureReported(((FailureReportedMarker) marker).getEvent(), getScreenshotMarker(event));
 		}
 	}
-	
+
 	private void processStoryboardMarker(ILoggingEvent event) {
 		Marker marker = findMarker(event.getMarker(), StoryboardMarkerFactory.STORYBOARD_MAKRER_NAME);
 		if (marker == null) {
@@ -105,11 +94,14 @@ public class StoryboardLogListener extends LoggingListener {
 		};
 	}
 
-	public String getStreamContent() {
-		return stream.toString();
-	}
+	private ScreenshotMarker getScreenshotMarker(ILoggingEvent event) {
+		ScreenshotMarker screenshotMarker = null;
+		Marker dataMarker = findMarker(event.getMarker(), ReportLoggerMarkers.DATA_MARKER_NAME);
 
-	public void resetStream() {
-		stream.reset();
+		if (dataMarker != null && dataMarker instanceof ScreenshotMarker) {
+			screenshotMarker = (ScreenshotMarker) dataMarker;
+		}
+
+		return screenshotMarker;
 	}
 }

@@ -122,11 +122,11 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	@Override
 	public void failureReported(final AssertFailureEvent event) {
 		if (useEventListener) {
-			doFailureReported(event);
+			doFailureReported(event, null);
 		}
 	}
 	
-	public void doFailureReported(final AssertFailureEvent event) {
+	public void doFailureReported(final AssertFailureEvent event, ScreenshotMarker screenshotMarker) {
 		if (!addCardOnFailure) {
 			return;
 		}
@@ -148,21 +148,27 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 			sb.append("\n").append("Actual: ").append(event.getActual().toString());
 		}
 					
-		if (screenshotTaker == null || skipFinalScreenshot) {
+		if (!skipFinalScreenshot && (screenshotTaker != null || screenshotMarker != null)) {
+			ScreenshotCard card = new ScreenshotCard();
+			card.setTitle(title);
+			card.setDescription(sb.toString());
+			card.setResult(CardResult.FAILURE);
+
+			if (screenshotMarker != null) {
+				card.setImageName(screenshotMarker.getFile(), screenshotMarker.getImageSize());
+			}
+
+			addCard(card);
+
+			lastScreenShotWasThrowable = true;
+		} else {
 			NotificationCard card = new NotificationCard();
 			card.setTitle(title);
 			card.setDescription(sb.toString());
 			card.setCardImage(StockCardImage.ERROR);
 			card.setResult(CardResult.FAILURE);
-			addCard(card);
-		} else {
-			ScreenshotCard card = new ScreenshotCard();
-			card.setTitle(title);
-			card.setDescription(sb.toString());
-			card.setResult(CardResult.FAILURE);
-			addCard(card);
 
-			lastScreenShotWasThrowable = true;
+			addCard(card);
 		}
 	}
 
