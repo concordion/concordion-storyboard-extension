@@ -22,7 +22,7 @@ public class StoryboardLogListener extends LoggingListener {
 
 	public StoryboardLogListener(StoryboardExtension storyboard) {
 		this.storyboard = storyboard;
-		this.storyboard.getListener().setUsingLogListener();
+		this.storyboard.getListener().setUseLogListener();
 	}
 
 	@Override
@@ -38,7 +38,14 @@ public class StoryboardLogListener extends LoggingListener {
 		if (marker != null) {
 			ThrowableCaughtMarker throwableMarker = (ThrowableCaughtMarker) marker;
 			
-			storyboard.getListener().doThrowableCaught(throwableMarker.getEvent());
+			ScreenshotMarker screenshotMarker = null;
+			Marker dataMarker = findMarker(event.getMarker(), ReportLoggerMarkers.DATA_MARKER_NAME);
+			
+			if (dataMarker != null && dataMarker instanceof ScreenshotMarker) {
+				screenshotMarker = (ScreenshotMarker) dataMarker;
+			}
+
+			storyboard.getListener().doThrowableCaught(throwableMarker.getEvent(), screenshotMarker);
 		}
 	}
 

@@ -18,6 +18,7 @@ import org.concordion.api.listener.ThrowableCaughtEvent;
 import org.concordion.api.listener.ThrowableCaughtListener;
 import org.concordion.ext.ScreenshotTaker;
 import org.concordion.ext.StoryboardExtension.AppendTo;
+import org.concordion.slf4j.markers.ScreenshotMarker;
 
 /**
  * Listens to Concordion events and/or method calls and then adds the required cards to the story board. 
@@ -36,7 +37,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	private AppendTo appendMode = AppendTo.EXAMPLE;
 	private boolean skipFinalScreenshot = false;
 	private boolean acceptCards = true;
-	private boolean usingLogListener = false;
+	private boolean useEventListener = true;
 	
 	// State
 	private ExampleEvent currentExample = null;
@@ -120,7 +121,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	@Override
 	public void failureReported(final AssertFailureEvent event) {
-		if (!usingLogListener) {
+		if (useEventListener) {
 			doFailureReported(event);
 		}
 	}
@@ -167,12 +168,12 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	@Override
 	public void throwableCaught(final ThrowableCaughtEvent event) {
-		if (!usingLogListener) {
-			doThrowableCaught(event);
+		if (useEventListener) {
+			doThrowableCaught(event, null);
 		}
 	}
 	
-	public void doThrowableCaught(final ThrowableCaughtEvent event) {
+	public void doThrowableCaught(final ThrowableCaughtEvent event, ScreenshotMarker screenshotMarker) {
 		if (!addCardOnThrowable) {
 			return;
 		}
@@ -186,21 +187,26 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		failureDetected = true;
 		String title = error.getClass().getSimpleName();
 
-		if (screenshotTaker == null || skipFinalScreenshot) {
+		if (!skipFinalScreenshot && (screenshotTaker != null || screenshotMarker != null)) {
+			ScreenshotCard card = new ScreenshotCard();
+			card.setTitle(title);
+			card.setDescription("See specification for further information");
+			card.setResult(CardResult.FAILURE);
+
+			if (screenshotMarker != null) {
+				card.setImageName(screenshotMarker.getFile(), screenshotMarker.getImageSize());
+			}
+
+			addCard(card);
+
+			lastScreenShotWasThrowable = true;
+		} else {
 			NotificationCard card = new NotificationCard();
 			card.setTitle(title);
 			card.setDescription("See specification for further information");
 			card.setCardImage(StockCardImage.ERROR);
 			card.setResult(CardResult.FAILURE);
 			addCard(card);
-		} else {
-			ScreenshotCard card = new ScreenshotCard();
-			card.setTitle(title);
-			card.setDescription("See specification for further information");
-			card.setResult(CardResult.FAILURE);
-			addCard(card);
-
-			lastScreenShotWasThrowable = true;
 		}
 	}
 
@@ -381,7 +387,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		this.acceptCards  = accept;
 	}
 
-	public void setUsingLogListener() {
-		this.usingLogListener = true;
+	public void setUseLogListener() {
+		this.useEventListener = false;
 	}
 }
