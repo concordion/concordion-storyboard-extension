@@ -18,7 +18,6 @@ import org.concordion.api.listener.ThrowableCaughtEvent;
 import org.concordion.api.listener.ThrowableCaughtListener;
 import org.concordion.ext.ScreenshotTaker;
 import org.concordion.ext.StoryboardExtension.AppendTo;
-import org.concordion.slf4j.markers.ScreenshotMarker;
 
 /**
  * Listens to Concordion events and/or method calls and then adds the required cards to the story board. 
@@ -121,12 +120,10 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	@Override
 	public void failureReported(final AssertFailureEvent event) {
-		if (useEventListener) {
-			doFailureReported(event, null);
+		if (!useEventListener) {
+			return;
 		}
-	}
 	
-	public void doFailureReported(final AssertFailureEvent event, ScreenshotMarker screenshotMarker) {
 		if (!addCardOnFailure) {
 			return;
 		}
@@ -148,15 +145,11 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 			sb.append("\n").append("Actual: ").append(event.getActual().toString());
 		}
 					
-		if (!skipFinalScreenshot && (screenshotTaker != null || screenshotMarker != null)) {
+		if (!skipFinalScreenshot && screenshotTaker != null) {
 			ScreenshotCard card = new ScreenshotCard();
 			card.setTitle(title);
 			card.setDescription(sb.toString());
 			card.setResult(CardResult.FAILURE);
-
-			if (screenshotMarker != null) {
-				card.setImageName(screenshotMarker.getFile(), screenshotMarker.getImageSize());
-			}
 
 			addCard(card);
 
@@ -174,12 +167,10 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	@Override
 	public void throwableCaught(final ThrowableCaughtEvent event) {
-		if (useEventListener) {
-			doThrowableCaught(event, null);
+		if (!useEventListener) {
+			return;
 		}
-	}
-	
-	public void doThrowableCaught(final ThrowableCaughtEvent event, ScreenshotMarker screenshotMarker) {
+
 		if (!addCardOnThrowable) {
 			return;
 		}
@@ -193,15 +184,11 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		failureDetected = true;
 		String title = error.getClass().getSimpleName();
 
-		if (!skipFinalScreenshot && (screenshotTaker != null || screenshotMarker != null)) {
+		if (!skipFinalScreenshot && screenshotTaker != null) {
 			ScreenshotCard card = new ScreenshotCard();
 			card.setTitle(title);
 			card.setDescription("See specification for further information");
 			card.setResult(CardResult.FAILURE);
-
-			if (screenshotMarker != null) {
-				card.setImageName(screenshotMarker.getFile(), screenshotMarker.getImageSize());
-			}
 
 			addCard(card);
 
