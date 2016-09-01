@@ -13,25 +13,25 @@ import org.junit.Before;
 import org.junit.runner.RunWith;
 
 import test.concordion.ProcessingResult;
-import test.concordion.ext.storyboard.DummyStoryboardFactory;
+import test.concordion.ext.storyboard.ExampleFixture;
 
 @RunWith(ConcordionRunner.class)
 public class StoryCardNotification extends AcceptanceTest {
     
     public static final String SPEC_NAME = "/" + StoryCardNotification.class.getName().replaceAll("\\.","/");
     private int example = 0;
+    private ExampleFixture fixture;
     
     @Extension
-    public StoryboardExtension storyboard = new StoryboardExtension().setAddCardOnFailure(false);
+    public StoryboardExtension storyboard = new StoryboardExtension();
     
-    @Before 
-    public void installExtension() {
-        System.setProperty("concordion.extensions", DummyStoryboardFactory.class.getName());
-        DummyStoryboardFactory.prepareWithoutScreenShot();
+    @Before
+    public void before() {
+    	fixture = new ExampleFixture();
     }
     
-    public String render(String fragment, String acronym) throws Exception {
-    	ProcessingResult result = getTestRig().processFragment(fragment, SPEC_NAME + ++example);    	
+    public String render(String fragment) throws Exception {
+    	ProcessingResult result = getTestRig().withFixture(fixture).processFragment(fragment, SPEC_NAME + ++example);    	
     	
     	NotificationCard card = new NotificationCard();    	
     	card.setTitle(storyboard.getCurrentExampleTitle());
@@ -47,23 +47,9 @@ public class StoryCardNotification extends AcceptanceTest {
     	
         return result.getElementXML("storyboard");
     }
-    
-    public String renderWithFailureOff(String fragment, String acronym) throws Exception {
-    	DummyStoryboardFactory.setAddCardOnFailure(false);
-    	
-    	String result = render(fragment, acronym);
-    	
-    	DummyStoryboardFactory.setAddCardOnFailure(true);
-    	
-    	return result;
-    }
-    
-    public void addNotification(String data) {
-    	DummyStoryboardFactory.getStoryboard().addNotification("Notification Example", "Example 1", data, "html", StockCardImage.XML_RESPONSE, CardResult.SUCCESS);
-    }
-        
+  
     public void allowRepeatedFailures() {
-    	DummyStoryboardFactory.setSupressRepeatingFailures(false);
+    	fixture.getStoryboard().setSupressRepeatingFailures(false);
     }
     
     public int failureCardCount(String fragment) {

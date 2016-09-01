@@ -5,40 +5,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.concordion.integration.junit4.ConcordionRunner;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 
-import test.concordion.ext.storyboard.DummyStoryboardFactory;
+import test.concordion.ext.storyboard.ExampleFixture;
 
 @RunWith(ConcordionRunner.class)
 public class StoryCardFileNaming extends AcceptanceTest {
     
     public static final String SPEC_NAME = "/" + StoryCardFileNaming.class.getName().replace(".java", ".html").replaceAll("\\.","/");
     public static final String TEXT_BEFORE_IMAGE_NAME = "<a href=\"";
-    public String acronym;
-    
-    @Before
-    public void installExtension() {
-        System.setProperty("concordion.extensions", DummyStoryboardFactory.class.getName());
-        DummyStoryboardFactory.prepareWithScreenShot();
-    }
-    
-    @After
-    public void clearConcordionExtensionsSystemProperty() {
-        System.clearProperty("concordion.extensions");
-    }
-    
-    public String render(String fragment, String acronym) throws Exception {
-        this.acronym = acronym;
+    private ExampleFixture fixture;
         
+    public String render(String fragment) throws Exception {
+    	fixture = new ExampleFixture();
+    	
         return getTestRig()
+        		.withFixture(fixture)
         		.processFragment(fragment, SPEC_NAME)	            
         		.getElementXML("storyboard");
     }
 
     public String renderUsingFixtureNamed(String fragment, String fixtureName) throws Exception {
+    	fixture = new ExampleFixture();
+    	
     	return getTestRig()
+    			.withFixture(fixture)
 	            .processFragment(fragment, fixtureName)
 	            .getElementXML("storyboard");
     }

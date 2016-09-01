@@ -5,50 +5,59 @@ import java.io.FilenameFilter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.concordion.api.ConcordionScoped;
+import org.concordion.api.Scope;
+import org.concordion.api.ScopedObjectHolder;
 import org.concordion.api.extension.Extension;
 import org.concordion.ext.StoryboardExtension;
 import org.concordion.ext.storyboard.CardResult;
 import org.concordion.ext.storyboard.NotificationCard;
-import org.concordion.ext.storyboard.ScreenshotCard;
 import org.concordion.ext.storyboard.StockCardImage;
 import org.concordion.integration.junit4.ConcordionRunner;
-import org.junit.Before;
 import org.junit.runner.RunWith;
 
 import test.concordion.ProcessingResult;
-import test.concordion.TestRig;
-import test.concordion.ext.storyboard.DummyStoryboardFactory;
+import test.concordion.ext.storyboard.ExampleFixture;
 
 @RunWith(ConcordionRunner.class)
 public class RemoveUnwantedScreenshots extends AcceptanceTest {
     
     public static final String SPEC_NAME = "/" + RemoveUnwantedScreenshots.class.getName().replaceAll("\\.","/");
-    private int example = 0;
-    TestRig rig = null;
     
-    @Extension
-    public StoryboardExtension storyboard = new StoryboardExtension().setAddCardOnFailure(false);
+    @ConcordionScoped(Scope.SPECIFICATION)
+    private ScopedObjectHolder<Counter> example = new ScopedObjectHolder<Counter>() {
+        @Override
+        protected Counter create() {
+            return new Counter();
+        }
+    };
     
-    @Before 
-    public void installExtension() {
-    	File[] files = getImages(false);
-
-		for (File file : files) {
-			System.gc();
-		    file.delete();
-		}
-		
-        System.setProperty("concordion.extensions", DummyStoryboardFactory.class.getName());
-        DummyStoryboardFactory.prepareWithScreenShot();
-        DummyStoryboardFactory.setAddCardOnFailure(false);
-        DummyStoryboardFactory.setTakeScreenshotOnTestCompletion(false);
+    private class Counter {
+    	int count;
+    	
+    	public int value() {
+    		return count;
+    	}
+    	
+    	public void increment() {
+    		count++;
+    	}
     }
     
+    private ExampleFixture fixture;
+    
+    @Extension
+    public StoryboardExtension storyboard = new StoryboardExtension();
+
     public String render(String fragment) throws Exception {
-    	example++;
-    	
-    	rig = getTestRig();
-    	ProcessingResult result = rig.processFragment(fragment, SPEC_NAME + example);    	
+    	example.get().increment();
+
+    	fixture = new ExampleFixture();
+    	fixture.getStoryboard().setTakeScreenshotOnExampleCompletion(false);
+    			
+    	ProcessingResult result = getTestRig()
+    			.withFixture(fixture)
+    			.processFragment(fragment, SPEC_NAME + example.get().value());    	
 
     	NotificationCard card = new NotificationCard();    	
     	card.setTitle(storyboard.getCurrentExampleTitle());	    
@@ -64,48 +73,7 @@ public class RemoveUnwantedScreenshots extends AcceptanceTest {
     	
         return result.getElementXML("storyboard");
     }
-    
-    public void addScreenshots() {
-    	StoryboardExtension dummyboard = DummyStoryboardFactory.getStoryboard();
-    	
-    	dummyboard.addScreenshot("Screen 1", "Screenshot 1");
-    	dummyboard.addScreenshot("Screen 2", "Screenshot 2");
-    	dummyboard.markPriorScreenshotsForRemoval();
-    	dummyboard.addScreenshot("Screen 3", "Screenshot 3");
-    }
- 
-    public void addFailedScreenshots() {
-    	StoryboardExtension dummyboard = DummyStoryboardFactory.getStoryboard();
-    	
-    	dummyboard.addScreenshot("Screen 1", "Screenshot 1");
-    	dummyboard.addScreenshot("Screen 2", "Screenshot 2");
-    	dummyboard.markPriorScreenshotsForRemoval();
-    	
-    	throw new RuntimeException("Random Error");
-    }
-    
-    public void addScreenshotsInSectionBreak() {
-    	StoryboardExtension dummyboard = DummyStoryboardFactory.getStoryboard();
-    	    	
-    	dummyboard.addSectionContainer("Example 1");
-    	dummyboard.addScreenshot("Screen 1", "Screenshot 1");
-    	dummyboard.addScreenshot("Screen 2", "Screenshot 2");
-    	dummyboard.markPriorScreenshotsForRemoval();
-    	dummyboard.addScreenshot("Screen 3", "Screenshot 3");
-    	dummyboard.closeContainer();
-    	
-    	dummyboard.addSectionContainer("Example 2");
-    	dummyboard.addScreenshot("Screen 1", "Screenshot 1");
-    	dummyboard.addScreenshot("Screen 2", "Screenshot 2");
-    	dummyboard.markPriorScreenshotsForRemoval();
-    	ScreenshotCard card = new ScreenshotCard();
-    	card.setTitle("Screen 3");
-    	card.setDescription("Screenshot 3");
-    	card.setResult(CardResult.FAILURE);
-    	dummyboard.addCard(card);
-    	dummyboard.closeContainer();
-    } 
-    
+
     public int getCountScreenShots(String fragment) {
     	String search = "<a href=\"RemoveUnwantedScreenshots";
     	int pos = 0;
@@ -126,7 +94,7 @@ public class RemoveUnwantedScreenshots extends AcceptanceTest {
     private File[] getImages(boolean forSpec) {
     	Path path = Paths.get(this.getBaseOutputDir(), this.getClass().getPackage().getName().replace(".", "/"));
 		
-    	final String fileName = this.getClass().getSimpleName() + (forSpec ? example : "");
+    	final String fileName = this.getClass().getSimpleName() + (forSpec ? example.get().value() : "");
     	File dir = path.toFile();
 		
 		File [] files = dir.listFiles(new FilenameFilter() {

@@ -18,33 +18,31 @@
   		<li>setScreenshotTaker</li>
   		<li>setTakeScreenshotOnExampleCompletion</li>
   		<li>setAcceptCards</li>
-  		<li>setAddCardOnThrowable</li>
-  		<li>setAddCardOnFailure</li>
   	</ul>	
   </ul>
 
-  <div concordion:example="example1">
+  <div concordion:example="Add-Screenshot">
     <h3>Example 1: Add Screenshot</h3>
     <pre concordion:set="#snippet">&lt;p concordion:execute="addScreenshot()"&gt;false&lt;/p&gt;</pre>
 
-	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
+	<p concordion:execute="#fragment=render(#snippet)">
 	  When this snippet is run with this fixture, <span concordion:assertTrue="screenshotCardAdded(#fragment)">this results in a Screenshot Card being added to the Storyboard</span>.
 	</p>
   </div>
   
-  <div concordion:example="example2">	
+  <div concordion:example="Capture-Failure">	
 	<h3>Example 2: Capture Failure</h3>
     <pre concordion:set="#snippet">
     	&lt;p concordion:assertEquals="true"&gt;false&lt;/p&gt;<br/>
     	&lt;p concordion:assertEquals="true"&gt;false&lt;/p&gt;
  	</pre>
 
-	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
+	<p concordion:execute="#fragment=render(#snippet)">
 	  When this snippet is run with this fixture, this results in <span concordion:assertEquals="failureCardCount(#fragment)">1</span> Screenshot Card being added to the Storyboard <span concordion:assertTrue="failureCardAdded(#fragment)">notifying that a test failed on the specification</span>.
 	</p>
   </div>
   
-  <div concordion:example="example3">	
+  <div concordion:example="Show-Mulitple-Failures">	
 	<h3>Example 2: Show Mulitple Failures</h3>
     <pre concordion:set="#snippet">
     	&lt;p concordion:assertEquals="true"&gt;false&lt;/p&gt;<br/>
@@ -52,27 +50,18 @@
  	</pre>
 
 	<p>
-	  When this snippet is run with this fixture with <span concordion:execute="allowRepeatedFailures()">repeating failures allowed</span>, this <span concordion:execute="#fragment=render(#snippet, #actualValue)">results</span> in <span concordion:assertEquals="failureCardCount(#fragment)">2</span> Screenshot Cards being added to the Storyboard <span concordion:assertTrue="failureCardAdded(#fragment)">notifying that a test failed on the specification</span>.
+	  When this snippet is run with this fixture with <span concordion:execute="allowRepeatedFailures()">repeating failures allowed</span>, this <span concordion:execute="#fragment=render(#snippet)">results</span> in <span concordion:assertEquals="failureCardCount(#fragment)">2</span> Screenshot Cards being added to the Storyboard <span concordion:assertTrue="failureCardAdded(#fragment)">notifying that a test failed on the specification</span>.
 	</p>
   </div>
   
-  <div concordion:example="example4">	
+  <div concordion:example="Capture-Exception">	
 	<h3>Example 3: Capture Exception</h3>
 	<pre concordion:set="#snippet">&lt;p concordion:assertTrue="#TEXT"&gt;false&lt;/p&gt;</pre>
 
-	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
+	<p concordion:execute="#fragment=render(#snippet)">
 	  When this snippet is run with this fixture, this results in a Screenshot Card being added to the Storyboard <span concordion:assertTrue="exceptionCardAdded(#fragment)">notifying that an exception occurred in the fixture</span>.
 	</p>
   </div>
-  
-  <div concordion:example="example5">	
-	<h3>Example 4: Ignore Failure</h3>
-    <pre concordion:set="#snippet">&lt;p concordion:assertEquals="true"&gt;false&lt;/p&gt;</pre>
-
-	<p concordion:execute="#fragment=renderWithFailureOff(#snippet, #actualValue)">
-	  After calling <code>setAddCardOnFailure(false)</code>, when this snippet is run with this fixture, this results in <span concordion:assertTrue="noCardAdded(#fragment)">NO cards being added to the Storyboard</span>.
-	</p>
-  </div>  
 
   <h2>Further Details</h2>
   <ul>

@@ -13,30 +13,29 @@ import org.junit.Before;
 import org.junit.runner.RunWith;
 
 import test.concordion.ProcessingResult;
-import test.concordion.ext.storyboard.DummyStoryboardFactory;
+import test.concordion.ext.storyboard.ExampleFixture;
 
 @RunWith(ConcordionRunner.class)
 public class StoryCardScreenshot extends AcceptanceTest {
     
     public static final String SPEC_NAME = "/" + StoryCardScreenshot.class.getName().replaceAll("\\.","/");
     private int example = 0;
+    private ExampleFixture fixture;
     
     @Extension
-    public StoryboardExtension storyboard = new StoryboardExtension().setAddCardOnFailure(false);
+    public StoryboardExtension storyboard = new StoryboardExtension();
     
-//    public StoryCardScreenshot() {
-//    	storyboard.setTakeScreenshotOnCompletion(false);
-//    	storyboard.setScreenshotTaker(new DummyScreenshotTaker());
-//    }
-//    
-    @Before 
-    public void installExtension() {
-        System.setProperty("concordion.extensions", DummyStoryboardFactory.class.getName());
-        DummyStoryboardFactory.prepareWithScreenShot();
+    @Before
+    public void before() {
+    	fixture = new ExampleFixture();
     }
     
-    public String render(String fragment, String acronym) throws Exception {    	
-    	ProcessingResult result = getTestRig().processFragment(fragment, SPEC_NAME + ++example);    	
+    public String render(String fragment) throws Exception {
+    	example++;
+    	
+    	ProcessingResult result = getTestRig()
+    			.withFixture(fixture)
+    			.processFragment(fragment, SPEC_NAME + "Example" + example);    	
     	
     	NotificationCard card = new NotificationCard();    	
     	card.setTitle(storyboard.getCurrentExampleTitle());
@@ -52,23 +51,9 @@ public class StoryCardScreenshot extends AcceptanceTest {
     	
         return result.getElementXML("storyboard");
     }
-    
-    public String renderWithFailureOff(String fragment, String acronym) throws Exception {
-    	DummyStoryboardFactory.setAddCardOnFailure(false);
-    	
-    	String result = render(fragment, acronym);
-    	
-    	DummyStoryboardFactory.setAddCardOnFailure(true);
-    	
-    	return result;
-    }
-    
+
     public void allowRepeatedFailures() {
-    	DummyStoryboardFactory.setSupressRepeatingFailures(false);
-    }
-    
-    public void addScreenshot() {
-    	DummyStoryboardFactory.getStoryboard().addScreenshot("Screenshot Example", "This is a screenshot");
+    	fixture.getStoryboard().setSupressRepeatingFailures(false);
     }
         
     public boolean screenshotCardAdded(String fragment) {

@@ -26,7 +26,7 @@ public final class DummyScreenshotTaker implements ScreenshotTaker {
     private BufferedImage getImage() {
     	
         try {
-            InputStream imageStream = DummyStoryboardFactory.class.getClassLoader().getResourceAsStream(IMAGE_PATH.replace("#", String.valueOf(index)));
+            InputStream imageStream = DummyScreenshotTaker.class.getClassLoader().getResourceAsStream(IMAGE_PATH.replace("#", String.valueOf(index)));
             if (imageStream == null) {
                 throw new RuntimeException(String.format("Unable to find IMAGE '%s' on classpath", IMAGE_PATH));
             }

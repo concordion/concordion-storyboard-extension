@@ -12,39 +12,39 @@ import org.junit.Before;
 import org.junit.runner.RunWith;
 
 import test.concordion.ProcessingResult;
-import test.concordion.ext.storyboard.DummyStoryboardFactory;
+import test.concordion.ext.storyboard.ExampleFixture;
 
 @RunWith(ConcordionRunner.class)
 public class StoryGroupSectionContainer extends AcceptanceTest {
     
     public static final String SPEC_NAME = "/" + StoryGroupSectionContainer.class.getName().replaceAll("\\.","/");
     private int example = 0;
+    private ExampleFixture fixture;
     
     @Extension
-    public StoryboardExtension storyboard = new StoryboardExtension().setAddCardOnThrowable(false).setAddCardOnFailure(false).setAppendMode(AppendTo.STORYBOARD);
+    public StoryboardExtension storyboard = new StoryboardExtension().setAppendMode(AppendTo.STORYBOARD);
     
-    @Before 
-    public void installExtension() {
-        System.setProperty("concordion.extensions", DummyStoryboardFactory.class.getName());
-        DummyStoryboardFactory.prepareWithoutScreenShot();
+    @Before
+    public void before() {
+    	fixture = new ExampleFixture();
     }
     
     public String renderAutoAddSection(String fragment) throws Exception {
-    	DummyStoryboardFactory.setAppendMode(AppendTo.NEW_STORYBOARD_SECTION_PER_EXAMPLE);
+    	fixture.getStoryboard().setAppendMode(AppendTo.NEW_STORYBOARD_SECTION_PER_EXAMPLE);
     	ProcessingResult result = renderTest(fragment);
     	
     	return result.getElementXML("storyboard");
     }
     
     public String renderAddToExample(String fragment) throws Exception {
-    	DummyStoryboardFactory.setAppendMode(AppendTo.EXAMPLE);
+    	fixture.getStoryboard().setAppendMode(AppendTo.EXAMPLE);
     	ProcessingResult result = renderTest(fragment);
     	
     	return result.getElementXML("testinput");
     }
     
     public String render(String fragment) throws Exception {
-    	DummyStoryboardFactory.setAppendMode(AppendTo.STORYBOARD);
+    	fixture.getStoryboard().setAppendMode(AppendTo.STORYBOARD);
     	
     	return renderTest(fragment).getElementXML("storyboard");
     }
@@ -52,7 +52,7 @@ public class StoryGroupSectionContainer extends AcceptanceTest {
     private ProcessingResult renderTest(String fragment) throws Exception {
     	example++;
     	
-    	ProcessingResult result = getTestRig().processFragment(fragment, SPEC_NAME + example);    	
+    	ProcessingResult result = getTestRig().withFixture(fixture).processFragment(fragment, SPEC_NAME + example);    	
 
     	NotificationCard card = new NotificationCard();    	
     	card.setTitle(storyboard.getCurrentExampleTitle());
@@ -68,31 +68,6 @@ public class StoryGroupSectionContainer extends AcceptanceTest {
     	
         return result;
     }
-    
-    public boolean addCard(String title) {    	
-    	DummyStoryboardFactory.getStoryboard().addNotification(title, "Success", StockCardImage.TEXT, CardResult.SUCCESS);
-    	return true;
-    }
-    
-     public boolean addFailureCard(String title) {
-    	DummyStoryboardFactory.getStoryboard().addNotification(title, "Failure", StockCardImage.TEXT, CardResult.FAILURE);
-    	return true;
-    }
-    
-    public void addSectionContainer(String title) {    	
-    	DummyStoryboardFactory.getStoryboard().addSectionContainer(title);
-    }
-    
-    public void addSectionContainerToContainer(String title) {    
-    	SectionContainer container = new SectionContainer(title).setAutoClose(false);
-    	    	
-    	DummyStoryboardFactory.getStoryboard().addContainer(container);
-    }
-    
-    public void closeContainer() {
-    	DummyStoryboardFactory.getStoryboard().closeContainer();
-    }
-    
         
     public boolean sectionAddedCollapsed(String fragment) {
     	return fragment.contains("class=\"toggle-box scsuccess\">") && !fragment.contains("checked");    	

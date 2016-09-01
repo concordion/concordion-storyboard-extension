@@ -109,34 +109,9 @@ public class StoryboardExtension implements ConcordionExtension {
 		return this;
 	}
 
-		
 	/**
-	 * Sets whether a card will be added to the storyboard when an uncaught exception occurs in the test. Defaults to <b><code>true</code></b>. 
-	 * If screenshotTaker is set then it will take a {@link ScreenshotCard}, else it will add a {@link NotificationCard}
-	 * 
-	 * @param value <code>true</code> to add a card when an uncaught exception occurs in the test, <code>false</code> to not add a card.
-	 * @return A self reference
-	 */
-	public StoryboardExtension setAddCardOnThrowable(final boolean value) {
-		listener.setAddCardOnThrowable(value);
-		return this;
-	}
-
-	/**
-	 * Sets whether a card will be added to the storyboard when a failure occurs in the test. Defaults to <b><code>true</code></b>. 
-	 * If screenshotTaker is set then it will take a {@link ScreenshotCard}, else it will add a {@link NotificationCard}
-	 * 
-	 * @param value <code>true</code> to add a card when a failure occurs in the test, <code>false</code> to not add a card.
-	 * @return A self reference
-	 */
-	public StoryboardExtension setAddCardOnFailure(final boolean value) {
-		listener.setAddCardOnFailure(value);
-		return this;
-	}
-	
-	/**
-	 * If {@link #setAddCardOnFailure(boolean)} is true then will optionally ignore second or subsequent failure.  If using the Example command then
-	 * each example will be treated separately. 
+	 * To limit the number of items added to the storyboard, the default behaviour is to ignore second or subsequent failure.  If using the Example 
+	 * command then up to one failure card will be added per example. 
 	 * 
 	 * @param value <code>true</code> to not add card on second, or subsequent, failure (default behaviour), <code>false</code> to add a card for every failure.
 	 * @return A self reference

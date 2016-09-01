@@ -12,16 +12,24 @@ public class StoryboardMarkerFactory {
 
 	private StoryboardMarkerFactory() {}
 
+	public static StoryboardMarker addCard() {
+		return new StoryboardMarker("", "", StockCardImage.TEXT, CardResult.SUCCESS);
+	}
+
 	public static StoryboardMarker addCard(String title) {
-		return new StoryboardMarker(title, StockCardImage.TEXT, CardResult.SUCCESS);
+		return new StoryboardMarker(title, "", StockCardImage.TEXT, CardResult.SUCCESS);
 	}
 
 	public static StoryboardMarker addCard(String title, CardImage cardImage) {
-		return new StoryboardMarker(title, cardImage, CardResult.SUCCESS);
+		return new StoryboardMarker(title, "", cardImage, CardResult.SUCCESS);
 	}
 
 	public static StoryboardMarker addCard(String title, CardImage cardImage, CardResult cardResult) {
-		return new StoryboardMarker(title, cardImage, cardResult);
+		return new StoryboardMarker(title, "", cardImage, cardResult);
+	}
+	
+	public static StoryboardMarker addCard(String title, String description, CardImage cardImage, CardResult cardResult) {
+		return new StoryboardMarker(title, description, cardImage, cardResult);
 	}
 
 }

@@ -17,39 +17,39 @@ import org.junit.runner.RunWith;
 
 import test.concordion.ProcessingResult;
 import test.concordion.TestRig;
-import test.concordion.ext.storyboard.DummyStoryboardFactory;
 import test.concordion.ext.storyboard.DummyTest;
+import test.concordion.ext.storyboard.ExampleFixture;
 
 @RunWith(ConcordionRunner.class)
 public class LoggingExtensionIntegration extends AcceptanceTest {
     public static final String SPEC_NAME = "/" + LoggingExtensionIntegration.class.getName().replaceAll("\\.","/");
     private int example = 0;
+    private ExampleFixture fixture;
     
     @Extension
-    public StoryboardExtension storyboard = new StoryboardExtension().setAddCardOnThrowable(false).setAddCardOnFailure(false).setAppendMode(AppendTo.STORYBOARD);
+    public StoryboardExtension storyboard = new StoryboardExtension();
     
-    
-    @Before 
-    public void removeExtension() {
-        System.clearProperty("concordion.extensions");
+    @Before
+    public void before() {
+    	fixture = new ExampleFixture();
     }
     
     public String renderAutoAddSection(String fragment) throws Exception {
-    	DummyStoryboardFactory.setAppendMode(AppendTo.NEW_STORYBOARD_SECTION_PER_EXAMPLE);
+    	fixture.getStoryboard().setAppendMode(AppendTo.NEW_STORYBOARD_SECTION_PER_EXAMPLE);
     	ProcessingResult result = renderTest(fragment);
     	
     	return result.getElementXML("storyboard");
     }
     
     public String renderAddToExample(String fragment) throws Exception {
-    	DummyStoryboardFactory.setAppendMode(AppendTo.EXAMPLE);
+    	fixture.getStoryboard().setAppendMode(AppendTo.EXAMPLE);
     	ProcessingResult result = renderTest(fragment);
     	
     	return result.getElementXML("testinput");
     }
     
     public String render(String fragment) throws Exception {
-    	DummyStoryboardFactory.setAppendMode(AppendTo.STORYBOARD);
+    	fixture.getStoryboard().setAppendMode(AppendTo.STORYBOARD);
     	
     	return renderTest(fragment).getElementXML("storyboard");
     }
