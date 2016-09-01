@@ -19,7 +19,7 @@ public class StoryboardLogListener extends LoggingListener {
 
 	public StoryboardLogListener(StoryboardExtension storyboard) {
 		this.storyboard = storyboard;
-		this.storyboard.getListener().setUseLogListener();
+		this.storyboard.getListener().setUseReportLogger();
 	}
 
 	@Override

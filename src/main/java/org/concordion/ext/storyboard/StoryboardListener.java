@@ -40,7 +40,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 	private AppendTo appendMode = AppendTo.EXAMPLE;
 	private boolean skipFinalScreenshot = false;
 	private boolean acceptCards = true;
-	private boolean useEventListener = true;
+	private boolean useReportLogger = false;
 	
 	// State
 	private ExampleEvent currentExample = null;
@@ -148,7 +148,18 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 			sb.append("\n").append("Actual: ").append(event.getActual().toString());
 		}
 
-		if (useEventListener) {
+		if (useReportLogger) {
+			FluentLogger logger = getLogger().with()
+					.message("Test Failed")
+					.data(sb.toString())
+					.marker(StoryboardMarkerFactory.addCard("Test Failed", sb.toString(), StockCardImage.ERROR, CardResult.FAILURE));
+
+			if (!skipFinalScreenshot && FluentLogger.hasScreenshotTaker()) {
+				logger.screenshot();
+			}
+
+			logger.error();
+		} else {
 			if (!skipFinalScreenshot && screenshotTaker != null) {
 				ScreenshotCard card = new ScreenshotCard();
 				card.setTitle(title);
@@ -167,17 +178,6 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 				addCard(card);
 			}
-		} else {
-			FluentLogger logger = getLogger().with()
-					.message("Test Failed")
-					.data(sb.toString())
-					.marker(StoryboardMarkerFactory.addCard("Test Failed", sb.toString(), StockCardImage.ERROR, CardResult.FAILURE));
-
-			if (!skipFinalScreenshot && FluentLogger.hasScreenshotTaker()) {
-				logger.screenshot();
-			}
-
-			logger.error();
 		}
 		
 		failureDetected = true;
@@ -193,7 +193,18 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 		String title = cause.getClass().getSimpleName();
 		
-		if (useEventListener) {
+		if (useReportLogger) {
+			FluentLogger logger = getLogger().with()
+					.message(String.format("Exception thrown while evaluating expression '%s':\r\n\t%s", event.getExpression(), cause.getMessage()))
+					.marker(StoryboardMarkerFactory.addCard(title, "See specification for further information", StockCardImage.ERROR, CardResult.FAILURE));
+
+			if (!skipFinalScreenshot && FluentLogger.hasScreenshotTaker()) {
+				logger.screenshot();
+				lastScreenShotWasThrowable = true;
+			}
+
+			logger.error(cause);
+		} else {
 			if (!skipFinalScreenshot && screenshotTaker != null) {
 				ScreenshotCard card = new ScreenshotCard();
 				card.setTitle(title);
@@ -211,17 +222,6 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 				card.setResult(CardResult.FAILURE);
 				addCard(card);
 			}
-		} else {
-			FluentLogger logger = getLogger().with()
-					.message(String.format("Exception thrown while evaluating expression '%s':\r\n\t%s", event.getExpression(), cause.getMessage()))
-					.marker(StoryboardMarkerFactory.addCard(title, "See specification for further information", StockCardImage.ERROR, CardResult.FAILURE));
-
-			if (!skipFinalScreenshot && FluentLogger.hasScreenshotTaker()) {
-				logger.screenshot();
-				lastScreenShotWasThrowable = true;
-			}
-			
-			logger.error(cause);
 		}
 		
 		failureDetected = true;
@@ -265,9 +265,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	@Override
 	public void afterExample(ExampleEvent event) {
-		if (useEventListener) {
-			takeFinalScreenshotForExample("Example Completed");
-		}
+		takeFinalScreenshotForExample("Example Completed");
 		
 		switch (appendMode) {
 		case EXAMPLE:
@@ -307,21 +305,21 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		if (skipFinalScreenshot) return;
 		if (lastScreenShotWasThrowable) return;
 				
-		if (useEventListener) {
+		if (useReportLogger) {
+			if (FluentLogger.hasScreenshotTaker()) {
+				getLogger().with()
+						.message(title)
+						.screenshot()
+						.marker(StoryboardMarkerFactory.addCard())
+						.debug();
+			}
+		} else {
 			if (screenshotTaker != null) {
 				ScreenshotCard card = new ScreenshotCard();
 				card.setTitle(title);
 				card.setDescription("");
 				card.setResult(CardResult.SUCCESS);
 				addCard(card);
-			}
-		} else {
-			if (FluentLogger.hasScreenshotTaker()) {
-				getLogger().with()
-					.message(title)
-					.screenshot()
-					.marker(StoryboardMarkerFactory.addCard())
-					.debug();
 			}
 		}
 	}
@@ -409,7 +407,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		this.acceptCards  = accept;
 	}
 
-	public void setUseLogListener() {
-		this.useEventListener = false;
+	public void setUseReportLogger() {
+		this.useReportLogger = true;
 	}
 }
