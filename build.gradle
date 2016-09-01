@@ -3,6 +3,14 @@ apply from: 'https://raw.githubusercontent.com/concordion/concordion-extension-b
 
 description = 'An extension to Concordion that capture screenshots, etc in storyboard format while the specification is being executed so that we can see exactly what the test has done against the system under test'
 
+//TODO remove me
+repositories {
+	//mavenLocal()
+	maven {
+		url = 'http://oss.jfrog.org/oss-snapshot-local'
+	}
+}
+
 ext {
 	developers = {
 		developer {
