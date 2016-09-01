@@ -7,13 +7,14 @@ import org.concordion.api.Resource;
 import org.concordion.api.extension.Extension;
 import org.concordion.ext.StoryboardExtension;
 import org.concordion.ext.StoryboardExtension.AppendTo;
-import org.concordion.ext.loggingFormatter.LogbackAdaptor;
 import org.concordion.ext.storyboard.CardResult;
 import org.concordion.ext.storyboard.NotificationCard;
 import org.concordion.ext.storyboard.StockCardImage;
 import org.concordion.integration.junit4.ConcordionRunner;
+import org.concordion.logback.LogbackAdaptor;
 import org.junit.Before;
 import org.junit.runner.RunWith;
+
 import test.concordion.ProcessingResult;
 import test.concordion.TestRig;
 import test.concordion.ext.storyboard.DummyStoryboardFactory;

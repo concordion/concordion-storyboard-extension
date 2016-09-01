@@ -5,9 +5,9 @@ import org.concordion.ext.LoggingFormatterExtension;
 import org.concordion.ext.StoryboardExtension;
 import org.concordion.ext.StoryboardLogListener;
 import org.concordion.ext.StoryboardMarkerFactory;
-import org.slf4j.ext.MediaType;
-import org.slf4j.ext.ReportLogger;
-import org.slf4j.ext.ReportLoggerFactory;
+import org.concordion.slf4j.ext.MediaType;
+import org.concordion.slf4j.ext.ReportLogger;
+import org.concordion.slf4j.ext.ReportLoggerFactory;
 
 public class DummyTest {
 	private static final ReportLogger LOGGER = ReportLoggerFactory.getReportLogger(DummyTest.class);

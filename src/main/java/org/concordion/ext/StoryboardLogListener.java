@@ -111,12 +111,7 @@ public class StoryboardLogListener extends LoggingListener {
 	}
 
 	@Override
-	public Marker getThrowableCaughtMarker() {
-		return StoryboardMarkerFactory.STORYBOARD_MAKRER;
-	}
-
-	@Override
-	public Marker getFailureReportedMarker() {
+	public Marker getConcordionEventMarker() {
 		return StoryboardMarkerFactory.STORYBOARD_MAKRER;
 	}
 

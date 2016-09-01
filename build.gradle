@@ -1,14 +1,6 @@
 apply from: 'https://raw.githubusercontent.com/concordion/concordion-extension-build/master/extension-build.gradle'
 //apply from: 'extension-build.gradle'
 
-//TODO remove me
-repositories {
-	//mavenLocal()
-	maven {
-		url = 'http://oss.jfrog.org/oss-snapshot-local'
-	}
-}
-
 description = 'An extension to Concordion that capture screenshots, etc in storyboard format while the specification is being executed so that we can see exactly what the test has done against the system under test'
 
 ext {
@@ -38,18 +30,10 @@ githubPages {
 }
 
 dependencies {
-	compile 'org.concordion:concordion-logback-extension:2.0.0-SNAPSHOT:integration'
+	compile 'org.concordion:concordion-logback-extension:2.0.0-SNAPSHOT:reportlogger'
 	testCompile 'org.concordion:concordion-logback-extension:2.0.0-SNAPSHOT'
 	testCompile 'org.concordion:concordion-embed-extension:1.1.2'
 }
-
-/*
-sourceSets {
-	test {
-		resources { srcDirs += 'src/test/java' }
-	}
-}
-*/
 
 test.dependsOn cleanTest
 test {

@@ -18,6 +18,8 @@ import org.concordion.api.listener.ThrowableCaughtEvent;
 import org.concordion.api.listener.ThrowableCaughtListener;
 import org.concordion.ext.ScreenshotTaker;
 import org.concordion.ext.StoryboardExtension.AppendTo;
+import org.concordion.slf4j.ext.ReportLogger;
+import org.concordion.slf4j.ext.ReportLoggerFactory;
 
 /**
  * Listens to Concordion events and/or method calls and then adds the required cards to the story board. 
@@ -241,7 +243,9 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 	@Override
 	public void afterExample(ExampleEvent event) {
-		takeFinalScreenshotForExample("Example Completed");
+		if (useEventListener) {
+			takeFinalScreenshotForExample("Example Completed");
+		}
 		
 		switch (appendMode) {
 		case EXAMPLE:
@@ -282,6 +286,8 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		if (screenshotTaker == null) return;
 		if (lastScreenShotWasThrowable) return;
 				
+		ReportLogger reportLogger = ReportLoggerFactory.getReportLogger(StoryboardListener.class);
+
 		ScreenshotCard card = new ScreenshotCard();
 		card.setTitle(title);
 		card.setDescription("");
