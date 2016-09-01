@@ -192,16 +192,22 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		String title = cause.getClass().getSimpleName();
 		
 		if (useReportLogger) {
+			boolean setFlag = false;
+
 			FluentLogger logger = getLogger().with()
 					.message(String.format("Exception thrown while evaluating expression '%s':\r\n\t%s", event.getExpression(), cause.getMessage()))
 					.marker(StoryboardMarkerFactory.addCard(title, "See specification for further information", StockCardImage.ERROR, CardResult.FAILURE));
 
 			if (!skipFinalScreenshot && FluentLogger.hasScreenshotTaker()) {
 				logger.screenshot();
-				lastScreenShotWasThrowable = true;
+				setFlag = true;
 			}
 
 			logger.error(cause);
+
+			if (setFlag) {
+				lastScreenShotWasThrowable = true;
+			}
 		} else {
 			if (!skipFinalScreenshot && screenshotTaker != null) {
 				ScreenshotCard card = new ScreenshotCard();
