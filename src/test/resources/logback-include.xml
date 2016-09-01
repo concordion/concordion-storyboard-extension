@@ -50,9 +50,8 @@
 				<append>false</append>				
 				
 				<encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
-					<layout class="ch.qos.logback.ext.html.HTMLLayout">
-						<format>COLUMN</format> 					<!-- Options: STRING, COLUMN -->
-						<pattern>%message%date{HH:mm:ss.SSS}%file%line</pattern>
+					<layout class="org.concordion.logback.html.HTMLLayout">
+						<pattern>%level%message%date{HH:mm:ss.SSS}%file%line</pattern>
 						<stepRecorder>STEP_MARKER</stepRecorder> 	<!-- Options: STEP_MARKER, INFO_LOG_LEVEL, DEBUG_LOG_LEVEL -->
 					</layout>
 			    </encoder>
