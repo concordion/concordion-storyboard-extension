@@ -167,8 +167,6 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 				card.setResult(CardResult.FAILURE);
 
 				addCard(card);
-
-				lastScreenShotWasThrowable = true;
 			} else {
 				NotificationCard card = new NotificationCard();
 				card.setTitle(title);
