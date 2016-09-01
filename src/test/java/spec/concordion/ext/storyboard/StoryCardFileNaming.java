@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.concordion.integration.junit4.ConcordionRunner;
-import org.junit.Before;
 import org.junit.runner.RunWith;
 
 import test.concordion.ext.storyboard.ExampleFixture;

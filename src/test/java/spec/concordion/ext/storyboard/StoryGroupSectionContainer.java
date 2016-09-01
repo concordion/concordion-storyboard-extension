@@ -5,7 +5,6 @@ import org.concordion.ext.StoryboardExtension;
 import org.concordion.ext.StoryboardExtension.AppendTo;
 import org.concordion.ext.storyboard.CardResult;
 import org.concordion.ext.storyboard.NotificationCard;
-import org.concordion.ext.storyboard.SectionContainer;
 import org.concordion.ext.storyboard.StockCardImage;
 import org.concordion.integration.junit4.ConcordionRunner;
 import org.junit.Before;

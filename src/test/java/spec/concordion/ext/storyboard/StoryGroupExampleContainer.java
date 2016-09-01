@@ -2,7 +2,6 @@ package spec.concordion.ext.storyboard;
 
 import org.concordion.api.extension.Extension;
 import org.concordion.ext.StoryboardExtension;
-import org.concordion.ext.StoryboardExtension.AppendTo;
 import org.concordion.ext.storyboard.CardResult;
 import org.concordion.ext.storyboard.NotificationCard;
 import org.concordion.ext.storyboard.StockCardImage;
