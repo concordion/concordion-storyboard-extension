@@ -40,7 +40,6 @@ public class ScreenshotCard extends Card {
 		}
 
 		if (screenshotTaker == null) {
-			imageSize = new Dimension(0, 0);
 			return;
 		}
 
@@ -54,9 +53,6 @@ public class ScreenshotCard extends Card {
 			this.imageSize = screenshotTaker.writeScreenshotTo(outputStream);
 			outputStream.close();
 		} catch (Exception e) {
-			// Do nothing, unable to take screenshot
-			imageSize = new Dimension(0, 0);
-			
 			//TODO: What logger should I use here?
 			System.out.println(e.getMessage());
 		}
@@ -101,6 +97,12 @@ public class ScreenshotCard extends Card {
 		
 		if (!imageName.isEmpty()) {
 			href = this.imageName + "?version=" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+		}
+
+		if (imageSize == null) {
+			// Something has gone wrong to get into this state, but allow the image
+			// to be added anyway to make the issue obvious
+			imageSize = new Dimension(0, 0);
 		}
 				
 		// Add link to image
