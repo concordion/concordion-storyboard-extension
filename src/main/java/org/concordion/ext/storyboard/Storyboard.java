@@ -44,6 +44,26 @@ class Storyboard {
 		card.captureData();
 	}
 	
+	public Card getLastCard() {
+		List<StoryboardItem> search;
+		
+		if (openContainers.isEmpty()) {
+			search = items;
+		} else {
+			search = openContainers.get(getCurrentContainerIndex()).getItems();
+		}
+		
+		if (search.size() > 0) {
+			StoryboardItem item = search.get(search.size() - 1);
+			
+			if (item instanceof Card) {
+				return (Card) item;
+			}
+		}
+		
+		return null;
+	}
+	
 	/**
 	 * Add container to the currently open container or storyboard
 	 * @param container Container to add
@@ -171,6 +191,8 @@ class Storyboard {
 		
 		for (StoryboardItem item : items) {
 			if (item instanceof Container) {
+				ul = null;
+				 
 				Container container = (Container)item;
 				
 				container.writeTo(parent);

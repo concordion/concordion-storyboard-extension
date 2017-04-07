@@ -122,7 +122,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 		storyboard.closeContainer();
 
-		resetCurrentState();
+		resetCurrentState(false);
 	}
 	
 	@Override
@@ -280,12 +280,15 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 			break;
 		}
 		
-		resetCurrentState();
+		resetCurrentState(true);
 	}
 	
-	private void resetCurrentState() {
+	private void resetCurrentState(boolean resettingExample) {
 		// Reset current state as if where starting a new specification
-		this.currentExample = null;
+		if (resettingExample) {
+			this.currentExample = null;
+		}
+		
 		this.failureDetected = false;
 		this.acceptCards = true;
 		this.skipFinalScreenshot = false;
@@ -308,6 +311,9 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 		if (!takeScreenshotOnExampleCompletion) return;
 		if (skipFinalScreenshot) return;
 		if (lastScreenShotWasThrowable) return;
+		
+		Card test = storyboard.getLastCard();
+		if (test != null && test instanceof ScreenshotCard == false) return;
 				
 		if (useReportLogger) {
 			if (FluentLogger.hasScreenshotTaker()) {

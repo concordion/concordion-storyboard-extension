@@ -12,7 +12,8 @@
   	<li>or implicitly, when a test failure is encountered, or exception is thrown</li>
   	<li>Hovering over the screenshot image on the card will popup a larger view of the image</li>
   	<li>Clicking on the screenshot image will show the image full screen within the browser</li>
-  	<li>When a test completes and there is an active ScreenshotTaker, a screenshot will be taken of the final state of the browser</li>
+  	<li>When a test completes and there is an active ScreenshotTaker, a screenshot will be taken of the final state of the browser <i>- as long as no other cards have been added</i></li>
+  	<li>It is assumed that if the last card added was not a screenshot then we don't want a final screenshot taken</li>
   	<li>Default behaviour can be overridden by use of the following methods</li> 
   	<ul>
   		<li>setScreenshotTaker</li>
