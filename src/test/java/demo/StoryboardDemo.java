@@ -20,9 +20,13 @@ public class StoryboardDemo {
 
 	public boolean addCard(final String description) {
 		String title = storyboard.getCurrentExampleTitle() + " - " + description;
-		 
+		
+		if (!storyboard.hasScreenshotTaker()) {
+			title += " (WITHOUT SCREENSHOTTAKER)";
+		}
+		
 		storyboard.addScreenshot("Adding Card BEFORE", description);
-		storyboard.addSectionContainer("this will not show up as is empty container");
+		storyboard.addSectionContainer("Only added if active screenshot taker as empty cntainers not shown");
 				
 		storyboard.addSectionContainer(title);
 		
@@ -45,6 +49,8 @@ public class StoryboardDemo {
 		storyboard.closeContainer();
 		
 		storyboard.addScreenshot("ALL DONE", description);
+		
+		storyboard.removeScreenshotTaker();
 		
 		return true;
 	}
