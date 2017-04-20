@@ -9,6 +9,7 @@ import org.concordion.ext.storyboard.StockCardImage;
 import org.concordion.integration.junit4.ConcordionRunner;
 import org.junit.runner.RunWith;
 
+import org.junit.Assert;
 import test.concordion.ext.storyboard.DummyScreenshotTaker;
 
 @RunWith(ConcordionRunner.class)
@@ -36,6 +37,13 @@ public class StoryboardDemo {
 		storyboard.closeContainer();
 		
 		storyboard.insertSectionContainer("With Final Screenshot");
+		
+		//TODO 
+		// How should we handle this?  
+		// Will failfast alter behaviour?
+		// Do need to close some/all containers... 
+		//Assert.fail("Oh boy!");
+		
 		//storyboard.skipFinalScreenshot();
 		storyboard.addScreenshot("A", "screenshot");
 		storyboard.addNotification("n1", "null", StockCardImage.JSON, CardResult.SUCCESS);
@@ -52,7 +60,7 @@ public class StoryboardDemo {
 		
 		storyboard.removeScreenshotTaker();
 		
-		return true;
+		return false;
 	}
 
 }
