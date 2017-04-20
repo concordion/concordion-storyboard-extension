@@ -19,6 +19,8 @@ public class StoryboardDemo {
 						.setScreenshotTaker(new DummyScreenshotTaker(1))
 						.setAppendMode(AppendTo.EXAMPLE);
 
+	int attempts = 0;
+			
 	public boolean addCard(final String description) {
 		String title = storyboard.getCurrentExampleTitle() + " - " + description;
 		
@@ -58,9 +60,7 @@ public class StoryboardDemo {
 		
 		storyboard.addScreenshot("ALL DONE", description);
 		
-		storyboard.removeScreenshotTaker();
-		
-		return false;
+		return 1 > attempts ++;
 	}
 
 }
