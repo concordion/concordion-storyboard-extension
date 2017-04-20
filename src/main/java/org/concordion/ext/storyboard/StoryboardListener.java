@@ -150,8 +150,7 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 
 		if (useReportLogger) {
 			FluentLogger logger = getLogger().with()
-					.message("Test Failed")
-					.data(sb.toString())
+					.message("{}: {}", title, sb.toString())
 					.marker(StoryboardMarkerFactory.addCard("Test Failed", sb.toString(), StockCardImage.ERROR, CardResult.FAILURE));
 
 			if (!skipFinalScreenshot && FluentLogger.hasScreenshotTaker()) {
@@ -195,13 +194,13 @@ public class StoryboardListener implements AssertEqualsListener, AssertTrueListe
 			boolean setFlag = false;
 
 			FluentLogger logger = getLogger().with()
-					.message(String.format("Exception thrown while evaluating expression '%s':\r\n\t%s", event.getExpression(), cause.getMessage()))
+					.message("Exception thrown while evaluating expression '{}':\r\n\t{}", event.getExpression(), cause.getMessage())
 					.marker(StoryboardMarkerFactory.addCard(title, "See specification for further information", StockCardImage.ERROR, CardResult.FAILURE));
 
 			if (!skipFinalScreenshot && FluentLogger.hasScreenshotTaker()) {
 				logger.screenshot();
 				setFlag = true;
-			}
+			} 
 
 			logger.error(cause);
 

@@ -25,7 +25,6 @@ public class StoryboardLogListener extends LoggingListener {
 	@Override
 	protected void append(ILoggingEvent event) {
 		StoryboardMarker storyboardMarker = (StoryboardMarker) findMarker(event.getMarker(), StoryboardMarkerFactory.STORYBOARD_MAKRER_NAME);
-		Marker dataMarker = findMarker(event.getMarker(), ReportLoggerMarkers.DATA_MARKER_NAME);
 		String title = storyboardMarker.getTitle();
 		String description = storyboardMarker.getDescription();
 		
@@ -38,6 +37,8 @@ public class StoryboardLogListener extends LoggingListener {
 			description = "";
 		}
 
+		Marker dataMarker = findMarker(event.getMarker(), ReportLoggerMarkers.DATA_MARKER_NAME);
+		
 		if (dataMarker instanceof ScreenshotMarker) {
 			ScreenshotMarker screenshotMarker = (ScreenshotMarker) dataMarker;
 
