@@ -9,7 +9,6 @@ import org.concordion.ext.storyboard.StockCardImage;
 import org.concordion.integration.junit4.ConcordionRunner;
 import org.junit.runner.RunWith;
 
-import org.junit.Assert;
 import test.concordion.ext.storyboard.DummyScreenshotTaker;
 
 @RunWith(ConcordionRunner.class)
