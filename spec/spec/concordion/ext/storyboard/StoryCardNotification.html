@@ -45,7 +45,7 @@ li {
   margin-bottom: 6px; 
 }
 
-.example, [concordion\:example] {
+.example, :not(th)[concordion\:example] {
   padding: 6px 16px 6px 16px;
   border: 1px solid #C3D9FF;
   margin: 6px 0px 28px 0px;
@@ -164,7 +164,7 @@ ins {
   font-size: 8pt;
 }
 </style><meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<link type="text/css" rel="stylesheet" href="../../../../storyboard.css" /><script type="text/javascript" src="../../../../storyboard.js"></script><link type="text/css" rel="stylesheet" href="../../../../storyboard.css" /><script type="text/javascript" src="../../../../storyboard.js"></script></head>
+<link type="text/css" rel="stylesheet" href="../../../../storyboard.css" /><script type="text/javascript" src="../../../../storyboard.js"></script></head>
 <body><span class="breadcrumbs"><a href="Storyboard.html">Storyboard Extension</a> &gt;</span>
 
   <h1>Notification Card</h1>
@@ -175,18 +175,13 @@ ins {
   	<li>A notification card may be added explicitly by calling the <code>addNotification(...) or addCard(...)</code> methods,</li>
   	<li>or implicitly, when a test failure is encountered, or exception is thrown and there is no active screenshot taker</li>
   	<li>Clicking on the card image will open a new page and present the data - if any data was supplied</li>
-  	<li>Default behaviour can be overridden by use of the following methods</li> 
-  	<ul>
-  		<li>setAddCardOnThrowable</li>
-  		<li>setAddCardOnFailure</li>
-  	</ul>	
   </ul>
 
   <div concordion:example="example1" id="example1">
     <h3>Example 1: Add Card</h3>
     <pre concordion:set="#snippet">&lt;span concordion:execute="addNotification(#TEXT)"&gt;&lt;b&gt;Hello World:&lt;/b&gt;This is some html!&lt;/span&gt;</pre>
 
-	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
+	<p concordion:execute="#fragment=render(#snippet)">
 	  When this snippet is run with this fixture, <span concordion:assertTrue="notificationCardAdded(#fragment)" class="success">this results in a Notification Card being added to the Storyboard</span>.
 	</p>
   <hr class="toggle-separator" /><div class="toggle-example-container"><input id="toggleheader0" class="toggle-example" type="checkbox" /><label for="toggleheader0" class="toggle-example scsuccess">Storyboard</label><div class="toggle-example-content"><ul><li class="storycard"><div class="scimgcontainer"><a href="StoryCardNotification0-0.html"><img id=": click image to see example" class="sizeheight" src="../../../../html.png" /></a></div><p class="scsummary scsuccess">Example 1: Add Card</p><p class="scdescription" title=": click image to see example">: click image to see example</p></li></ul></div></div></div>
@@ -198,7 +193,7 @@ ins {
     	&lt;p concordion:assertEquals="true"&gt;false&lt;/p&gt;
  	</pre>
 
-	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
+	<p concordion:execute="#fragment=render(#snippet)">
 	  When this snippet is run with this fixture, this results in <span concordion:assertEquals="failureCardCount(#fragment)" class="success">1</span> Notification Card being added to the Storyboard <span concordion:assertTrue="failureCardAdded(#fragment)" class="success">notifying that a test failed on the specification</span>.
 	</p>
   <hr class="toggle-separator" /><div class="toggle-example-container"><input id="toggleheader1" class="toggle-example" type="checkbox" /><label for="toggleheader1" class="toggle-example scsuccess">Storyboard</label><div class="toggle-example-content"><ul><li class="storycard"><div class="scimgcontainer"><a href="StoryCardNotification1-0.html"><img id=": click image to see example" class="sizeheight" src="../../../../html.png" /></a></div><p class="scsummary scsuccess">Example 2: Capture Failure</p><p class="scdescription" title=": click image to see example">: click image to see example</p></li></ul></div></div></div>
@@ -211,7 +206,7 @@ ins {
  	</pre>
 
 	<p>
-	  When this snippet is run with this fixture with <span concordion:execute="allowRepeatedFailures()">repeating failures allowed</span>, this <span concordion:execute="#fragment=render(#snippet, #actualValue)">results</span> in <span concordion:assertEquals="failureCardCount(#fragment)" class="success">2</span> Notification Cards being added to the Storyboard <span concordion:assertTrue="failureCardAdded(#fragment)" class="success">notifying that a test failed on the specification</span>.
+	  When this snippet is run with this fixture with <span concordion:execute="allowRepeatedFailures()">repeating failures allowed</span>, this <span concordion:execute="#fragment=render(#snippet)">results</span> in <span concordion:assertEquals="failureCardCount(#fragment)" class="success">2</span> Notification Cards being added to the Storyboard <span concordion:assertTrue="failureCardAdded(#fragment)" class="success">notifying that a test failed on the specification</span>.
 	</p>
   <hr class="toggle-separator" /><div class="toggle-example-container"><input id="toggleheader2" class="toggle-example" type="checkbox" /><label for="toggleheader2" class="toggle-example scsuccess">Storyboard</label><div class="toggle-example-content"><ul><li class="storycard"><div class="scimgcontainer"><a href="StoryCardNotification2-0.html"><img id=": click image to see example" class="sizeheight" src="../../../../html.png" /></a></div><p class="scsummary scsuccess">Example 2: Show Mulitple Failures</p><p class="scdescription" title=": click image to see example">: click image to see example</p></li></ul></div></div></div>
   
@@ -219,19 +214,10 @@ ins {
 	<h3>Example 3: Capture Exception</h3>
 	<pre concordion:set="#snippet">&lt;p concordion:assertTrue="#TEXT"&gt;false&lt;/p&gt;</pre>
 
-	<p concordion:execute="#fragment=render(#snippet, #actualValue)">
+	<p concordion:execute="#fragment=render(#snippet)">
 	  When this snippet is run with this fixture, this results in a Notification Card being added to the Storyboard <span concordion:assertTrue="exceptionCardAdded(#fragment)" class="success">notifying that an exception occurred in the fixture</span>.
 	</p>
-  <hr class="toggle-separator" /><div class="toggle-example-container"><input id="toggleheader3" class="toggle-example" type="checkbox" /><label for="toggleheader3" class="toggle-example scsuccess">Storyboard</label><div class="toggle-example-content"><ul><li class="storycard"><div class="scimgcontainer"><a href="StoryCardNotification3-0.html"><img id=": click image to see example" class="sizeheight" src="../../../../html.png" /></a></div><p class="scsummary scsuccess">Example 3: Capture Exception</p><p class="scdescription" title=": click image to see example">: click image to see example</p></li></ul></div></div></div>
-  
-  <div concordion:example="example5" id="example5">	
-	<h3>Example 4: Ignore Failure</h3>
-    <pre concordion:set="#snippet">&lt;p concordion:assertEquals="true"&gt;false&lt;/p&gt;</pre>
+  <hr class="toggle-separator" /><div class="toggle-example-container"><input id="toggleheader3" class="toggle-example" type="checkbox" /><label for="toggleheader3" class="toggle-example scsuccess">Storyboard</label><div class="toggle-example-content"><ul><li class="storycard"><div class="scimgcontainer"><a href="StoryCardNotification3-0.html"><img id=": click image to see example" class="sizeheight" src="../../../../html.png" /></a></div><p class="scsummary scsuccess">Example 3: Capture Exception</p><p class="scdescription" title=": click image to see example">: click image to see example</p></li></ul></div></div></div> 
 
-	<p concordion:execute="#fragment=renderWithFailureOff(#snippet, #actualValue)">
-	  After calling <code>setAddCardOnFailure(false)</code>, when this snippet is run with this fixture, this results in <span concordion:assertTrue="noCardAdded(#fragment)" class="success">NO cards being added to the Storyboard</span>.
-	</p>
-  <hr class="toggle-separator" /><div class="toggle-example-container"><input id="toggleheader4" class="toggle-example" type="checkbox" /><label for="toggleheader4" class="toggle-example scsuccess">Storyboard</label><div class="toggle-example-content"><ul><li class="storycard"><div class="scimgcontainer"><a href="StoryCardNotification4-0.html"><img id=": click image to see example" class="sizeheight" src="../../../../html.png" /></a></div><p class="scsummary scsuccess">Example 4: Ignore Failure</p><p class="scdescription" title=": click image to see example">: click image to see example</p></li></ul></div></div></div>  
-
-<div class="storyboard" style="display: none"><h3 id="StoryboardHeader">Storyboard</h3><ul><li class="storycard"><div class="scimgcontainer"><a href="StoryCardNotification0.jpg?version=20160619223427"><img id="" class="sizelandscape" src="StoryCardNotification0.jpg?version=20160619223427" width="677" onMouseOver="showScreenPopup(this);this.style.cursor='pointer'" onMouseOut="hideScreenPopup();this.style.cursor='default'" /></a></div><p class="scsummary scsuccess">Example Completed</p><p class="scdescription" title=""></p></li><li class="storycard"><div class="scimgcontainer"><a href="StoryCardNotification1.jpg?version=20160619223427"><img id="" class="sizelandscape" src="StoryCardNotification1.jpg?version=20160619223427" width="677" onMouseOver="showScreenPopup(this);this.style.cursor='pointer'" onMouseOut="hideScreenPopup();this.style.cursor='default'" /></a></div><p class="scsummary scsuccess">Example Completed</p><p class="scdescription" title=""></p></li><li class="storycard"><div class="scimgcontainer"><a href="StoryCardNotification2.jpg?version=20160619223427"><img id="" class="sizelandscape" src="StoryCardNotification2.jpg?version=20160619223427" width="677" onMouseOver="showScreenPopup(this);this.style.cursor='pointer'" onMouseOut="hideScreenPopup();this.style.cursor='default'" /></a></div><p class="scsummary scsuccess">Example Completed</p><p class="scdescription" title=""></p></li><li class="storycard"><div class="scimgcontainer"><a href="StoryCardNotification3.jpg?version=20160619223427"><img id="" class="sizelandscape" src="StoryCardNotification3.jpg?version=20160619223427" width="677" onMouseOver="showScreenPopup(this);this.style.cursor='pointer'" onMouseOut="hideScreenPopup();this.style.cursor='default'" /></a></div><p class="scsummary scsuccess">Example Completed</p><p class="scdescription" title=""></p></li><li class="storycard"><div class="scimgcontainer"><a href="StoryCardNotification4.jpg?version=20160619223427"><img id="" class="sizelandscape" src="StoryCardNotification4.jpg?version=20160619223427" width="677" onMouseOver="showScreenPopup(this);this.style.cursor='pointer'" onMouseOut="hideScreenPopup();this.style.cursor='default'" /></a></div><p class="scsummary scsuccess">Example Completed</p><p class="scdescription" title=""></p></li></ul></div><img id="StoryCardScreenshotPopup" class="screenshot" /><div class="footer">Results generated by <a href="http://www.concordion.org" style="font-weight: bold; text-decoration: none; color: #89C;">Concordion</a><div class="testTime">in 173 ms on 19-Jun-2016 at 22:34:27 NZST</div></div></body>
+<div class="storyboard" style="display: none"><h3 id="StoryboardHeader">Storyboard</h3></div><img id="StoryCardScreenshotPopup" class="screenshot" /><div class="footer">Results generated by <a href="http://www.concordion.org" style="font-weight: bold; text-decoration: none; color: #89C;">Concordion</a><div class="testTime">in 126 ms on 22-Oct-2017 at 11:15:39 NZDT</div></div></body>
 </html>
