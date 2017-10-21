@@ -1,15 +1,6 @@
 apply from: 'https://raw.githubusercontent.com/concordion/concordion-extension-build/master/extension-build.gradle'
-//apply from: 'extension-build.gradle'
 
 description = 'An extension to Concordion that capture screenshots, etc in storyboard format while the specification is being executed so that we can see exactly what the test has done against the system under test'
-
-//TODO remove me
-repositories {
-	//mavenLocal()
-	maven {
-		url = 'http://oss.jfrog.org/oss-snapshot-local'
-	}
-}
 
 ext {
 	developers = {
@@ -22,35 +13,12 @@ ext {
 	inceptionYear = '2014'
 }
 
-/*
-githubPages {
-	repoUri = 'git@github.com:concordion/concordion-storyboard-extension.git'
-	pages {
-		from 'docs'
-
-		from ('build/reports/spec/') {
-			into 'spec'
-		}
-			
-		from ('build/docs/javadoc/') {
-			into 'api'
-		}
-	}
-}
-*/
-
 dependencies {
-	compile 'org.concordion:concordion-logback-extension:2.0.0-SNAPSHOT:reportlogger'
-	testCompile 'org.concordion:concordion-logback-extension:2.0.0-SNAPSHOT'
+	compile 'org.concordion:concordion-logback-extension:2.0.0:reportlogger'
+	testCompile 'org.concordion:concordion-logback-extension:2.0.0'
 	testCompile 'org.concordion:concordion-embed-extension:1.1.2'
 }
 
-test.dependsOn cleanTest
 test {
 	include '**/Storyboard.*'
-	systemProperties['concordion.output.dir'] = "$reporting.baseDir/spec"
-	outputs.upToDateWhen { false } // force it to run even if test code hasn't changed
-	testLogging {
-		events "passed", "skipped", "failed", "standardError"
-	}
 }
