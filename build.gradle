@@ -22,6 +22,7 @@ ext {
 	inceptionYear = '2014'
 }
 
+/*
 githubPages {
 	repoUri = 'git@github.com:concordion/concordion-storyboard-extension.git'
 	pages {
@@ -36,6 +37,7 @@ githubPages {
 		}
 	}
 }
+*/
 
 dependencies {
 	compile 'org.concordion:concordion-logback-extension:2.0.0-SNAPSHOT:reportlogger'
