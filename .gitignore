@@ -2,8 +2,10 @@
 .gradle
 build/
 
+# Maven
+target/
+
 # Eclipse
-.checkstyle
 .classpath
 .project
 .settings/
@@ -11,4 +13,11 @@ bin/
 
 # IDEA
 .idea/
+out/
 *.iml
+
+# VS Code
+.vscode/
+
+# Infer
+infer-out/
