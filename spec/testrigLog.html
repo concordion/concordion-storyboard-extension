@@ -499,7 +499,7 @@ function viewport() {
 </script>
   </head>
 <body>
-<label class="floattopright"><input id="chkTrace" type="checkbox" onclick="filterTrace(this);" checked>Show 'TRACE' level statements</label><img id="ScreenshotPopup" class="screenshot" /><h1>Log session start time Mon Oct 23 00:56:39 NZDT 2017</h1><p></p>
+<label class="floattopright"><input id="chkTrace" type="checkbox" onclick="filterTrace(this);" checked>Show 'TRACE' level statements</label><img id="ScreenshotPopup" class="screenshot" /><h1>Log session start time Sun Jul 11 21:59:54 NZST 2021</h1><p></p>
 
 <table>
 <thead>
@@ -516,14 +516,14 @@ function viewport() {
 <tr class="record debug">
 <td>1.</td><td class="Level debug">DEBUG</td>
 <td class="Message">hello</td>
-<td class="Time">00:56:39.120</td>
+<td class="Time">21:59:54.810</td>
 <td class="FileOfCaller" title="DummyTest.java">DummyTest.java</td>
 <td class="LineOfCaller">28</td>
 </tr>
 <tr class="record debug">
 <td>2.</td><td class="Level debug">DEBUG</td>
 <td class="Message">This is a screenshot</td>
-<td class="Time">00:56:39.143</td>
+<td class="Time">21:59:54.847</td>
 <td class="FileOfCaller" title="DummyTest.java">DummyTest.java</td>
 <td class="LineOfCaller">34</td>
 </tr>
@@ -535,7 +535,7 @@ function viewport() {
 <tr class="record debug">
 <td>3.</td><td class="Level debug">DEBUG</td>
 <td class="Message">This is an attachment</td>
-<td class="Time">00:56:39.152</td>
+<td class="Time">21:59:54.857</td>
 <td class="FileOfCaller" title="DummyTest.java">DummyTest.java</td>
 <td class="LineOfCaller">44</td>
 </tr>
@@ -553,7 +553,7 @@ function viewport() {
 <tr class="record error">
 <td>4.</td><td class="Level error">ERROR</td>
 <td class="Message">Exception thrown while evaluating expression &#39;doException()&#39;:<br />&nbsp;&nbsp;&nbsp;&nbsp;I threw an execption</td>
-<td class="Time">00:56:39.170</td>
+<td class="Time">21:59:54.876</td>
 <td class="FileOfCaller" title="StoryboardListener.java">StoryboardListener.java</td>
 <td class="LineOfCaller">205</td>
 </tr>
@@ -574,18 +574,19 @@ java.lang.RuntimeException: I threw an execption
 <div class="stackTraceEntry">at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)</div>
 <div class="stackTraceEntry">at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)</div>
 <div class="stackTraceEntry">at java.lang.reflect.Method.invoke(Method.java:498)</div>
-<div class="stackTraceEntry">at ognl.OgnlRuntime.invokeMethod(OgnlRuntime.java:872)</div>
-<div class="stackTraceEntry">at ognl.OgnlRuntime.callAppropriateMethod(OgnlRuntime.java:1295)</div>
+<div class="stackTraceEntry">at ognl.OgnlRuntime.invokeMethodInsideSandbox(OgnlRuntime.java:1266)</div>
+<div class="stackTraceEntry">at ognl.OgnlRuntime.invokeMethod(OgnlRuntime.java:1251)</div>
+<div class="stackTraceEntry">at ognl.OgnlRuntime.callAppropriateMethod(OgnlRuntime.java:1969)</div>
 <div class="stackTraceEntry">at ognl.ObjectMethodAccessor.callMethod(ObjectMethodAccessor.java:68)</div>
-<div class="stackTraceEntry">at ognl.OgnlRuntime.callMethod(OgnlRuntime.java:1371)</div>
-<div class="stackTraceEntry">at ognl.ASTMethod.getValueBody(ASTMethod.java:90)</div>
+<div class="stackTraceEntry">at ognl.OgnlRuntime.callMethod(OgnlRuntime.java:2045)</div>
+<div class="stackTraceEntry">at ognl.ASTMethod.getValueBody(ASTMethod.java:97)</div>
 <div class="stackTraceEntry">at ognl.SimpleNode.evaluateGetValueBody(SimpleNode.java:212)</div>
 <div class="stackTraceEntry">at ognl.SimpleNode.getValue(SimpleNode.java:258)</div>
-<div class="stackTraceEntry">at ognl.Ognl.getValue(Ognl.java:494)</div>
-<div class="stackTraceEntry">at ognl.Ognl.getValue(Ognl.java:596)</div>
-<div class="stackTraceEntry">at ognl.Ognl.getValue(Ognl.java:566)</div>
-<div class="stackTraceEntry">at org.concordion.internal.OgnlEvaluator.evaluate(OgnlEvaluator.java:24)</div>
-<div class="stackTraceEntry">at org.concordion.internal.SimpleEvaluator.evaluate(SimpleEvaluator.java:12)</div>
+<div class="stackTraceEntry">at ognl.Ognl.getValue(Ognl.java:537)</div>
+<div class="stackTraceEntry">at ognl.Ognl.getValue(Ognl.java:639)</div>
+<div class="stackTraceEntry">at ognl.Ognl.getValue(Ognl.java:609)</div>
+<div class="stackTraceEntry">at org.concordion.internal.OgnlEvaluator.evaluate(OgnlEvaluator.java:25)</div>
+<div class="stackTraceEntry">at org.concordion.internal.SimpleEvaluator.evaluate(SimpleEvaluator.java:14)</div>
 <div class="stackTraceEntry">at org.concordion.internal.command.BooleanCommand.verify(BooleanCommand.java:33)</div>
 <div class="stackTraceEntry">at org.concordion.api.AbstractCommandDecorator$3.run(AbstractCommandDecorator.java:33)</div>
 <div class="stackTraceEntry">at org.concordion.internal.command.LocalTextDecorator.process(LocalTextDecorator.java:26)</div>
@@ -597,31 +598,32 @@ java.lang.RuntimeException: I threw an execption
 <div class="stackTraceEntry">at org.concordion.api.CommandCallList.processSequentially(CommandCallList.java:34)</div>
 <div class="stackTraceEntry">at org.concordion.internal.command.SpecificationCommand.execute(SpecificationCommand.java:36)</div>
 <div class="stackTraceEntry">at org.concordion.api.CommandCall.execute(CommandCall.java:72)</div>
-<div class="stackTraceEntry">at org.concordion.internal.XMLSpecification.processNode(XMLSpecification.java:61)</div>
-<div class="stackTraceEntry">at org.concordion.internal.XMLSpecification.processExample(XMLSpecification.java:78)</div>
-<div class="stackTraceEntry">at org.concordion.Concordion.processExample(Concordion.java:103)</div>
-<div class="stackTraceEntry">at test.concordion.TestRig.process(TestRig.java:80)</div>
-<div class="stackTraceEntry">at test.concordion.TestRig.process(TestRig.java:103)</div>
+<div class="stackTraceEntry">at org.concordion.internal.XMLSpecification.processNode(XMLSpecification.java:60)</div>
+<div class="stackTraceEntry">at org.concordion.internal.XMLSpecification.processExample(XMLSpecification.java:69)</div>
+<div class="stackTraceEntry">at org.concordion.Concordion.processExample(Concordion.java:92)</div>
 <div class="stackTraceEntry">at test.concordion.TestRig.process(TestRig.java:98)</div>
-<div class="stackTraceEntry">at test.concordion.TestRig.process(TestRig.java:93)</div>
-<div class="stackTraceEntry">at test.concordion.TestRig.processFragment(TestRig.java:34)</div>
+<div class="stackTraceEntry">at test.concordion.TestRig.process(TestRig.java:121)</div>
+<div class="stackTraceEntry">at test.concordion.TestRig.process(TestRig.java:116)</div>
+<div class="stackTraceEntry">at test.concordion.TestRig.process(TestRig.java:111)</div>
+<div class="stackTraceEntry">at test.concordion.TestRig.processFragment(TestRig.java:45)</div>
 <div class="stackTraceEntry">at spec.concordion.ext.storyboard.LoggingExtensionIntegration.exception(LoggingExtensionIntegration.java:113)</div>
 <div class="stackTraceEntry">at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)</div>
 <div class="stackTraceEntry">at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)</div>
 <div class="stackTraceEntry">at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)</div>
 <div class="stackTraceEntry">at java.lang.reflect.Method.invoke(Method.java:498)</div>
-<div class="stackTraceEntry">at ognl.OgnlRuntime.invokeMethod(OgnlRuntime.java:872)</div>
-<div class="stackTraceEntry">at ognl.OgnlRuntime.callAppropriateMethod(OgnlRuntime.java:1295)</div>
+<div class="stackTraceEntry">at ognl.OgnlRuntime.invokeMethodInsideSandbox(OgnlRuntime.java:1266)</div>
+<div class="stackTraceEntry">at ognl.OgnlRuntime.invokeMethod(OgnlRuntime.java:1251)</div>
+<div class="stackTraceEntry">at ognl.OgnlRuntime.callAppropriateMethod(OgnlRuntime.java:1969)</div>
 <div class="stackTraceEntry">at ognl.ObjectMethodAccessor.callMethod(ObjectMethodAccessor.java:68)</div>
-<div class="stackTraceEntry">at ognl.OgnlRuntime.callMethod(OgnlRuntime.java:1371)</div>
-<div class="stackTraceEntry">at ognl.ASTMethod.getValueBody(ASTMethod.java:90)</div>
+<div class="stackTraceEntry">at ognl.OgnlRuntime.callMethod(OgnlRuntime.java:2045)</div>
+<div class="stackTraceEntry">at ognl.ASTMethod.getValueBody(ASTMethod.java:97)</div>
 <div class="stackTraceEntry">at ognl.SimpleNode.evaluateGetValueBody(SimpleNode.java:212)</div>
 <div class="stackTraceEntry">at ognl.SimpleNode.getValue(SimpleNode.java:258)</div>
-<div class="stackTraceEntry">at ognl.Ognl.getValue(Ognl.java:494)</div>
-<div class="stackTraceEntry">at ognl.Ognl.getValue(Ognl.java:596)</div>
-<div class="stackTraceEntry">at ognl.Ognl.getValue(Ognl.java:566)</div>
-<div class="stackTraceEntry">at org.concordion.internal.OgnlEvaluator.evaluate(OgnlEvaluator.java:24)</div>
-<div class="stackTraceEntry">at org.concordion.internal.SimpleEvaluator.evaluate(SimpleEvaluator.java:12)</div>
+<div class="stackTraceEntry">at ognl.Ognl.getValue(Ognl.java:537)</div>
+<div class="stackTraceEntry">at ognl.Ognl.getValue(Ognl.java:639)</div>
+<div class="stackTraceEntry">at ognl.Ognl.getValue(Ognl.java:609)</div>
+<div class="stackTraceEntry">at org.concordion.internal.OgnlEvaluator.evaluate(OgnlEvaluator.java:25)</div>
+<div class="stackTraceEntry">at org.concordion.internal.SimpleEvaluator.evaluate(SimpleEvaluator.java:14)</div>
 <div class="stackTraceEntry">at org.concordion.internal.command.BooleanCommand.verify(BooleanCommand.java:33)</div>
 <div class="stackTraceEntry">at org.concordion.api.AbstractCommandDecorator$3.run(AbstractCommandDecorator.java:33)</div>
 <div class="stackTraceEntry">at org.concordion.internal.command.LocalTextDecorator.process(LocalTextDecorator.java:26)</div>
@@ -633,34 +635,38 @@ java.lang.RuntimeException: I threw an execption
 <div class="stackTraceEntry">at org.concordion.api.CommandCallList.processSequentially(CommandCallList.java:34)</div>
 <div class="stackTraceEntry">at org.concordion.internal.command.SpecificationCommand.execute(SpecificationCommand.java:36)</div>
 <div class="stackTraceEntry">at org.concordion.api.CommandCall.execute(CommandCall.java:72)</div>
-<div class="stackTraceEntry">at org.concordion.internal.XMLSpecification.processNode(XMLSpecification.java:61)</div>
-<div class="stackTraceEntry">at org.concordion.internal.XMLSpecification.processExample(XMLSpecification.java:78)</div>
-<div class="stackTraceEntry">at org.concordion.Concordion.processExample(Concordion.java:103)</div>
-<div class="stackTraceEntry">at org.concordion.internal.FixtureRunner.run(FixtureRunner.java:38)</div>
+<div class="stackTraceEntry">at org.concordion.internal.XMLSpecification.processNode(XMLSpecification.java:60)</div>
+<div class="stackTraceEntry">at org.concordion.internal.XMLSpecification.processExample(XMLSpecification.java:69)</div>
+<div class="stackTraceEntry">at org.concordion.Concordion.processExample(Concordion.java:92)</div>
+<div class="stackTraceEntry">at org.concordion.internal.FixtureRunner.run(FixtureRunner.java:41)</div>
 <div class="stackTraceEntry">at org.concordion.integration.junit4.ConcordionRunner.invoke(ConcordionRunner.java:207)</div>
 <div class="stackTraceEntry">at org.concordion.integration.junit4.ConcordionRunner$1.invoke(ConcordionRunner.java:31)</div>
 <div class="stackTraceEntry">at org.concordion.integration.junit4.ConcordionFrameworkMethod.invokeExplosively(ConcordionFrameworkMethod.java:58)</div>
 <div class="stackTraceEntry">at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)</div>
 <div class="stackTraceEntry">at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)</div>
-<div class="stackTraceEntry">at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)</div>
-<div class="stackTraceEntry">at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:78)</div>
+<div class="stackTraceEntry">at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)</div>
+<div class="stackTraceEntry">at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)</div>
+<div class="stackTraceEntry">at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)</div>
+<div class="stackTraceEntry">at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)</div>
 <div class="stackTraceEntry">at org.concordion.integration.junit4.ConcordionRunner.runChild(ConcordionRunner.java:191)</div>
 <div class="stackTraceEntry">at org.concordion.integration.junit4.ConcordionRunner.runChild(ConcordionRunner.java:23)</div>
-<div class="stackTraceEntry">at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)</div>
-<div class="stackTraceEntry">at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)</div>
-<div class="stackTraceEntry">at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)</div>
-<div class="stackTraceEntry">at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)</div>
-<div class="stackTraceEntry">at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)</div>
-<div class="stackTraceEntry">at org.junit.runners.ParentRunner.run(ParentRunner.java:363)</div>
+<div class="stackTraceEntry">at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)</div>
+<div class="stackTraceEntry">at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)</div>
+<div class="stackTraceEntry">at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)</div>
+<div class="stackTraceEntry">at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)</div>
+<div class="stackTraceEntry">at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)</div>
+<div class="stackTraceEntry">at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)</div>
+<div class="stackTraceEntry">at org.junit.runners.ParentRunner.run(ParentRunner.java:413)</div>
 <div class="stackTraceEntry">at org.concordion.integration.junit4.ConcordionRunner.run(ConcordionRunner.java:150)</div>
 <div class="stackTraceEntry">at org.junit.runners.Suite.runChild(Suite.java:128)</div>
 <div class="stackTraceEntry">at org.junit.runners.Suite.runChild(Suite.java:27)</div>
-<div class="stackTraceEntry">at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)</div>
-<div class="stackTraceEntry">at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)</div>
-<div class="stackTraceEntry">at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)</div>
-<div class="stackTraceEntry">at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)</div>
-<div class="stackTraceEntry">at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)</div>
-<div class="stackTraceEntry">at org.junit.runners.ParentRunner.run(ParentRunner.java:363)</div>
+<div class="stackTraceEntry">at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)</div>
+<div class="stackTraceEntry">at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)</div>
+<div class="stackTraceEntry">at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)</div>
+<div class="stackTraceEntry">at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)</div>
+<div class="stackTraceEntry">at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)</div>
+<div class="stackTraceEntry">at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)</div>
+<div class="stackTraceEntry">at org.junit.runners.ParentRunner.run(ParentRunner.java:413)</div>
 <div class="stackTraceEntry">at org.junit.runner.JUnitCore.run(JUnitCore.java:137)</div>
 <div class="stackTraceEntry">at org.junit.runner.JUnitCore.run(JUnitCore.java:115)</div>
 <div class="stackTraceEntry">at org.junit.runner.JUnitCore.run(JUnitCore.java:105)</div>
@@ -670,7 +676,7 @@ java.lang.RuntimeException: I threw an execption
 <div class="stackTraceEntry">at org.concordion.internal.runner.DefaultConcordionRunner.runTestClass(DefaultConcordionRunner.java:44)</div>
 <div class="stackTraceEntry">at org.concordion.internal.runner.DefaultConcordionRunner.execute(DefaultConcordionRunner.java:19)</div>
 <div class="stackTraceEntry">at org.concordion.internal.command.SequentialRunStrategy.call(SequentialRunStrategy.java:10)</div>
-<div class="stackTraceEntry">at org.concordion.internal.command.RunCommand.execute(RunCommand.java:80)</div>
+<div class="stackTraceEntry">at org.concordion.internal.command.RunCommand.execute(RunCommand.java:81)</div>
 <div class="stackTraceEntry">at org.concordion.api.AbstractCommandDecorator$2.run(AbstractCommandDecorator.java:25)</div>
 <div class="stackTraceEntry">at org.concordion.internal.command.LocalTextDecorator.process(LocalTextDecorator.java:26)</div>
 <div class="stackTraceEntry">at org.concordion.api.AbstractCommandDecorator.execute(AbstractCommandDecorator.java:23)</div>
@@ -681,56 +687,63 @@ java.lang.RuntimeException: I threw an execption
 <div class="stackTraceEntry">at org.concordion.api.CommandCallList.processSequentially(CommandCallList.java:33)</div>
 <div class="stackTraceEntry">at org.concordion.internal.command.SpecificationCommand.execute(SpecificationCommand.java:36)</div>
 <div class="stackTraceEntry">at org.concordion.api.CommandCall.execute(CommandCall.java:72)</div>
-<div class="stackTraceEntry">at org.concordion.internal.XMLSpecification.processNode(XMLSpecification.java:61)</div>
-<div class="stackTraceEntry">at org.concordion.internal.XMLSpecification.processExample(XMLSpecification.java:78)</div>
-<div class="stackTraceEntry">at org.concordion.Concordion.processExample(Concordion.java:103)</div>
-<div class="stackTraceEntry">at org.concordion.internal.FixtureRunner.run(FixtureRunner.java:38)</div>
+<div class="stackTraceEntry">at org.concordion.internal.XMLSpecification.processNode(XMLSpecification.java:60)</div>
+<div class="stackTraceEntry">at org.concordion.internal.XMLSpecification.processExample(XMLSpecification.java:69)</div>
+<div class="stackTraceEntry">at org.concordion.Concordion.processExample(Concordion.java:92)</div>
+<div class="stackTraceEntry">at org.concordion.internal.FixtureRunner.run(FixtureRunner.java:41)</div>
 <div class="stackTraceEntry">at org.concordion.integration.junit4.ConcordionRunner.invoke(ConcordionRunner.java:207)</div>
 <div class="stackTraceEntry">at org.concordion.integration.junit4.ConcordionRunner$1.invoke(ConcordionRunner.java:31)</div>
 <div class="stackTraceEntry">at org.concordion.integration.junit4.ConcordionFrameworkMethod.invokeExplosively(ConcordionFrameworkMethod.java:58)</div>
 <div class="stackTraceEntry">at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)</div>
-<div class="stackTraceEntry">at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)</div>
-<div class="stackTraceEntry">at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:78)</div>
+<div class="stackTraceEntry">at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)</div>
+<div class="stackTraceEntry">at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)</div>
+<div class="stackTraceEntry">at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)</div>
+<div class="stackTraceEntry">at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)</div>
 <div class="stackTraceEntry">at org.concordion.integration.junit4.ConcordionRunner.runChild(ConcordionRunner.java:191)</div>
 <div class="stackTraceEntry">at org.concordion.integration.junit4.ConcordionRunner.runChild(ConcordionRunner.java:23)</div>
-<div class="stackTraceEntry">at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)</div>
-<div class="stackTraceEntry">at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)</div>
-<div class="stackTraceEntry">at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)</div>
-<div class="stackTraceEntry">at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)</div>
-<div class="stackTraceEntry">at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)</div>
-<div class="stackTraceEntry">at org.junit.runners.ParentRunner.run(ParentRunner.java:363)</div>
+<div class="stackTraceEntry">at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)</div>
+<div class="stackTraceEntry">at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)</div>
+<div class="stackTraceEntry">at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)</div>
+<div class="stackTraceEntry">at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)</div>
+<div class="stackTraceEntry">at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)</div>
+<div class="stackTraceEntry">at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)</div>
+<div class="stackTraceEntry">at org.junit.runners.ParentRunner.run(ParentRunner.java:413)</div>
 <div class="stackTraceEntry">at org.concordion.integration.junit4.ConcordionRunner.run(ConcordionRunner.java:150)</div>
-<div class="stackTraceEntry">at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.runTestClass(JUnitTestClassExecuter.java:112)</div>
-<div class="stackTraceEntry">at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.execute(JUnitTestClassExecuter.java:56)</div>
-<div class="stackTraceEntry">at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassProcessor.processTestClass(JUnitTestClassProcessor.java:66)</div>
+<div class="stackTraceEntry">at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecutor.runTestClass(JUnitTestClassExecutor.java:110)</div>
+<div class="stackTraceEntry">at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecutor.execute(JUnitTestClassExecutor.java:58)</div>
+<div class="stackTraceEntry">at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecutor.execute(JUnitTestClassExecutor.java:38)</div>
+<div class="stackTraceEntry">at org.gradle.api.internal.tasks.testing.junit.AbstractJUnitTestClassProcessor.processTestClass(AbstractJUnitTestClassProcessor.java:62)</div>
 <div class="stackTraceEntry">at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:51)</div>
 <div class="stackTraceEntry">at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)</div>
 <div class="stackTraceEntry">at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)</div>
 <div class="stackTraceEntry">at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)</div>
 <div class="stackTraceEntry">at java.lang.reflect.Method.invoke(Method.java:498)</div>
-<div class="stackTraceEntry">at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)</div>
-<div class="stackTraceEntry">at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)</div>
-<div class="stackTraceEntry">at org.gradle.messaging.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:32)</div>
-<div class="stackTraceEntry">at org.gradle.messaging.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:93)</div>
+<div class="stackTraceEntry">at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:36)</div>
+<div class="stackTraceEntry">at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)</div>
+<div class="stackTraceEntry">at org.gradle.internal.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:33)</div>
+<div class="stackTraceEntry">at org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:94)</div>
 <div class="stackTraceEntry">at com.sun.proxy.$Proxy2.processTestClass(Unknown Source)</div>
-<div class="stackTraceEntry">at org.gradle.api.internal.tasks.testing.worker.TestWorker.processTestClass(TestWorker.java:109)</div>
+<div class="stackTraceEntry">at org.gradle.api.internal.tasks.testing.worker.TestWorker.processTestClass(TestWorker.java:121)</div>
 <div class="stackTraceEntry">at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)</div>
 <div class="stackTraceEntry">at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)</div>
 <div class="stackTraceEntry">at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)</div>
 <div class="stackTraceEntry">at java.lang.reflect.Method.invoke(Method.java:498)</div>
-<div class="stackTraceEntry">at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)</div>
-<div class="stackTraceEntry">at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)</div>
-<div class="stackTraceEntry">at org.gradle.messaging.remote.internal.hub.MessageHub$Handler.run(MessageHub.java:360)</div>
-<div class="stackTraceEntry">at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:54)</div>
-<div class="stackTraceEntry">at org.gradle.internal.concurrent.StoppableExecutorImpl$1.run(StoppableExecutorImpl.java:40)</div>
-<div class="stackTraceEntry">at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)</div>
-<div class="stackTraceEntry">at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)</div>
+<div class="stackTraceEntry">at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:36)</div>
+<div class="stackTraceEntry">at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)</div>
+<div class="stackTraceEntry">at org.gradle.internal.remote.internal.hub.MessageHubBackedObjectConnection$DispatchWrapper.dispatch(MessageHubBackedObjectConnection.java:182)</div>
+<div class="stackTraceEntry">at org.gradle.internal.remote.internal.hub.MessageHubBackedObjectConnection$DispatchWrapper.dispatch(MessageHubBackedObjectConnection.java:164)</div>
+<div class="stackTraceEntry">at org.gradle.internal.remote.internal.hub.MessageHub$Handler.run(MessageHub.java:414)</div>
+<div class="stackTraceEntry">at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)</div>
+<div class="stackTraceEntry">at org.gradle.internal.concurrent.ManagedExecutorImpl$1.run(ManagedExecutorImpl.java:48)</div>
+<div class="stackTraceEntry">at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)</div>
+<div class="stackTraceEntry">at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)</div>
+<div class="stackTraceEntry">at org.gradle.internal.concurrent.ThreadFactoryImpl$ManagedThreadRunnable.run(ThreadFactoryImpl.java:56)</div>
 <div class="stackTraceEntry">at java.lang.Thread.run(Thread.java:748)</div>
 </div></td></tr>
 <tr class="record error">
 <td>5.</td><td class="Level error">ERROR</td>
 <td class="Message">Test Failed: <br />Expected: false<br />Actual: == false</td>
-<td class="Time">00:56:39.204</td>
+<td class="Time">21:59:54.904</td>
 <td class="FileOfCaller" title="StoryboardListener.java">StoryboardListener.java</td>
 <td class="LineOfCaller">160</td>
 </tr>
