@@ -14,8 +14,8 @@ ext {
 }
 
 dependencies {
-	implementation 'org.concordion:concordion-logback-extension:2.0.0:reportlogger'
-	testImplementation 'org.concordion:concordion-logback-extension:2.0.0'
+	implementation 'org.concordion:concordion-logback-extension:2.1.2:reportlogger'
+	testImplementation 'org.concordion:concordion-logback-extension:2.1.2'
 	testImplementation 'org.concordion:concordion-embed-extension:1.1.2'
 }
 
